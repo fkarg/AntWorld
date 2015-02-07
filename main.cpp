@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <ctime>
+
 
 int main()
 {
@@ -7,8 +10,11 @@ int main()
 
     // Load a sprite to display
     sf::Texture texture;
-    if (!texture.loadFromFile("cb.bmp"))
+    std::cout<<"there's no error yet..."<<std::endl<<time(NULL)<<std::endl;
+    if (!texture.loadFromFile("cb.bmp")) {
+        std::cout<<"failed to load!"<<std::endl<<time(NULL)<<std::endl;
         return EXIT_FAILURE;
+    }
     sf::Sprite sprite(texture);
 
 	// Start the game loop

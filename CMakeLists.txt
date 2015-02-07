@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 2.8.4)
+cmake_minimum_required(VERSION 2.8)
 project(AntWorld)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES "main.cpp" "cb.bmp" )
 add_executable(AntWorld ${SOURCE_FILES})
 
+# include_directories("${PROJECT_SOURCE_DIR}/*")
 
 
  # Define sources and executable
