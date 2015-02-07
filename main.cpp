@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <ctime>
-
+#include "Maze.h"
+#include "Tile.h"
 
 int main()
 {
@@ -10,12 +11,14 @@ int main()
 
     // Load a sprite to display
     sf::Texture texture;
-    std::cout<<"there's no error yet..."<<std::endl<<time(NULL)<<std::endl;
+    std::cout << "there's no error yet..." << std::endl << time(NULL) << std::endl;
     if (!texture.loadFromFile("cb.bmp")) {
-        std::cout<<"failed to load!"<<std::endl<<time(NULL)<<std::endl;
+        std::cout << "failed to load!" << std::endl << time(NULL) << std::endl;
         return EXIT_FAILURE;
     }
     sf::Sprite sprite(texture);
+
+    Maze maze(10, 10);
 
 	// Start the game loop
     while (app.isOpen())
@@ -37,6 +40,7 @@ int main()
 
         // Update the window
         app.display();
+        std::cout << "FRAME!" << std::endl;
     }
 
     return EXIT_SUCCESS;
