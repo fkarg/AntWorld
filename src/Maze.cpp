@@ -1,4 +1,4 @@
-#include "Maze.h"
+#include "../include/Maze.h"
 
 Maze::Maze(int sizeX, int sizeY)
 {
@@ -13,10 +13,13 @@ Maze::~Maze()
 }
 
 
-Maze::drawMaze(const RenderWindow& renderWind){
+void Maze::drawMaze(RenderWindow *renderWind){
     for(int i = 0; i < sizeX; i++){
         for(int j = 0; j < sizeY; j++){
-            // TODO: draw Tile in Map!
         }
     }
+    Tile tile1(10, 10, 20, 20);
+
+    tile1.drawTile(renderWind);
+
 }

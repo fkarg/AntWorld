@@ -10,7 +10,7 @@ class Tile
         Tile(int x, int y, int height, int width);
         virtual ~Tile();
         bool isWall(int dir);
-        void drawTile(const Renderwindow& renderWind);
+        void drawTile(RenderWindow *renderWind);
     protected:
     private:
         int locX = -1, locY = -1, scent1 = 0, scent2 = 0, height = -1, width = -1;

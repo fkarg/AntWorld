@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <ctime>
-#include "Maze.h"
-#include "Tile.h"
+#include "include/Maze.h"
+#include "include/Tile.h"
 
 int main()
 {
@@ -37,6 +37,7 @@ int main()
 
         // Draw the sprite
         app.draw(sprite);
+        maze.drawMaze(&app);
 
         // Update the window
         app.display();

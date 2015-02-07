@@ -1,4 +1,6 @@
+#include <SFML/Graphics/Color.hpp>
 #include "Tile.h"
+#include "../include/Tile.h"
 
 Tile::Tile(int x, int y, int height, int width)
 {
@@ -7,7 +9,8 @@ Tile::Tile(int x, int y, int height, int width)
     ::height = height;
     ::width = width;
 
-
+    tile.setSize(Vector2f(height, width));
+    tile.setFillColor(Color::Blue);
 
     //ctor
 }
@@ -22,6 +25,6 @@ bool Tile::isWall(int dir){
 }
 
 
-void Tile::drawTile(const RenderWindow& renderWind){
-    renderWind.draw(tile);
+void Tile::drawTile(RenderWindow *renderWind){
+    renderWind->draw(tile);
 }
