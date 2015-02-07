@@ -3,14 +3,14 @@ project(AntWorld)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES AntWorld/main.cpp)
+set(SOURCE_FILES main.cpp)
 add_executable(AntWorld ${SOURCE_FILES})
 
 
 
  # Define sources and executable
 set(EXECUTABLE_NAME "MySFML")
-add_executable(${EXECUTABLE_NAME} AntWorld/main.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp)
 
 
 # Detect and add SFML
