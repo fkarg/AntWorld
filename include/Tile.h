@@ -14,8 +14,9 @@ class Tile
     protected:
     private:
         int locX = -1, locY = -1, scent1 = 0, scent2 = 0, height = -1, width = -1;
-        array<bool, 4> walls = {false, false, false, false};
-        RectangeShape tile;
+        // array<bool, 4> walls = {false, false, false, false};
+        // RectangleShape rect();
+
 };
 
 #endif // TILE_H

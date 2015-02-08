@@ -1,9 +1,9 @@
 #include "../include/Maze.h"
 
-Maze::Maze(int sizeX, int sizeY)
+Maze::Maze(int sizeX2, int sizeY2)
 {
-    ::sizeX = sizeX;
-    ::sizeY = sizeY;
+    sizeX = sizeX2;
+    sizeY = sizeY2;
     //ctor
 }
 

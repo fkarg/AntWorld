@@ -1,8 +1,73 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <ctime>
-#include "include/Maze.h"
-#include "include/Tile.h"
+
+using namespace std;
+using namespace sf;
+
+
+
+
+class Tile {
+
+    private:
+        int locX, locY, height, width;
+        RectangleShape rect;
+
+    public:
+        void setSize(int x, int y, int height2, int width2){
+            locX = x;
+            locY = y;
+            height = height2;
+            width = width2;
+            rect.setSize(Vector2f(height, width));
+            rect.setFillColor(Color::Blue);
+        }
+        void drawTile(RenderWindow *renderWindow){
+            renderWindow->draw(rect);
+        }
+
+};
+
+
+
+class Maze {
+
+    private:
+        int sizeX = -1, sizeY = -1;
+        Tile tile1;
+
+    public:
+        Maze(int xSize, int ySize){
+            sizeX = xSize;
+            sizeY = ySize;
+            // TODO: placing tiles
+            tile1.setSize(10, 10, 20, 20);
+        }
+        void drawMaze(RenderWindow *renderWindow){
+            // TODO: draw Tiles!
+        }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int main()
 {
@@ -46,3 +111,9 @@ int main()
 
     return EXIT_SUCCESS;
 }
+
+
+
+
+
+

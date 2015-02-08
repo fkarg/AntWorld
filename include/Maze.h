@@ -10,7 +10,7 @@ using namespace sf;
 class Maze
 {
     public:
-        Maze(int sizeX, int sizeY);
+        Maze(int sizeX2, int sizeY2);
         virtual ~Maze();
         void drawMaze(RenderWindow *renderWind);
     protected:
