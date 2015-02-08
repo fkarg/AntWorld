@@ -67,9 +67,9 @@ int main()
 
     // Load a sprite to display
     sf::Texture texture;
-    std::cout << "there's no error yet..." << std::endl << time(NULL) << std::endl;
+    std::cout << "there's no error yet..." << std::endl;
     if (!texture.loadFromFile("cb.bmp")) {
-        std::cout << "failed to load!" << std::endl << time(NULL) << std::endl;
+        std::cout << "failed to load!" << std::endl;
         return EXIT_FAILURE;
     }
     sf::Sprite sprite(texture);
