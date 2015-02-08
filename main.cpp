@@ -36,6 +36,34 @@ class Tile {
         Tile* surrounding[4] = {}; // to direct an agent to the next one
 
         RectangleShape rect;
+        RectangleShape Walls[4];
+
+        void addWalls(){
+
+            RectangleShape temp;
+            temp.setFillColor(Color::Magenta);
+
+            temp.setPosition(locX, locY);
+
+            temp.setSize(Vector2f(width, 2));
+
+            Walls[0] = temp;
+
+            temp.setSize(Vector2f(2, height));
+
+            Walls[3] = temp;
+
+            temp.setPosition(locX + width - 2, locY);
+            temp.setSize(Vector2f(2, height));
+
+            Walls[1] = temp;
+
+            temp.setPosition(locX, locY + height - 2);
+            temp.setSize(Vector2f(width, 2));
+
+            Walls[2] = temp;
+
+        }
 
     public:
         // setting the initial @param x: X and @param y: Y values,
@@ -45,6 +73,9 @@ class Tile {
             locY = y;
             height = height2;
             width = width2;
+
+            addWalls();
+
             rect.setSize(Vector2f(height, width));
             rect.setFillColor(Color::Blue);
             rect.setPosition(Vector2f(locX, locY));
@@ -52,6 +83,12 @@ class Tile {
         // Draws the Tile
         void drawTile(RenderWindow *renderWindow){
             renderWindow->draw(rect);
+        }
+        // Draws the Walls of the Tile
+        void drawWalls(RenderWindow *renderWindow){
+            for(int x = 0; x < 4; x++){
+                renderWindow->draw(Walls[x]);
+            }
         }
         // returns if there is a wall at the @param dir: direction
         bool isWall(int dir){
@@ -117,6 +154,7 @@ class Maze {
             for(int i = 0; i < sizeX; i++){
                 for(int j = 0; j < sizeY; j++){
                     MAP[i][j].drawTile(renderWindow);
+                    MAP[i][j].drawWalls(renderWindow);
                 }
             }
         }
