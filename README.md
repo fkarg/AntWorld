@@ -17,3 +17,6 @@ Should work with clion too since all the necessary information (like the cmake f
 
 
 Further details are added soon
+
+
+ERROR: Segmentation fault(core dumped), Process returned 139 (0x8B)
