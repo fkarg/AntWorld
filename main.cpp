@@ -1,10 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 using namespace sf;
-
-
 
 
 class Tile {
@@ -21,6 +20,7 @@ class Tile {
             width = width2;
             rect.setSize(Vector2f(height, width));
             rect.setFillColor(Color::Blue);
+            rect.setPosition(Vector2f(x, y));
         }
         void drawTile(RenderWindow *renderWindow){
             renderWindow->draw(rect);
@@ -29,43 +29,34 @@ class Tile {
 };
 
 
-
 class Maze {
 
     private:
         int sizeX = -1, sizeY = -1;
         Tile tile1;
+        vector<vector<Tile> > MAP;
 
     public:
         Maze(int xSize, int ySize){
             sizeX = xSize;
             sizeY = ySize;
-            // TODO: placing tiles
-            tile1.setSize(10, 10, 20, 20);
+            for(int i = 0; i < xSize; i++){
+                for(int j = 0; j < ySize; j++){
+                    Tile tile;
+                    tile.setSize(i * 35, j * 35, 30, 30);
+                    MAP[i][j] = tile;
+                }
+            }
         }
         void drawMaze(RenderWindow *renderWindow){
             // TODO: draw Tiles!
+            for(int i = 0; i < sizeX; i++){
+                for(int j = 0; j < sizeY; j++){
+                    MAP[i][j].drawTile(renderWindow);
+                }
+            }
         }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -84,6 +75,8 @@ int main()
     sf::Sprite sprite(texture);
 
     Maze maze(10, 10);
+
+    int Frame = 0;
 
 	// Start the game loop
     while (app.isOpen())
@@ -106,7 +99,8 @@ int main()
 
         // Update the window
         app.display();
-        std::cout << "FRAME!" << std::endl;
+        std::cout << "FRAME: " << Frame << std::endl;
+        Frame++;
     }
 
     return EXIT_SUCCESS;
