@@ -43,7 +43,7 @@
 		</Compiler>
 		<Unit filename="cb.bmp" />
 		<Unit filename="main.cpp" />
-		<Unit filename="maze.h" />
+		<Unit filename="maze.hpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

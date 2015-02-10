@@ -1,5 +1,8 @@
-#ifndef MAZE_H
-#define MAZE_H
+#ifndef MAZE_HPP
+#define MAZE_HPP
+
+using namespace std;
+using namespace sf;
 
 
 /*
@@ -134,7 +137,7 @@ public:
     Maze(int xSize, int ySize){
         sizeX = xSize;
         sizeY = ySize;
-        MAP = vector<vector<Tile> >(xSize, vector<Tile>(ySize));
+        MAP = vector< vector<Tile> >(xSize, vector<Tile>(ySize));
         for(int i = 0; i < xSize; i++){
             for(int j = 0; j < ySize; j++){
                 Tile tile;
@@ -144,6 +147,7 @@ public:
             }
         }
     }
+
     // drawing the Maze on the @param renderWindow
     void drawMaze(RenderWindow *renderWindow){
         // TODO: draw Tiles!
@@ -156,3 +160,4 @@ public:
     }
 };
 
+#endif

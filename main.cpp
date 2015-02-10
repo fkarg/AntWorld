@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "maze.h"
+#include "maze.hpp"
 #include <vector>
 
 using namespace std;
