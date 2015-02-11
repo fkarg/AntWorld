@@ -16,7 +16,7 @@ int main()
 
     GUI gui;
 
-    gui.create();
+    gui.create(window);
 
     // Load a sprite to display
     // Texture texture;
@@ -45,6 +45,14 @@ int main()
             // Close window : exit
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            gui.handleEvent(event);
+        }
+
+        tgui::Callback callback;
+        while(gui.pollCallback(callback)){
+            if(callback.id == 1)
+                window.close();
         }
 
         cout << "gonna draw it ..." << endl;
@@ -54,6 +62,8 @@ int main()
 
         // drawing the Maze
         maze.drawMaze(&window);
+
+        gui.draw();
 
         // Update the window
         window.display();
