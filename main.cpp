@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "maze.hpp"
+#include "GUI.hpp"
 #include <vector>
 
 using namespace std;
@@ -11,7 +12,11 @@ using namespace sf;
 int main()
 {
     // Create the main window
-    RenderWindow app(VideoMode(800, 600), "SFML window");
+    RenderWindow window(VideoMode(800, 600), "SFML window");
+
+    GUI gui;
+
+    gui.create();
 
     // Load a sprite to display
     // Texture texture;
@@ -31,27 +36,27 @@ int main()
     int Frame = 0;
 
 	// Start the game loop
-    while (app.isOpen())
+    while (window.isOpen())
     {
         // Process events
         Event event;
-        while (app.pollEvent(event))
+        while (window.pollEvent(event))
         {
             // Close window : exit
             if (event.type == sf::Event::Closed)
-                app.close();
+                window.close();
         }
 
         cout << "gonna draw it ..." << endl;
 
         // Clear screen
-        app.clear();
+        window.clear();
 
         // drawing the Maze
-        maze.drawMaze(&app);
+        maze.drawMaze(&window);
 
         // Update the window
-        app.display();
+        window.display();
 
         // shows the Frame number
         cout << "Frame: " << Frame << endl;

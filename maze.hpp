@@ -89,6 +89,10 @@ public:
             renderWindow->draw(Walls[x]);
         }
     }
+    // moving the rect for @param x: X and @param y: Y pixels ...
+    void move(int x, int y){
+        rect.move(Vector2f(x, y));
+    }
     // returns if there is a wall at the @param dir: direction
     bool isWall(int dir){
         return wall[dir];
@@ -114,6 +118,10 @@ public:
     }
 
 };
+
+
+
+
 
 
 /*
@@ -155,6 +163,15 @@ public:
             for(int j = 0; j < sizeY; j++){
                 MAP[i][j].drawTile(renderWindow);
                 MAP[i][j].drawWalls(renderWindow);
+            }
+        }
+    }
+
+    // moving the whole maze for @param x: X and @param y: Y pixels
+    void move(int x, int y){
+        for(int i = 0; i < sizeX; i++){
+            for(int j = 0; j < sizeY; j++){
+                MAP[i][j].move(x, y);
             }
         }
     }
