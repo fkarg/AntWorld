@@ -3,7 +3,9 @@ An Environment for several AI's, searching for food and other resources.
 Nearly all the variables can be changed by the user.
 
 
-Project done with Code::Blocks, Clion and Sublime Text, written in C++ with SFML (until now ...)
+Project done with Clion, Code::Blocks and Sublime Text, written in C++
+
+Used librarys: SFML, TinyXML2, TGUI (GUI for SFML)
 
 
 
@@ -17,6 +19,3 @@ Should work with clion too since all the necessary information (like the cmake f
 
 
 Further details are added soon
-
-
-ERROR: Segmentation fault(core dumped), Process returned 139 (0x8B)
