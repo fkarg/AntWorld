@@ -47,9 +47,14 @@ include_directories(${OPENGL_INCLUDE_DIR})
 
 # Determine library suffixes depending on static/shared configuration
 if(TGUI_SHARED_LIBS)
-    add_library(${PROJECT_NAME} SHARED ${TGUI_SRC})
-    set_target_properties( ${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX -d )
-    set_target_properties( ${PROJECT_NAME} PROPERTIES VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION} )
+
+    # add_library(${PROJECT_NAME} SHARED ${TGUI_SRC})
+
+
+    # set_target_properties( ${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX -d )
+
+
+    # set_target_properties( ${PROJECT_NAME} PROPERTIES VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION} )
 
     # the library should be linked to sfml, unless you are on linux
     if (NOT SFML_OS_LINUX)
