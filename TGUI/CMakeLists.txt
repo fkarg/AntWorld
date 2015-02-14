@@ -18,12 +18,12 @@ if(NOT CMAKE_MODULE_PATH)
     set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules CACHE STRING "The path to the cmake modules. This path must contain the FindSFML.cmake file." FORCE)
 endif()
 
-## project(tgui)
-##
-## # project version
-## SET( MAJOR_VERSION 0 )
-## SET( MINOR_VERSION 6 )
-## SET( PATCH_VERSION 7 )
+project(tgui)
+
+# project version
+SET( MAJOR_VERSION 0 )
+SET( MINOR_VERSION 6 )
+SET( PATCH_VERSION 7 )
 
 # Fill in the version in the config file
 configure_file ("${CMAKE_CURRENT_SOURCE_DIR}/include/TGUI/Config.hpp.in"
