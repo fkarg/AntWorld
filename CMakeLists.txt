@@ -19,4 +19,5 @@ add_executable(AntWorld main.cpp)
 target_link_libraries(AntWorld ${TGUI_LIBRARY} ${SFML_LIBRARIES})
 
 
-set(EXECUTABLE_NAME "Run_AntWorld")
+set(EXECUTABLE_NAME "Run_AntWorld2")
+

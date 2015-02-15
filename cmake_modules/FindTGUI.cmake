@@ -62,7 +62,7 @@ set(FIND_TGUI_PATHS
     /etc)
 
 # find the TGUI include directory
-find_path(TGUI_INCLUDE_DIR TGUI/Config.hpp
+find_path(TGUI_INCLUDE_DIR TGUI/Config.hpp TGUI/include/TGUI/Config.hpp
           PATH_SUFFIXES include
           PATHS ${FIND_TGUI_PATHS})
 
