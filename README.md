@@ -19,3 +19,13 @@ Should work with clion too since all the necessary information (like the cmake f
 
 
 Further details are added soon
+
+
+
+What I have in mind:
+
+A GUI similar to the projects of the NetLogo library, where you can specify about everything, 
+but improved direct control over the environment. 
+
+
+
