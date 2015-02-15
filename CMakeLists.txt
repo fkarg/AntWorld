@@ -34,7 +34,16 @@ include_directories(
 
 add_subdirectory(TGUI)
 
-export(TARGETS TGUI FILE "${PROJECT_BINARY_DIR}/
+export(TARGETS TGUI FILE "${PROJECT_BINARY_DIR}/AntWorldTargets.cmake")
+
+export(PACKAGE AntWorld)
+
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
+
+set(CONF_INCLUDE_DIRS "\${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+
+
+
 
 
 
