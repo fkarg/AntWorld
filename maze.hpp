@@ -86,7 +86,9 @@ public:
     // Draws the Walls of the Tile
     void drawWalls(RenderWindow *renderWindow){
         for(int x = 0; x < 4; x++){
-            renderWindow->draw(Walls[x]);
+            if (wall[x]) {
+                renderWindow->draw(Walls[x]);
+            }
         }
     }
     // moving the rect for @param x: X and @param y: Y pixels ...
