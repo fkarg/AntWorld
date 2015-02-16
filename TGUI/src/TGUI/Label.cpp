@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // TGUI - Texus's Graphical User Interface
-// Copyright (C) 2012-2015 Bruno Van de Velde (vdv_b@tgui.eu)
+// Copyright (C) 2012-2014 Bruno Van de Velde (vdv_b@tgui.eu)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -194,20 +194,6 @@ namespace tgui
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void Label::setTextStyle(sf::Uint32 style)
-    {
-        m_Text.setStyle(style);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    sf::Uint32 Label::getTextStyle() const
-    {
-        return m_Text.getStyle();
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     void Label::setTextSize(unsigned int size)
     {
         m_Text.setCharacterSize(size);
@@ -351,6 +337,7 @@ namespace tgui
 
     void Label::initialize(Container *const parent)
     {
+
         m_Parent = parent;
         setTextFont(m_Parent->getGlobalFont());
     }

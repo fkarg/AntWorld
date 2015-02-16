@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // TGUI - Texus's Graphical User Interface
-// Copyright (C) 2012-2015 Bruno Van de Velde (vdv_b@tgui.eu)
+// Copyright (C) 2012-2014 Bruno Van de Velde (vdv_b@tgui.eu)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -342,11 +342,11 @@ namespace tgui
         unsigned int size = 0;
         while (pos + size < text.getSize())
         {
-            tempLine->setText(text.substring(pos, ++size));
+            tempLine->setText(text.toWideString().substr(pos, ++size));
 
             if (tempLine->getSize().x + 4.0f > width)
             {
-                label->setText(label->getText() + text.substring(pos, size - 1) + "\n");
+                label->setText(label->getText() + text.toWideString().substr(pos, size - 1) + "\n");
 
                 pos = pos + size - 1;
                 size = 0;
@@ -448,24 +448,9 @@ namespace tgui
     {
         m_Panel->setGlobalFont(font);
 
-        m_FullTextHeight = 0;
-        unsigned int labelNr = 0;
         auto& labels = m_Panel->getWidgets();
-        for (auto it = labels.begin(); it != labels.end(); ++it, ++labelNr)
-        {
+        for (auto it = labels.begin(); it != labels.end(); ++it)
             Label::Ptr(*it)->setTextFont(font);
-            m_FullTextHeight += getLineSpacing(labelNr);
-        }
-
-        if (m_Scroll != nullptr)
-        {
-            m_Scroll->setMaximum(static_cast<unsigned int>(m_FullTextHeight));
-            if (m_Scroll->getMaximum() > m_Scroll->getLowValue())
-                m_Scroll->setValue(m_Scroll->getMaximum() - m_Scroll->getLowValue());
-        }
-
-        // Reposition the labels
-        updateDisplayedText();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -970,7 +955,7 @@ namespace tgui
         if (m_LineSpacing > 0)
             return m_LineSpacing * linesOfText;
 
-        unsigned int lineSpacing = static_cast<unsigned int>(m_Panel->getGlobalFont().getLineSpacing(line->getTextSize()));
+        unsigned int lineSpacing = m_Panel->getGlobalFont().getLineSpacing(line->getTextSize());
         if (lineSpacing > line->getTextSize())
             return lineSpacing * linesOfText;
         else

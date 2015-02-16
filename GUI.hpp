@@ -45,4 +45,8 @@ public:
     void draw(){
         gui.draw();
     }
+
+    bool pollCallback(tgui::Callback callback){
+        return gui.pollCallback(callack);
+    }
 };

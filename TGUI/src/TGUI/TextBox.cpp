@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // TGUI - Texus's Graphical User Interface
-// Copyright (C) 2012-2015 Bruno Van de Velde (vdv_b@tgui.eu)
+// Copyright (C) 2012-2014 Bruno Van de Velde (vdv_b@tgui.eu)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -420,8 +420,6 @@ namespace tgui
         m_TextSelection2.setFont(font);
         m_TextAfterSelection1.setFont(font);
         m_TextAfterSelection2.setFont(font);
-
-        setTextSize(m_TextSize);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +451,7 @@ namespace tgui
             return;
 
         // Calculate the height of one line
-        m_LineHeight = static_cast<unsigned int>(m_TextBeforeSelection.getFont()->getLineSpacing(m_TextSize));
+        m_LineHeight = m_TextBeforeSelection.getFont()->getLineSpacing(m_TextSize);
 
         // There is also a minimum height
         if (m_Size.y < m_LineHeight)
@@ -1483,7 +1481,7 @@ namespace tgui
                         unsigned int oldCaretPos = m_SelEnd;
 
                         if (m_Text.getSize() > m_SelEnd)
-                            setText(m_Text.substring(0, m_SelEnd) + TGUI_Clipboard.get() + m_Text.substring(m_SelEnd, m_Text.getSize() - m_SelEnd));
+                            setText(m_Text.toWideString().substr(0, m_SelEnd) + TGUI_Clipboard.get() + m_Text.toWideString().substr(m_SelEnd, m_Text.getSize() - m_SelEnd));
                         else
                             setText(m_Text + clipboardContents);
 
@@ -1573,7 +1571,7 @@ namespace tgui
                 if (text[i-1] != '\n')
                 {
                     // Add the next character to the text widget
-                    tempText.setString(text.substring(beginChar, i - beginChar));
+                    tempText.setString(text.toWideString().substr(beginChar, i - beginChar));
 
                     // Check if the string still fits on the line
                     if (tempText.findCharacterPos(i).x > maxLineWidth)
@@ -1913,7 +1911,7 @@ namespace tgui
                 if (m_Text[i-1] != '\n')
                 {
                     // Add the next character to the text widget
-                    tempText.setString(m_Text.substring(beginChar, i - beginChar));
+                    tempText.setString(m_Text.toWideString().substr(beginChar, i - beginChar));
 
                     // Check if the string still fits on the line
                     if (tempText.findCharacterPos(i).x > maxLineWidth)
@@ -2110,7 +2108,7 @@ namespace tgui
             if (m_Text[i-1] != '\n')
             {
                 // Add the next character to the text widget
-                tempText.setString(m_Text.substring(beginChar, i - beginChar));
+                tempText.setString(m_Text.toWideString().substr(beginChar, i - beginChar));
 
                 // Check if the string still fits on the line
                 if (tempText.findCharacterPos(i).x > maxLineWidth)
@@ -2239,7 +2237,7 @@ namespace tgui
                 if (m_Text[i] != '\n')
                 {
                     // Add the next character to the text widget
-                    tempText.setString(m_Text.substring(beginChar, i - beginChar + 1));
+                    tempText.setString(m_Text.toWideString().substr(beginChar, i - beginChar + 1));
 
                     // Check if the string still fits on the line
                     if (tempText.findCharacterPos(i+1).x > maxLineWidth)
@@ -2266,7 +2264,7 @@ namespace tgui
                 if (m_Text[i] != '\n')
                 {
                     // Add the next character to the text widget
-                    tempText.setString(m_Text.substring(beginChar, i - beginChar + 1));
+                    tempText.setString(m_Text.toWideString().substr(beginChar, i - beginChar + 1));
 
                     // Check if the string still fits on the line
                     if (tempText.findCharacterPos(i+1).x > maxLineWidth)
@@ -2318,10 +2316,10 @@ namespace tgui
             m_MultilineSelectionRectWidth.push_back(tempText2.findCharacterPos(i).x);
 
             // Set the text before selection
-            m_TextBeforeSelection.setString(m_DisplayedText.substring(0, selectionStart));
+            m_TextBeforeSelection.setString(m_DisplayedText.toWideString().substr(0, selectionStart));
 
             // Set the text that is selected. If it consists of multiple lines then it will be changed below.
-            m_TextSelection1.setString(m_DisplayedText.substring(selectionStart, m_SelChars));
+            m_TextSelection1.setString(m_DisplayedText.toWideString().substr(selectionStart, m_SelChars));
             m_TextSelection2.setString("");
 
             // Loop through every character inside the selection
@@ -2331,14 +2329,14 @@ namespace tgui
                 if (m_DisplayedText[i] == '\n')
                 {
                     // Set the text that is selected
-                    m_TextSelection1.setString(m_DisplayedText.substring(selectionStart, i - selectionStart));
-                    m_TextSelection2.setString(m_DisplayedText.substring(i + 1, m_SelChars + newlinesAddedInsideSelection + selectionStart - i - 1));
+                    m_TextSelection1.setString(m_DisplayedText.toWideString().substr(selectionStart, i - selectionStart));
+                    m_TextSelection2.setString(m_DisplayedText.toWideString().substr(i + 1, m_SelChars + newlinesAddedInsideSelection + selectionStart - i - 1));
                     break;
                 }
             }
 
             // Set the text after the selection. If it consists of multiple lines then it will be changed below.
-            m_TextAfterSelection1.setString(m_DisplayedText.substring(selectionEnd, m_DisplayedText.getSize() - selectionEnd));
+            m_TextAfterSelection1.setString(m_DisplayedText.toWideString().substr(selectionEnd, m_DisplayedText.getSize() - selectionEnd));
             m_TextAfterSelection2.setString("");
 
             // Loop through every character after the selection
@@ -2348,8 +2346,8 @@ namespace tgui
                 if (m_DisplayedText[i] == '\n')
                 {
                     // Set the text that is selected
-                    m_TextAfterSelection1.setString(m_DisplayedText.substring(selectionEnd, i - selectionEnd));
-                    m_TextAfterSelection2.setString(m_DisplayedText.substring(i + 1, m_DisplayedText.getSize() - i - 1));
+                    m_TextAfterSelection1.setString(m_DisplayedText.toWideString().substr(selectionEnd, i - selectionEnd));
+                    m_TextAfterSelection2.setString(m_DisplayedText.toWideString().substr(i + 1, m_DisplayedText.getSize() - i - 1));
                     break;
                 }
             }

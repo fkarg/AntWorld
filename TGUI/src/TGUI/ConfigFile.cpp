@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // TGUI - Texus's Graphical User Interface
-// Copyright (C) 2012-2015 Bruno Van de Velde (vdv_b@tgui.eu)
+// Copyright (C) 2012-2014 Bruno Van de Velde (vdv_b@tgui.eu)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -29,16 +29,11 @@
 
 #include <TGUI/ConfigFile.hpp>
 
-// Avoid "decorated name length exceeded, name was truncated" warnings in visual studio
-#if defined(SFML_SYSTEM_WINDOWS) && defined(_MSC_VER)
-    #pragma warning(disable: 4503)
-#endif
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace tgui
 {
-    std::map<std::string, std::map<std::string, std::pair<std::vector<std::string>, std::vector<std::string>>>> ConfigFile::m_Cache;
+    std::map<std::pair<std::string, std::string>, std::pair<std::vector<std::string>, std::vector<std::string>>> ConfigFile::m_Cache;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -54,10 +49,6 @@ namespace tgui
     bool ConfigFile::open(const std::string& filename)
     {
         m_Filename = filename;
-
-        // The file may be cached
-        if (m_Cache.find(filename) != m_Cache.end())
-            return true;
 
         // If a file is already open then close it
         if (m_File.is_open())
@@ -77,26 +68,111 @@ namespace tgui
 
     bool ConfigFile::read(const std::string& section, std::vector<std::string>& properties, std::vector<std::string>& values)
     {
-        // Only parse the file once
-        if (m_Cache.find(m_Filename) == m_Cache.end())
+        // Don't read and parse the file every time
+        if (!m_Cache[std::make_pair(m_Filename, section)].first.empty())
         {
-            m_Cache[m_Filename] = std::map<std::string, std::pair<std::vector<std::string>, std::vector<std::string>>>();
-            if (!readAndCache())
-                return false;
+            properties = m_Cache[std::make_pair(m_Filename, section)].first;
+            values = m_Cache[std::make_pair(m_Filename, section)].second;
+            return true;
+        }
+
+        std::string lowercaseSection = toLower(section);
+
+        bool error = false;
+        bool sectionFound = false;
+        unsigned int lineNumber = 0;
+
+        // Stop reading when we reach the end of the file
+        while (!m_File.eof())
+        {
+            // Get the next line
+            std::string line;
+            std::getline(m_File, line);
+            lineNumber++;
+
+            if (line.empty())
+                continue;
+
+            // If the lines contains a '\r' at the end then remove it
+            if (line[line.size()-1] == '\r')
+                line.erase(line.size()-1);
+
+            std::string::const_iterator c = line.begin();
+
+            // Check if we are reading a section
+            std::string sectionName;
+            if (isSection(line, c, sectionName))
+            {
+                // If we already found our section then this would be the next section
+                if (sectionFound)
+                    break;
+
+                // Convert the section names to lowercase in order to compare them
+                sectionName = toLower(sectionName);
+
+                // If this is the section we were looking for then start reading the properties
+                if ((lowercaseSection + ":") == sectionName)
+                    sectionFound = true;
+            }
+            else // This isn't a section
+            {
+                // We are only interested in one section
+                if (!sectionFound)
+                    continue;
+
+                std::string property;
+                std::string value;
+
+                if (!removeWhitespace(line, c))
+                    continue; // empty line
+
+                // Read the property in lowercase
+                property = readWord(line, c);
+                property = toLower(property);
+
+                if (!removeWhitespace(line, c))
+                {
+                    TGUI_OUTPUT("TGUI error: Failed to parse line " + to_string(lineNumber) + ".");
+                    error = true;
+                }
+
+                // There has to be an assignment character
+                if (*c == '=')
+                    ++c;
+                else
+                {
+                    TGUI_OUTPUT("TGUI error: Failed to parse line " + to_string(lineNumber) + ".");
+                    error = true;
+                }
+
+                if (!removeWhitespace(line, c))
+                {
+                    TGUI_OUTPUT("TGUI error: Failed to parse line " + to_string(lineNumber) + ".");
+                    error = true;
+                }
+
+                int pos = c - line.begin();
+                value = line.substr(pos, line.length() - pos);
+
+                properties.push_back(property);
+                values.push_back(value);
+            }
         }
 
         // Output an error when the section wasn't found
-        std::string lowercaseSection = toLower(section);
-        if (m_Cache[m_Filename].find(lowercaseSection) == m_Cache[m_Filename].end())
+        if (!sectionFound)
         {
-            TGUI_OUTPUT("TGUI error: Section '" + section + "' was not found in the config file '" + m_Filename + "'.");
-            return false;
+            TGUI_OUTPUT("TGUI error: Section '" + section + "' was not found in the config file.");
+            error = true;
         }
 
-        // Fill in properties and values
-        properties = m_Cache[m_Filename][lowercaseSection].first;
-        values = m_Cache[m_Filename][lowercaseSection].second;
-        return true;
+        if (!error)
+        {
+            m_Cache[std::make_pair(m_Filename, section)].first = properties;
+            m_Cache[std::make_pair(m_Filename, section)].second = values;
+        }
+
+        return !error;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -232,85 +308,6 @@ namespace tgui
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void ConfigFile::flushCache()
-    {
-        m_Cache.clear();
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    bool ConfigFile::readAndCache()
-    {
-        bool error = false;
-        unsigned int lineNumber = 0;
-        std::string sectionName;
-
-        // Stop reading when we reach the end of the file
-        while (!m_File.eof())
-        {
-            // Get the next line
-            std::string line;
-            std::getline(m_File, line);
-            std::string::const_iterator c = line.begin();
-            lineNumber++;
-
-            // If the lines contains a '\r' at the end then remove it
-            if (!line.empty() && line[line.size()-1] == '\r')
-                line.erase(line.size()-1);
-
-            // Skip empty lines
-            if (line.empty() || !removeWhitespace(line, c))
-                continue;
-
-            if (!isSection(line, c, sectionName))
-            {
-                std::string property;
-                std::string value;
-                bool lineError = false;
-
-                // Read the property in lowercase
-                property = readWord(line, c);
-                property = toLower(property);
-
-                if (!removeWhitespace(line, c))
-                {
-                    TGUI_OUTPUT("TGUI error: Failed to parse line " + to_string(lineNumber) + ".");
-                    lineError = true;
-                }
-
-                // There has to be an assignment character
-                if (*c == '=')
-                    ++c;
-                else
-                {
-                    TGUI_OUTPUT("TGUI error: Failed to parse line " + to_string(lineNumber) + ".");
-                    lineError = true;
-                }
-
-                if (!removeWhitespace(line, c))
-                {
-                    TGUI_OUTPUT("TGUI error: Failed to parse line " + to_string(lineNumber) + ".");
-                    lineError = true;
-                }
-
-                if (!lineError)
-                {
-                    int pos = c - line.begin();
-                    value = line.substr(pos, line.length() - pos);
-
-                    m_Cache[m_Filename][sectionName].first.push_back(property);
-                    m_Cache[m_Filename][sectionName].second.push_back(value);
-                }
-
-                error |= lineError;
-            }
-        }
-
-        return !error;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     bool ConfigFile::removeWhitespace(const std::string& line, std::string::const_iterator& c) const
     {
         while (c != line.end())
@@ -350,18 +347,15 @@ namespace tgui
         if (!removeWhitespace(line, c))
             return false;
 
-        std::string name = readWord(line, c);
+        sectionName = readWord(line, c);
 
         removeWhitespace(line, c);
 
         if (c != line.end())
             return false;
 
-        if (name[name.length()-1] == ':')
-        {
-            sectionName = toLower(name.substr(0, name.length()-1));
+        if (sectionName[sectionName.length()-1] == ':')
             return true;
-        }
         else
             return false;
     }

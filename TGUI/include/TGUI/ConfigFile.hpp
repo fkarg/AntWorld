@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // TGUI - Texus's Graphical User Interface
-// Copyright (C) 2012-2015 Bruno Van de Velde (vdv_b@tgui.eu)
+// Copyright (C) 2012-2014 Bruno Van de Velde (vdv_b@tgui.eu)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -50,11 +50,9 @@ namespace tgui
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Open a given file
+        // Open a given file. If a file is already open then it will be closed first.
         //
-        // Nothing will happen if file is already cached.
-        //
-        // return:  true when the file was opened or already cached
+        // return:  true when the file was opened
         //          false when it couldn't be opened
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         bool open(const std::string& filename);
@@ -109,12 +107,6 @@ namespace tgui
       private:
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Read the entire config file and cache its contents
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        bool readAndCache();
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Remove the whitespace from the line, starting from the character c.
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         bool removeWhitespace(const std::string& line, std::string::const_iterator& c) const;
@@ -139,7 +131,7 @@ namespace tgui
 
         std::string m_Filename;
 
-        static std::map<std::string, std::map<std::string, std::pair<std::vector<std::string>, std::vector<std::string>>>> m_Cache;
+        static std::map<std::pair<std::string, std::string>, std::pair<std::vector<std::string>, std::vector<std::string>>> m_Cache;
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

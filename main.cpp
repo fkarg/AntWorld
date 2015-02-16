@@ -2,10 +2,11 @@
 #include <iostream>
 #include "maze.hpp"
 #include "GUI.hpp"
-#include <vector>
+#include <TGUI/TGUI.hpp>
 
 using namespace std;
 using namespace sf;
+using namespace tgui;
 
 
 
@@ -14,9 +15,9 @@ int main()
     // Create the main window
     RenderWindow window(VideoMode(800, 600), "SFML window");
 
-    GUI gui;
+    tgui::GUI gui(window);
 
-    gui.create(window);
+    // gui.create(window);
 
     // Load a sprite to display
     // Texture texture;
@@ -49,7 +50,7 @@ int main()
             gui.handleEvent(event);
         }
 
-        tgui::Callback callback;
+        Callback callback;
         while(gui.pollCallback(callback)){
             if(callback.id == 1)
                 window.close();
