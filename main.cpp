@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "maze.hpp"
-#include <vector>
+#include "mazecreator.hpp"
 
 using namespace std;
 using namespace sf;
@@ -25,7 +25,22 @@ int main()
     cout << "creating the maze ..." << endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(10, 10);
+    Maze maze(20, 20);
+
+    MazeCreator creator;
+
+    cout << "MazeCreator created and adding Maze ..." << endl;
+
+    creator.setMaze(&maze);
+
+    // thread creatorThread(creator.PrimsAlgorithm());
+    // creatorThread.detach();
+
+    cout << "trying Prim's Algorithm ..." << endl;
+
+    creator.PrimsAlgorithm();
+
+    cout << "end of Prim's Algorithm" << endl;
 
     // Frame-counter
     int Frame = 0;

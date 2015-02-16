@@ -1,6 +1,8 @@
 #ifndef MAZE_HPP
 #define MAZE_HPP
 
+#include <iostream>
+
 using namespace std;
 using namespace sf;
 
@@ -29,8 +31,9 @@ class Tile {
 private:
     int locX, locY, height, width, food = 0;
 
-    bool wall[4] = {true, true, true, true};
-//       the directions: up, right, down, left
+    bool wall[4] = { true, true, true, true };
+//    the directions: up, right, down, left
+//                     0 ,   1 ,   2 ,   3
 
     Tile* surrounding[4] = {}; // to direct an agent to the next one
 
@@ -79,10 +82,12 @@ public:
         rect.setFillColor(Color::Blue);
         rect.setPosition(Vector2f(locX, locY));
     }
+
     // Draws the Tile
     void drawTile(RenderWindow *renderWindow){
         renderWindow->draw(rect);
     }
+
     // Draws the Walls of the Tile
     void drawWalls(RenderWindow *renderWindow){
         for(int x = 0; x < 4; x++){
@@ -91,22 +96,27 @@ public:
             }
         }
     }
+
     // moving the rect for @param x: X and @param y: Y pixels ...
     void move(int x, int y){
         rect.move(Vector2f(x, y));
     }
+
     // returns if there is a wall at the @param dir: direction
     bool isWall(int dir){
         return wall[dir];
     }
+
     // returns the x value of the Tile
     int getX(){
         return locX;
     }
+
     // returns the y value of the Tile
     int getY(){
         return locY;
     }
+
     // returns any food if there is on this Tile, but max 10
     int getFood(){
         if(food >= 10){
@@ -119,14 +129,33 @@ public:
         }
     }
 
+    // returns the surrounding Tile at @param dir: direction
     Tile* getSurrounding(int dir){
-        if (!wall[dir]) {
-            return surrounding[dir];
-        }
+        return surrounding[dir];
     }
 
+    // returns if there is something in this Direction (a tile)
+    bool isSurrounding(int dir){
+        return surrounding[dir] != NULL;
+    }
+
+    // sets the @param *tile: Tile next to it in @param dir: direction
     void setSurrounding(int dir, Tile *tile){
         surrounding[dir] = tile;
+    }
+
+    // setting the wall of @param dir: direction at @param setWall.
+    void setWall(int dir, bool setWall){
+        cout << "in setWall" << endl;
+        cout << " newWallstate: ";      // FIXME: Ending just before this line!
+        cout << setWall;
+        cout << " oldWallstate: ";
+        cout << wall[dir];
+        cout << " dir: ";
+        cout << dir;
+        cout << endl;
+        wall[dir] = setWall;
+        cout << "after setWall" << endl;
     }
 
 };
@@ -168,6 +197,7 @@ public:
         setNeighbourTiles();
     }
 
+    // setting the surrounding - variable
     void setNeighbourTiles(){
         for(int i = 0; i < sizeX; i++){
             for(int j = 0; j < sizeY; j++){
@@ -207,10 +237,16 @@ public:
     }
 
     // returning a tile at a specific location
-    Tile getTile(int i, int y){
-        if(i > 0 && i < sizeX && y > 0 && y < sizeY)
-            return MAP[i][j];
-        return NULL;
+    Tile* getTile(int i, int j){
+        if(i > 0 && i < sizeX && j > 0 && j < sizeY)
+            return &MAP[i][j];
+    }
+
+    int getSizeX(){
+        return sizeX;
+    }
+    int getSizeY(){
+        return sizeY;
     }
 };
 
