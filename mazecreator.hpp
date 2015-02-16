@@ -10,7 +10,10 @@ using namespace std;
 
 class MazeCreator{
 private:
+    // the maze to be "edited"
     Maze *maze;
+
+    // a map of the same size as the maze, for the different states of the maze
     vector<vector<int> > state;
     int sizeX = -1, sizeY = -1;
     int x, y;
@@ -22,10 +25,12 @@ protected:
     // ...
 public:
 
+    // ctr
     MazeCreator(){
     }
 
-    void setMaze(Maze *maze1){
+    // setting the @param maze1: Maze to be "edited", and initializing the state-map
+    void setMaze(Maze* maze1){
         maze = maze1;
         sizeX = maze->getSizeX();
         sizeY = maze->getSizeY();
@@ -37,8 +42,8 @@ public:
         }
     }
 
+    // A bad try of Prim's Algorithm. FIXME: TRY AGAIN!
     void PrimsAlgorithm(){
-
         cout << "inside Prim's" << endl;
         setSeed();
         int startX = 9, startY = 0;
