@@ -107,7 +107,7 @@ public:
     int getY(){
         return locY;
     }
-    // returns any food if there is some on this Tile, but max 10
+    // returns any food if there is on this Tile, but max 10
     int getFood(){
         if(food >= 10){
             food -= 10;
@@ -117,6 +117,16 @@ public:
             food = 0;
             return tmp;
         }
+    }
+
+    Tile* getSurrounding(int dir){
+        if (!wall[dir]) {
+            return surrounding[dir];
+        }
+    }
+
+    void setSurrounding(int dir, Tile *tile){
+        surrounding[dir] = tile;
     }
 
 };
@@ -151,9 +161,27 @@ public:
         for(int i = 0; i < xSize; i++){
             for(int j = 0; j < ySize; j++){
                 Tile tile;
-                tile.setSize(i * 35, j * 35, 30, 30);
-                // tile might not have been initialized?
+                tile.setSize(i * 31, j * 31, 30, 30);
                 MAP[i][j] = tile;
+            }
+        }
+        setNeighbourTiles();
+    }
+
+    void setNeighbourTiles(){
+        for(int i = 0; i < sizeX; i++){
+            for(int j = 0; j < sizeY; j++){
+                if (j > 0)
+                    MAP[i][j].setSurrounding(0, &MAP[i][j - 1]);
+
+                if (i < sizeX - 1)
+                    MAP[i][j].setSurrounding(1, &MAP[i + 1][j]);
+
+                if(j < sizeY - 1)
+                    MAP[i][j].setSurrounding(2, &MAP[i][j + 1]);
+
+                if(i > 0)
+                    MAP[i][j].setSurrounding(3, &MAP[i - 1][j]);
             }
         }
     }
@@ -176,6 +204,13 @@ public:
                 MAP[i][j].move(x, y);
             }
         }
+    }
+
+    // returning a tile at a specific location
+    Tile getTile(int i, int y){
+        if(i > 0 && i < sizeX && y > 0 && y < sizeY)
+            return MAP[i][j];
+        return NULL;
     }
 };
 
