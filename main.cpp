@@ -1,12 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "maze.hpp"
-#include "GUI.hpp"
+#include "GraphicsControl.hpp"
 #include <TGUI/TGUI.hpp>
 
 using namespace std;
 using namespace sf;
-using namespace tgui;
 
 
 
@@ -15,9 +14,9 @@ int main()
     // Create the main window
     RenderWindow window(VideoMode(800, 600), "SFML window");
 
-    tgui::GUI gui(window);
+    GraphicsControl graphicsTGUI;
 
-    // gui.create(window);
+    graphicsTGUI.create(window);
 
     // Load a sprite to display
     // Texture texture;
@@ -47,11 +46,11 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            gui.handleEvent(event);
+            graphicsTGUI.handleEvent(event);
         }
 
-        Callback callback;
-        while(gui.pollCallback(callback)){
+        tgui::Callback callback;
+        while(graphicsTGUI.pollCallback(callback)){
             if(callback.id == 1)
                 window.close();
         }
@@ -64,7 +63,7 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
-        gui.draw();
+        graphicsTGUI.draw();
 
         // Update the window
         window.display();
