@@ -146,8 +146,9 @@ public:
 
     // setting the wall of @param dir: direction at @param setWall.
     void setWall(int dir, bool setWall){
-        cout << "in setWall" << endl;
-        cout << " newWallstate: ";      // FIXME: Ending just before this line!
+        cout << "in setWall " << setWall;       // FIXME: Ending right after this line!
+        cout << endl;
+        cout << " newWallstate: ";
         cout << setWall;
         cout << " oldWallstate: ";
         cout << wall[dir];
