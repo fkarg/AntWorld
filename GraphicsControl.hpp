@@ -1,51 +1,29 @@
 #ifndef UI_HPP
 #define UI_HPP
-#define THEME_CONFIG_FILE TGUI/widgets/Black.conf"
+#define THEME_CONFIG_FILE "resources/Black.conf"
 
 #include <TGUI/TGUI.hpp>
 
-
-using namespace std;
-using namespace sf;
 
 
 
 class GraphicsControl {
 private:
-    RenderWindow window;
-    tgui::Gui gui;
-    void createGUI(RenderWindow wind){
-        window = wind;
-        tgui::Gui gui(window);
-
-        tgui::Button::Ptr button(gui);
-        button->load(THEME_CONFIG_FILE);
-        button->setPosition(40, 25);
-        button->setText("BUTTÖÖÖN");
-        button->setCallbackId(1);
-        button->bindCallback(tgui::Button::LeftMouseClicked);
-        button->setSize(300, 40);
-
-        // TODO: create GUI!
-    }
     // ...
 protected:
     // ...
 public:
+    GraphicsControl(){
+        // ctr
+    }
     // ...
-    void create(RenderWindow wind){
-        createGUI(wind);
-    }
-
-    void handleEvent(Event event){
-        gui.handleEvent(event);
-    }
-
     void draw(){
-        gui.draw();
-    }
-
-    bool pollCallback(tgui::Callback callback){
-        return gui.pollCallback(callack);
+        // ...
     }
 };
+
+
+
+
+
+#endif

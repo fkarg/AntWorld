@@ -15,7 +15,18 @@ if(NOT TGUI_FOUND)
     message(FATAL_ERROR "Could not find TGUI")
 endif()
 
-add_executable(AntWorld main.cpp)
+file(GLOB AntWorld_SRC
+    "resources/*.*"
+    "*.h"
+    "*.cpp"
+    "*.hpp"
+    "*.conf"
+    "*.ttf" )
+#     "resources/DejaVuSans.ttf"
+# )
+
+
+add_executable(AntWorld main.cpp ${AntWorld_SRC})
 target_link_libraries(AntWorld ${TGUI_LIBRARY} ${SFML_LIBRARIES})
 
 

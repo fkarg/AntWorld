@@ -1,6 +1,9 @@
 #ifndef MAZE_HPP
 #define MAZE_HPP
 
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
 using namespace std;
 using namespace sf;
 
@@ -93,7 +96,12 @@ public:
     }
     // moving the rect for @param x: X and @param y: Y pixels ...
     void move(int x, int y){
-        rect.move(Vector2f(x, y));
+        locX += x;
+        locY += y;
+
+        addWalls();
+
+        rect.setPosition(Vector2f(locX, locY));
     }
     // returns if there is a wall at the @param dir: direction
     bool isWall(int dir){
