@@ -11,7 +11,7 @@ using namespace sf;
 int main()
 {
     // Create the main window
-    RenderWindow window(VideoMode(800, 600), "SFML window");
+    RenderWindow window(VideoMode(620, 620), "SFML window");
 
     // Load a sprite to display
     // Texture texture;
@@ -24,7 +24,7 @@ int main()
 
     cout << "creating the maze ..." << endl;
 
-    // Creating a 10 x 10 Maze
+    // Creating a 20 x 20 Maze
     Maze maze(20, 20);
 
     MazeCreator creator;
@@ -32,6 +32,10 @@ int main()
     cout << "MazeCreator created and adding Maze ..." << endl;
 
     creator.setMaze(&maze);
+
+    creator.setStart(4, 0);
+
+    cout << "Set start to x: 4 and y: 0" << endl;
 
     // thread creatorThread(creator.PrimsAlgorithm());
     // creatorThread.detach();

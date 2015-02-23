@@ -40,6 +40,7 @@ private:
     RectangleShape rect;
     RectangleShape Walls[4];
 
+    // adding or actualizing the Walls positions
     void addWalls(){
 
         RectangleShape temp;
@@ -146,15 +147,13 @@ public:
 
     // setting the wall of @param dir: direction at @param setWall.
     void setWall(int dir, bool setWall){
-        cout << "in setWall " << setWall;       // FIXME: Ending right after this line!
-        cout << endl;
-        cout << " newWallstate: ";
-        cout << setWall;
-        cout << " oldWallstate: ";
-        cout << wall[dir];
-        cout << " dir: ";
-        cout << dir;
-        cout << endl;
+        cout << "in setWall " << endl;
+        cout << " newWallstate: " << endl;
+        cout << std::noboolalpha << setWall << endl;
+        cout << " oldWallstate: " << endl;
+        cout << std::noboolalpha << wall[dir] << endl;
+        cout << " dir: " << endl;
+        cout << to_string(dir) << endl;
         wall[dir] = setWall;
         cout << "after setWall" << endl;
     }
@@ -219,7 +218,6 @@ public:
 
     // drawing the Maze on the @param renderWindow
     void drawMaze(RenderWindow *renderWindow){
-        // TODO: draw Tiles!
         for(int i = 0; i < sizeX; i++){
             for(int j = 0; j < sizeY; j++){
                 MAP[i][j].drawTile(renderWindow);
@@ -243,9 +241,12 @@ public:
             return &MAP[i][j];
     }
 
+    // returning the sizeX of the Maze
     int getSizeX(){
         return sizeX;
     }
+
+    // returning the sizeY of the Maze
     int getSizeY(){
         return sizeY;
     }
