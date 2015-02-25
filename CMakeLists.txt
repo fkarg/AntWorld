@@ -15,7 +15,9 @@ endif()
 #     message(FATAL_ERROR "Could not find TGUI")
 # endif()
 
-add_executable(AntWorld main.cpp)
+set(SOURCE_FILES main.cpp maze.hpp mazecreator.hpp tinyxml2.h tinyxml2.cpp cb.bmp )
+
+add_executable(AntWorld ${SOURCE_FILES})
 # target_link_libraries(AntWorld ${TGUI_LIBRARY} ${SFML_LIBRARIES})
 target_link_libraries(AntWorld ${SFML_LIBRARIES})
 
