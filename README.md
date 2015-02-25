@@ -7,12 +7,14 @@ Project done with Clion, Code::Blocks and Sublime Text, written in C++
 
 Used librarys: SFML, TinyXML2, TGUI (GUI for SFML)
 
+currently really needed:
+master: SFML, TGUI
+old_graphics: SFML
 
 
 
-To build the project for yourself: open the AntWorld.cbp file with code::blocks.
-
-Should work with clion too since all the necessary information (like the cmake files) are included, but it's not able to load the image due to different build structure (my guess).
+works with CLion and any other IDE working with CMake to build it's projects.
+(you can get CLion here: https://www.jetbrains.com/clion/)
 
 
 
