@@ -18,9 +18,9 @@ using namespace std;
 class MazeCreator {
 private:
     // the maze to be edited
-    Maze* maze;
+    Maze *maze;
 
-    // one map 
+    // one map for all the states of the tiles from the maze
     vector<vector<int> > states;
 
     // the sizeX and sizeY of the Maze (needed!)
@@ -49,13 +49,13 @@ private:
 
 public:
 
-    MazeCreator(){
+    MazeCreator() {
         // ctr
         setSeed();
     }
 
     // setting the @param maze1: Maze
-    void setMaze (Maze* maze1 ) {
+    void setMaze (Maze *maze1 ) {
         maze = maze1;
         sizeX = maze->getSizeX();
         sizeY = maze->getSizeY();
@@ -73,12 +73,12 @@ public:
     void setStart (int startX = rand(), int startY = rand() ) {
         Xstart = startX % sizeX;
         Ystart = startY % sizeY;
-        states[Xstart][Ystart] = 1;
+        states[Xstart][Ystart] = 2;
     }
 
     // searching for an state1 if there is one left, 
     // returns the multiplied index or -1
-    Tile* searchForState1 (int x = rand(), int y = rand() ) {
+    Tile *searchForState (int state, int x = rand(), int y = rand() ) {
         x %= sizeX;
         y %= sizeY;
 
@@ -95,19 +95,19 @@ public:
                 switch (index % 4) {
                     case 1:
                         dist++;
-                        if (testStates(x, y - dist, 1) )
+                        if (testStates(x, y - dist, state) )
                             return maze->getTile(x, y - dist);
                         break;
                     case 2:
-                        if (testStates(x - dist, y, 1) )
+                        if (testStates(x - dist, y, state) )
                             return maze->getTile(x - dist, y);
                         break;
                     case 3:
-                        if (testStates(x, y + dist, 1) )
+                        if (testStates(x, y + dist, state) )
                             return maze->getTile(x, y + dist);
                         break;
                     case 0:
-                        if (testStates(x + dist, y, 1) )
+                        if (testStates(x + dist, y, state) )
                             return maze->getTile(x + dist, y);
                         break;
                 }
@@ -131,7 +131,7 @@ public:
                 } else
                     distY = -distY;
 
-                if (testStates(x + distX, y + distY, 1) )
+                if (testStates(x + distX, y + distY, state) )
                     return maze->getTile(x + distX, y + distY);
 
             }
@@ -143,9 +143,12 @@ public:
     }
 
     // initiating Prim's Algorithm
-    void PrimsAlgorithm () {
+    void PrimsAlgorithm() {
         out("Gonna search from the start ...");
-        searchForState1()->setWall(3, false);
+        // cout << to_string(maze->getSizeX() ) << endl;
+        // cout << to_string(maze->getTile(4, 0)->getFood()) << endl;
+        (*searchForState(2) ).setWall(2, false);
+
     }
 
     // returns if the @param ind: number is directly in horizontal or vertical direction

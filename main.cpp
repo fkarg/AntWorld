@@ -8,30 +8,12 @@ using namespace sf;
 
 
 
-int main()
-{
-    // Create the main window
-    RenderWindow window(VideoMode(620, 620), "SFML window");
-
-    // Load a sprite to display
-    // Texture texture;
-    // cout << "there's no error yet..." << endl;
-    // if (!texture.loadFromFile("cb.bmp")) {
-    //     cout << "failed to load!" << endl;
-    //     return EXIT_FAILURE;
-    // }
-    // Sprite sprite(texture);
-
-    cout << "creating the maze ..." << endl;
-
-    // Creating a 20 x 20 Maze
-    Maze maze(20, 20);
-
+void initAlgorithm(Maze *maze) {
     MazeCreator creator;
 
     cout << "MazeCreator created and adding Maze ..." << endl;
 
-    creator.setMaze(&maze);
+    creator.setMaze(maze);
 
     creator.setStart(4, 0);
 
@@ -45,6 +27,34 @@ int main()
     creator.PrimsAlgorithm();
 
     cout << "end of Prim's Algorithm" << endl;
+}
+
+
+void Try_something (Tile *tile) {
+    (*tile).setWall(2, false);
+    tile->setWall(2, false);
+}
+
+
+
+
+
+
+int main()
+{
+    // Create the main window
+    RenderWindow window(VideoMode(660, 660), "SFML window");
+
+    cout << "creating the maze ..." << endl;
+
+    bool once = false;
+
+    // Creating a 20 x 20 Maze
+    Maze maze(20, 20);
+
+    Tile tile;
+
+    tile.setSize(620, 620, 30, 30);
 
     // Frame-counter
     int Frame = 0;
@@ -59,7 +69,6 @@ int main()
             // Close window : exit
             if (event.type == sf::Event::Closed)
                 window.close();
-
         }
 
         cout << "gonna draw it ..." << endl;
@@ -70,12 +79,23 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
+        tile.drawTile(&window);
+        tile.drawWalls(&window);
+
         // Update the window
         window.display();
 
         // shows the Frame number
         cout << "Frame: " << Frame << endl;
         Frame++;
+
+        initAlgorithm(&maze);
+
+        // if(!once) {
+        //     Try_something(&tile);
+        //     once = true;
+        // }
+
     }
 
     return EXIT_SUCCESS;
@@ -83,7 +103,3 @@ int main()
 
 
 
-
-
-
-// TODO: End!

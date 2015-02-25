@@ -69,6 +69,11 @@ private:
     }
 
 public:
+
+    Tile(){
+        // ctr
+    }
+
     // setting the initial @param x: X and @param y: Y values,
     // as well as the height and width
     void setSize(int x, int y, int height2, int width2){
@@ -120,6 +125,7 @@ public:
 
     // returns any food if there is on this Tile, but max 10
     int getFood(){
+        cout << "in getFood" << endl;
         if(food >= 10){
             food -= 10;
             return 10;
@@ -148,14 +154,12 @@ public:
     // setting the wall of @param dir: direction at @param setWall.
     void setWall(int dir, bool setWall){
         cout << "in setWall " << endl;
-        cout << " newWallstate: " << endl;
-        cout << std::noboolalpha << setWall << endl;
-        cout << " oldWallstate: " << endl;
-        cout << std::noboolalpha << wall[dir] << endl;
-        cout << " dir: " << endl;
-        cout << to_string(dir) << endl;
+        cout << " dir: " << to_string(dir) << endl;
+        cout << " newWallstate: " << noboolalpha << setWall << endl;
+        cout << " isWall: " << noboolalpha << isWall(dir) << endl;
+        cout << " oldWallstate: " << noboolalpha << wall[dir] << endl;
         wall[dir] = setWall;
-        cout << "after setWall" << endl;
+        cout << "after setWall" << endl << endl;
     }
 
 };
@@ -183,12 +187,12 @@ private:
 
 public:
     // creating the Maze with @param xSize times @param ySize Tiles
-    Maze(int xSize, int ySize){
+    Maze(int xSize, int ySize) {
         sizeX = xSize;
         sizeY = ySize;
         MAP = vector< vector<Tile> >(xSize, vector<Tile>(ySize));
-        for(int i = 0; i < xSize; i++){
-            for(int j = 0; j < ySize; j++){
+        for (int i = 0; i < xSize; i++) {
+            for (int j = 0; j < ySize; j++) {
                 Tile tile;
                 tile.setSize(i * 31, j * 31, 30, 30);
                 MAP[i][j] = tile;
@@ -217,9 +221,9 @@ public:
     }
 
     // drawing the Maze on the @param renderWindow
-    void drawMaze(RenderWindow *renderWindow){
-        for(int i = 0; i < sizeX; i++){
-            for(int j = 0; j < sizeY; j++){
+    void drawMaze (RenderWindow *renderWindow) {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].drawTile(renderWindow);
                 MAP[i][j].drawWalls(renderWindow);
             }
@@ -228,8 +232,8 @@ public:
 
     // moving the whole maze for @param x: X and @param y: Y pixels
     void move(int x, int y){
-        for(int i = 0; i < sizeX; i++){
-            for(int j = 0; j < sizeY; j++){
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].move(x, y);
             }
         }
@@ -242,12 +246,12 @@ public:
     }
 
     // returning the sizeX of the Maze
-    int getSizeX(){
+    int getSizeX() {
         return sizeX;
     }
 
     // returning the sizeY of the Maze
-    int getSizeY(){
+    int getSizeY() {
         return sizeY;
     }
 };
