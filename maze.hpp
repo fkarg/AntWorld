@@ -75,7 +75,7 @@ public:
     }
 
     // setting the initial @param x: X and @param y: Y values,
-    // as well as the height and width
+    // as well as the @param: height and @param: width
     void setSize(int x, int y, int height2, int width2){
         locX = x;
         locY = y;
@@ -108,22 +108,22 @@ public:
         rect.move(Vector2f(x, y));
     }
 
-    // returns if there is a wall at the @param dir: direction
+    // returning if there is a wall at the @param dir: direction
     bool isWall(int dir){
         return wall[dir];
     }
 
-    // returns the x value of the Tile
+    // returning the x value of the Tile
     int getX(){
         return locX;
     }
 
-    // returns the y value of the Tile
+    // returning the y value of the Tile
     int getY(){
         return locY;
     }
 
-    // returns any food if there is on this Tile, but max 10
+    // returning any food if there is on this Tile, but max 10
     int getFood(){
         cout << "in getFood" << endl;
         if(food >= 10){
@@ -243,6 +243,7 @@ public:
     Tile* getTile(int i, int j){
         if(i > 0 && i < sizeX && j > 0 && j < sizeY)
             return &MAP[i][j];
+        return NULL;
     }
 
     // returning the sizeX of the Maze
