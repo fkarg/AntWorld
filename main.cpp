@@ -72,6 +72,7 @@ int main()
         // Clear screen
         window.clear();
 
+
         // drawing the Maze
         maze.drawMaze(&window);
 

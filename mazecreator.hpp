@@ -111,7 +111,7 @@ public:
     }
 
     void setSet(bool set) {
-        Status::set == set;
+        Status::set = set;
     }
 };
 
@@ -148,7 +148,7 @@ private:
     }
 
     void out (string message) {
-        cout << "Prim's: " << message << endl;
+        // cout << "Prim's: " << message << endl;
     }
 
 public:

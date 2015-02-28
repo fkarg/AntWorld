@@ -88,6 +88,7 @@ public:
 
         addWalls();
 
+
         rect.setSize(Vector2f(height, width));
         rect.setFillColor(Color::Blue);
         rect.setPosition(Vector2f(locX, locY));
