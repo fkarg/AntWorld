@@ -183,6 +183,14 @@ public:
     virtual void setIndex(int index) {
         Tile::index = index;
     }
+
+    // setting the wall at @param dir: direction to @param setWall
+    virtual void setWall(int dir, bool setWall) {
+        if ( dir % 4 == dir ) {
+            wall[dir] = setWall;
+        }
+    }
+
 };
 
 
@@ -208,6 +216,12 @@ public:
         pubWidth = tile->getWidth();
         pubIndex = tile->getIndex();
         tileToShow = tile;
+
+        wall[0] = tile->isWall(0);
+        wall[1] = tile->isWall(1);
+        wall[2] = tile->isWall(2);
+        wall[3] = tile->isWall(3);
+
     }
 
     // returning the public height of the tile
@@ -244,6 +258,13 @@ public:
     Tile* getTileToShow() {
         return tileToShow;
     }
+
+    void setWall(int dir, bool setWall) {
+        if (dir % 4 == dir ) {
+            wall[dir] = setWall;
+            tileToShow->setWall(dir, setWall);
+        }
+    }
 };
 
 
@@ -274,7 +295,7 @@ public:
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 Tile tile;
-                tile.setSize(i * 31, j * 31, 30, 30);
+                tile.setSize(i * 30, j * 30, 30, 30);
                 tile.setIndex( i * xSize + j);
                 MAP[i][j] = tile;
             }
@@ -283,7 +304,6 @@ public:
 
     // drawing the Maze on the @param renderWindow
     void drawMaze(RenderWindow *renderWindow) {
-        // TODO: draw Tiles!
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].draw(renderWindow);
@@ -309,6 +329,10 @@ public:
             }
         }
         return NULL;
+    }
+
+    Tile* getTile(int index) {
+        return &MAP[index / sizeX][index % sizeY];
     }
 };
 

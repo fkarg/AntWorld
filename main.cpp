@@ -1,7 +1,5 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
-#include "maze.hpp"
-#include <iostream>
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
 
@@ -90,16 +88,20 @@ int main()
         tgui::Callback callback;
         while (gui.pollCallback(callback))
         {
-            if (callback.id == 1) {
-                window.close();
+            switch (callback.id) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    control.changeWalls(callback.id);
+                    break;
+                case 10:
+                    window.close();
+                    break;
+                default:
+                    cout << "uncought callback: " << to_string(callback.id) << endl;
             }
 
-            else if (callback.id == 2)
-            {
-                if (callback.text == "Exit") {
-                    window.close();
-                }
-            }
         }
 
 

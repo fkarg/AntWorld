@@ -27,7 +27,7 @@ public:
         button->load(THEME_CONFIG_FILE);
         button->setPosition(20, 25);
         button->setText("Close");
-        button->setCallbackId(1);
+        button->setCallbackId(10);
         button->bindCallback(tgui::Button::LeftMouseClicked);
         button->setSize(60, 20);
 
@@ -53,34 +53,34 @@ public:
         buttonChangeWallUp->load(THEME_CONFIG_FILE);
         buttonChangeWallUp->setPosition(15, 250);
         buttonChangeWallUp->setText("ChangeWallUp");
-        buttonChangeWallUp->setCallbackId(2);
+        buttonChangeWallUp->setCallbackId(0);
         buttonChangeWallUp->bindCallback(tgui::Button::LeftMouseClicked);
         buttonChangeWallUp->setSize(90, 20);
 
 
+        tgui::Button::Ptr buttonChangeWallRight( (*gui) );
+        buttonChangeWallRight->load(THEME_CONFIG_FILE);
+        buttonChangeWallRight->setPosition(15, 280);
+        buttonChangeWallRight->setText("ChangeWallRight");
+        buttonChangeWallRight->setCallbackId(1);
+        buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
+        buttonChangeWallRight->setSize(90, 20);
+
+
         tgui::Button::Ptr buttonChangeWallDown( (*gui) );
         buttonChangeWallDown->load(THEME_CONFIG_FILE);
-        buttonChangeWallDown->setPosition(15, 280);
+        buttonChangeWallDown->setPosition(15, 310);
         buttonChangeWallDown->setText("ChangeWallDown");
         buttonChangeWallDown->setCallbackId(2);
         buttonChangeWallDown->bindCallback(tgui::Button::LeftMouseClicked);
         buttonChangeWallDown->setSize(90, 20);
 
 
-        tgui::Button::Ptr buttonChangeWallRight( (*gui) );
-        buttonChangeWallRight->load(THEME_CONFIG_FILE);
-        buttonChangeWallRight->setPosition(15, 310);
-        buttonChangeWallRight->setText("ChangeWallRight");
-        buttonChangeWallRight->setCallbackId(2);
-        buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
-        buttonChangeWallRight->setSize(90, 20);
-
-
         tgui::Button::Ptr buttonChangeWallLeft( (*gui) );
         buttonChangeWallLeft->load(THEME_CONFIG_FILE);
         buttonChangeWallLeft->setPosition(15, 340);
         buttonChangeWallLeft->setText("ChangeWallLeft");
-        buttonChangeWallLeft->setCallbackId(2);
+        buttonChangeWallLeft->setCallbackId(3);
         buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
         buttonChangeWallLeft->setSize(90, 20);
 
@@ -101,6 +101,13 @@ public:
                 "\n\nFood: \n " +
                 std::to_string (tile->isFood() ) );
         tile->draw(window);
+    }
+
+    // changes the state of the wall in @param dir
+    void changeWalls(int dir) {
+        if (dir % 4 == dir) {
+            tile->setWall(dir, !tile->isWall(dir));
+        }
     }
 
 
