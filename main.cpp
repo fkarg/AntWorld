@@ -81,10 +81,6 @@ int main()
                 tile = testptr;
         }
 
-        // TODO: when clicked, 'select' the clicked tile
-
-
-
         window.clear();
 
         maze.drawMaze(&window);

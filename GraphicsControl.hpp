@@ -49,13 +49,13 @@ public:
         //////////////////////////////////////////////////////////
 
 
-        // tgui::Button::Ptr buttonChangeWall( (*gui) );
-        // buttonChangeWall->load(THEME_CONFIG_FILE);
-        // buttonChangeWall->setPosition(20, 250);
-        // buttonChangeWall->setText("ChangeWallUp");
-        // buttonChangeWall->setCallbackId(2);
-        // buttonChangeWall->bindCallback(tgui::Button::LeftMouseClicked);
-        // buttonChangeWall->setSize(80, 20);
+        tgui::Button::Ptr buttonChangeWall( (*gui) );
+        buttonChangeWall->load(THEME_CONFIG_FILE);
+        buttonChangeWall->setPosition(20, 250);
+        buttonChangeWall->setText("ChangeWallUp");
+        buttonChangeWall->setCallbackId(2);
+        buttonChangeWall->bindCallback(tgui::Button::LeftMouseClicked);
+        buttonChangeWall->setSize(80, 20);
 
 
 
