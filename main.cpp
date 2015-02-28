@@ -49,11 +49,40 @@ int main()
 
     while (window.isOpen())
     {
+        mousePosition = Mouse::getPosition(window);
+
         sf::Event event;
+
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+
+            switch(event.type) {
+                case Event::Closed:
+                    window.close();
+                    break;
+                case Event::KeyPressed:
+                    if(event.key.code == Keyboard::Escape) {
+                        cout << "Escape" << endl;
+                        window.close();
+                    }
+                    break;
+                case Event::TextEntered:break;
+                case Event::KeyReleased:break;
+                case Event::MouseWheelMoved:break;
+                case Event::MouseButtonPressed:
+                    if (Mouse::isButtonPressed(Mouse::Left) ) {
+                        showTile *testptr = NULL;
+                        testptr = (showTile *) maze.getTileClicked(mousePosition.x, mousePosition.y);
+                        if (testptr != NULL) {
+                            tile = testptr;
+                        }
+                    }
+                    break;
+                case Event::MouseButtonReleased:break;
+                case Event::MouseMoved:break;
+                default:
+                    cout << "uncovered event" << endl;
+            }
 
             gui.handleEvent(event);
         }
@@ -61,25 +90,18 @@ int main()
         tgui::Callback callback;
         while (gui.pollCallback(callback))
         {
-            if (callback.id == 1)
+            if (callback.id == 1) {
                 window.close();
+            }
 
             else if (callback.id == 2)
             {
-                if (callback.text == "Exit")
+                if (callback.text == "Exit") {
                     window.close();
+                }
             }
         }
 
-
-        mousePosition = Mouse::getPosition(window);
-
-        if (Mouse::isButtonPressed(Mouse::Left) ) {
-            showTile* testptr = NULL;
-            testptr = (showTile *) maze.getTileClicked(mousePosition.x, mousePosition.y);
-            if (testptr != NULL)
-                tile = testptr;
-        }
 
         window.clear();
 

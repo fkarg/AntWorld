@@ -49,15 +49,40 @@ public:
         //////////////////////////////////////////////////////////
 
 
-        tgui::Button::Ptr buttonChangeWall( (*gui) );
-        buttonChangeWall->load(THEME_CONFIG_FILE);
-        buttonChangeWall->setPosition(20, 250);
-        buttonChangeWall->setText("ChangeWallUp");
-        buttonChangeWall->setCallbackId(2);
-        buttonChangeWall->bindCallback(tgui::Button::LeftMouseClicked);
-        buttonChangeWall->setSize(80, 20);
+        tgui::Button::Ptr buttonChangeWallUp( (*gui) );
+        buttonChangeWallUp->load(THEME_CONFIG_FILE);
+        buttonChangeWallUp->setPosition(15, 250);
+        buttonChangeWallUp->setText("ChangeWallUp");
+        buttonChangeWallUp->setCallbackId(2);
+        buttonChangeWallUp->bindCallback(tgui::Button::LeftMouseClicked);
+        buttonChangeWallUp->setSize(90, 20);
 
 
+        tgui::Button::Ptr buttonChangeWallDown( (*gui) );
+        buttonChangeWallDown->load(THEME_CONFIG_FILE);
+        buttonChangeWallDown->setPosition(15, 280);
+        buttonChangeWallDown->setText("ChangeWallDown");
+        buttonChangeWallDown->setCallbackId(2);
+        buttonChangeWallDown->bindCallback(tgui::Button::LeftMouseClicked);
+        buttonChangeWallDown->setSize(90, 20);
+
+
+        tgui::Button::Ptr buttonChangeWallRight( (*gui) );
+        buttonChangeWallRight->load(THEME_CONFIG_FILE);
+        buttonChangeWallRight->setPosition(15, 310);
+        buttonChangeWallRight->setText("ChangeWallRight");
+        buttonChangeWallRight->setCallbackId(2);
+        buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
+        buttonChangeWallRight->setSize(90, 20);
+
+
+        tgui::Button::Ptr buttonChangeWallLeft( (*gui) );
+        buttonChangeWallLeft->load(THEME_CONFIG_FILE);
+        buttonChangeWallLeft->setPosition(15, 340);
+        buttonChangeWallLeft->setText("ChangeWallLeft");
+        buttonChangeWallLeft->setCallbackId(2);
+        buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
+        buttonChangeWallLeft->setSize(90, 20);
 
     }
 
