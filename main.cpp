@@ -31,7 +31,7 @@ int main()
 
     Maze maze(10, 10);
 
-    Tile tile;
+    showTile tile;
 
     tile.setSize(40, 60, 35, 35);
 
@@ -43,6 +43,8 @@ int main()
 
     int Frame = 0;
 
+    Vector2i mousePosition;
+
     std::cout << "starting main loop ... " << std::endl;
 
     while (window.isOpen())
@@ -52,10 +54,6 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-
-            // TODO: mouse click!
-            // if (event.type == sf::Mouse::isButtonPressed(sf::Mouse::Left))
-
 
             gui.handleEvent(event);
         }
@@ -74,6 +72,16 @@ int main()
         }
 
 
+        mousePosition = Mouse::getPosition(window);
+
+        if (Mouse::isButtonPressed(Mouse::Left) ) {
+            showTile* testptr = NULL;
+            testptr = (showTile *) maze.getTileClicked(mousePosition.x, mousePosition.y);
+            if (testptr != NULL)
+                tile = testptr;
+        }
+
+        // TODO: when clicked, 'select' the clicked tile
 
 
 

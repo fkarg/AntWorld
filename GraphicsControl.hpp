@@ -26,7 +26,7 @@ public:
         tgui::Button::Ptr button( (*gui) );
         button->load(THEME_CONFIG_FILE);
         button->setPosition(20, 25);
-        button->setText("Button1");
+        button->setText("Close");
         button->setCallbackId(1);
         button->bindCallback(tgui::Button::LeftMouseClicked);
         button->setSize(60, 20);
@@ -43,6 +43,22 @@ public:
 
         // TODO: buttons to change the walls of the currently selected Tile
 
+
+        //////////////////////////////////////////////////////////
+        /////           experimental:                       //////
+        //////////////////////////////////////////////////////////
+
+
+        // tgui::Button::Ptr buttonChangeWall( (*gui) );
+        // buttonChangeWall->load(THEME_CONFIG_FILE);
+        // buttonChangeWall->setPosition(20, 250);
+        // buttonChangeWall->setText("ChangeWallUp");
+        // buttonChangeWall->setCallbackId(2);
+        // buttonChangeWall->bindCallback(tgui::Button::LeftMouseClicked);
+        // buttonChangeWall->setSize(80, 20);
+
+
+
     }
 
     // changing the displayed info to another @param tile1: tile
@@ -54,6 +70,7 @@ public:
     // updating the InfoLabel and the seperately displayed tile
     void updateInfo () {
         InfoLabel->setText("Info: \n "
+                "\nIndex: " + std::to_string (tile->getIndex() ) +
                 "\nX: " + std::to_string (tile->getX() ) +
                 "\nY: " + std::to_string (tile->getY() ) +
                 "\n\nFood: \n " +

@@ -29,8 +29,8 @@ using namespace sf;
  */
 class Tile {
 
-private:
-    int locX, locY, height, width, food = 0;
+protected:
+    int locX, locY, height, width, food = 0, index = -1;
 
     float foodProduction = 0.0;
 
@@ -119,12 +119,12 @@ public:
     }
 
     // returns the x value of the Tile
-    int getX() {
+    virtual int getX() {
         return locX;
     }
 
     // returns the y value of the Tile
-    int getY() {
+    virtual int getY() {
         return locY;
     }
 
@@ -164,6 +164,86 @@ public:
         drawWalls(window);
     }
 
+    // returning the Height of the tile (for displaying it)
+    virtual int getHeight() {
+        return height;
+    }
+
+    // returning the Height of the tile (for displaying it)
+    virtual int getWidth() {
+        return width;
+    }
+
+    // setting the Index of the tile
+    virtual int getIndex() const {
+        return index;
+    }
+
+    // getting the index of the tile for 'Info'
+    virtual void setIndex(int index) {
+        Tile::index = index;
+    }
+};
+
+
+class showTile : public Tile {
+protected:
+
+    // values needed to be overridden
+    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1;
+
+    Tile* tileToShow;
+
+public:
+
+    showTile() {
+        // ctr
+    }
+
+    // operator overloading, needed not to override the wrong values
+    void operator=(Tile *tile){
+        pubX = tile->getX();
+        pubY = tile->getY();
+        pubHeight = tile->getHeight();
+        pubWidth = tile->getWidth();
+        pubIndex = tile->getIndex();
+        tileToShow = tile;
+    }
+
+    // returning the public height of the tile
+    int getHeight() {
+        return pubHeight;
+    }
+
+    // returning the public width of the tile
+    int getWidth() {
+        return pubWidth;
+    }
+
+    // returning the (public) X val
+    int getX() {
+        return pubX;
+    }
+
+    // returning the (public) Y val
+    int getY() {
+        return pubY;
+    }
+
+    // returning the index
+    int getIndex() const {
+        return pubIndex;
+    }
+
+    // setting the index
+    void setIndex(int index) {
+        showTile::pubIndex = index;
+    }
+
+    // returning a pointer to the tile currently shown
+    Tile* getTileToShow() {
+        return tileToShow;
+    }
 };
 
 
@@ -179,7 +259,7 @@ public:
  */
 class Maze {
 
-private:
+protected:
     int sizeX = -1, sizeY = -1;
     vector<vector<Tile> > MAP;
 
@@ -188,12 +268,14 @@ public:
     Maze(int xSize, int ySize) {
         sizeX = xSize;
         sizeY = ySize;
-        MAP = vector<vector<Tile> >(xSize, vector<Tile>(ySize));
+        MAP = vector<vector<Tile> >(
+                (unsigned int) xSize,
+                vector<Tile>( (unsigned int) ySize) );
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 Tile tile;
                 tile.setSize(i * 31, j * 31, 30, 30);
-                // tile might not have been initialized?
+                tile.setIndex( i * xSize + j);
                 MAP[i][j] = tile;
             }
         }
