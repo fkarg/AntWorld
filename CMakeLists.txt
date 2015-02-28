@@ -21,9 +21,15 @@ file(GLOB AntWorld_SRC
     "*.cpp"
     "*.hpp"
     "*.conf"
-    "*.ttf" )
-#     "resources/DejaVuSans.ttf"
+    "*.ttf"
+    "resources/DejaVuSans.ttf" )
 # )
+
+
+# include_directories ("${PROJECT_SOURCE_DIR}/resources/")
+#
+# add_subdirectory (resources)
+
 
 
 add_executable(AntWorld main.cpp ${AntWorld_SRC})
