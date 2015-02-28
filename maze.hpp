@@ -29,7 +29,7 @@ using namespace sf;
 class Tile {
 
 private:
-    int locX, locY, height, width, food = 0;
+    int index = -1, locX, locY, height, width, food = 0;
 
     bool wall[4] = { true, true, true, true };
 //    the directions: up, right, down, left
@@ -72,6 +72,10 @@ public:
 
     Tile(){
         // ctr
+    }
+
+    void setIndex(int index) {
+        Tile::index = index;
     }
 
     // setting the initial @param x: X and @param y: Y values,
@@ -151,6 +155,11 @@ public:
         surrounding[dir] = tile;
     }
 
+    // returns the index of the tile
+    int getIndex() {
+        return index;
+    }
+
     // setting the wall of @param dir: direction at @param setWall.
     void setWall(int dir, bool setWall){
         cout << "in setWall " << endl;
@@ -194,6 +203,7 @@ public:
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 Tile tile;
+                tile.setIndex(i * xSize + j);
                 tile.setSize(i * 31, j * 31, 30, 30);
                 MAP[i][j] = tile;
             }
@@ -241,7 +251,7 @@ public:
 
     // returning a tile at a specific location
     Tile* getTile(int i, int j){
-        if(i > 0 && i < sizeX && j > 0 && j < sizeY)
+        if(i >= 0 && i < sizeX && j >= 0 && j < sizeY)
             return &MAP[i][j];
         return NULL;
     }

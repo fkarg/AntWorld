@@ -30,12 +30,6 @@ void initAlgorithm(Maze *maze) {
 }
 
 
-void Try_something (Tile *tile) {
-    (*tile).setWall(2, false);
-    tile->setWall(2, false);
-}
-
-
 
 
 
@@ -47,14 +41,16 @@ int main()
 
     cout << "creating the maze ..." << endl;
 
+    // Creating a 20 x 20 Maze
+    Maze maze(10, 10);
+
     bool once = false;
 
-    // Creating a 20 x 20 Maze
-    Maze maze(20, 20);
-
-    Tile tile;
-
-    tile.setSize(620, 620, 30, 30);
+    // Tile tile;
+//
+    // tile.setIndex(0);
+//
+    // tile.setSize(620, 620, 30, 30);
 
     // Frame-counter
     int Frame = 0;
@@ -79,8 +75,8 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
-        tile.drawTile(&window);
-        tile.drawWalls(&window);
+        // tile.drawTile(&window);
+        // tile.drawWalls(&window);
 
         // Update the window
         window.display();
@@ -89,12 +85,10 @@ int main()
         cout << "Frame: " << Frame << endl;
         Frame++;
 
-        initAlgorithm(&maze);
-
-        // if(!once) {
-        //     Try_something(&tile);
-        //     once = true;
-        // }
+        if (!once) {
+            initAlgorithm(&maze);
+            once = true;
+        }
 
     }
 
