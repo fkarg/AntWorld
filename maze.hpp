@@ -4,6 +4,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+#include <iostream>
+
 using namespace std;
 using namespace sf;
 
@@ -31,14 +33,16 @@ class Tile {
 protected:
     int locX, locY, height, width, food = 0, index = -1;
 
-    bool wall[4] = {true, true, true, true};
-//       the directions: up, right, down, left
+    bool wall[4] = { true, true, true, true };
+//    the directions: up, right, down, left
+//                     0 ,   1 ,   2 ,   3
 
     Tile *surrounding[4] = {}; // to direct an agent to the next one
 
     RectangleShape rect;
     RectangleShape Walls[4];
 
+    // adding or actualizing the Walls positions
     void addWalls() {
 
         RectangleShape temp;
@@ -67,8 +71,13 @@ protected:
     }
 
 public:
+
     Tile(){
         // ctr
+    }
+
+    void setIndex(int index) {
+        Tile::index = index;
     }
 
     // setting the initial @param x: X and @param y: Y values,
@@ -80,6 +89,7 @@ public:
         width = width2;
 
         addWalls();
+
 
         rect.setSize(Vector2f(height, width));
         rect.setFillColor(Color::Blue);
@@ -110,18 +120,18 @@ public:
         rect.setPosition(Vector2f(locX, locY));
     }
 
-    // returns if there is a wall at the @param dir: direction
-    bool isWall(int dir) {
+    // returning if there is a wall at the @param dir: direction
+    bool isWall(int dir){
         return wall[dir];
     }
 
-    // returns the x value of the Tile
-    virtual int getX() {
+    // returning the x value of the Tile
+    int getX(){
         return locX;
     }
 
-    // returns the y value of the Tile
-    virtual int getY() {
+    // returning the y value of the Tile
+    int getY(){
         return locY;
     }
 
@@ -181,6 +191,37 @@ public:
         if ( dir % 4 == dir ) {
             wall[dir] = setWall;
         }
+    }
+
+    // returns the surrounding Tile at @param dir: direction
+    Tile* getSurrounding(int dir){
+        return surrounding[dir];
+    }
+
+    // returns if there is something in this Direction (a tile)
+    bool isSurrounding(int dir){
+        return surrounding[dir] != NULL;
+    }
+
+    // sets the @param *tile: Tile next to it in @param dir: direction
+    void setSurrounding(int dir, Tile *tile){
+        surrounding[dir] = tile;
+    }
+
+    // returns the index of the tile
+    int getIndex() {
+        return index;
+    }
+
+    // setting the wall of @param dir: direction at @param setWall.
+    void setWall(int dir, bool setWall){
+        cout << "in setWall " << endl;
+        cout << " dir: " << to_string(dir) << endl;
+        cout << " newWallstate: " << noboolalpha << setWall << endl;
+        cout << " isWall: " << noboolalpha << isWall(dir) << endl;
+        cout << " oldWallstate: " << noboolalpha << wall[dir] << endl;
+        wall[dir] = setWall;
+        cout << "after setWall" << endl << endl;
     }
 
 };
@@ -296,10 +337,30 @@ public:
                 MAP[i][j] = tile;
             }
         }
+        setNeighbourTiles();
+    }
+
+    // setting the surrounding - variable
+    void setNeighbourTiles(){
+        for(int i = 0; i < sizeX; i++){
+            for(int j = 0; j < sizeY; j++){
+                if (j > 0)
+                    MAP[i][j].setSurrounding(0, &MAP[i][j - 1]);
+
+                if (i < sizeX - 1)
+                    MAP[i][j].setSurrounding(1, &MAP[i + 1][j]);
+
+                if(j < sizeY - 1)
+                    MAP[i][j].setSurrounding(2, &MAP[i][j + 1]);
+
+                if(i > 0)
+                    MAP[i][j].setSurrounding(3, &MAP[i - 1][j]);
+            }
+        }
     }
 
     // drawing the Maze on the @param renderWindow
-    void drawMaze(RenderWindow *renderWindow) {
+    void drawMaze (RenderWindow *renderWindow) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].draw(renderWindow);
@@ -330,6 +391,23 @@ public:
     // returns the tile at the @param index
     Tile* getTile(int index) {
         return &MAP[index / sizeX][index % sizeY];
+    }
+
+    // returning a tile at a specific location
+    Tile* getTile(int i, int j){
+        if(i >= 0 && i < sizeX && j >= 0 && j < sizeY)
+            return &MAP[i][j];
+        return NULL;
+    }
+
+    // returning the sizeX of the Maze
+    int getSizeX() {
+        return sizeX;
+    }
+
+    // returning the sizeY of the Maze
+    int getSizeY() {
+        return sizeY;
     }
 };
 

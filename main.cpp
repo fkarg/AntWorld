@@ -1,14 +1,47 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include "maze.hpp"
+#include "mazecreator.hpp"
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
+
+
+
+void initAlgorithm(Maze *maze) {
+    MazeCreator creator;
+
+    std::cout << "MazeCreator created and adding Maze ..." << std::endl;
+
+    creator.setMaze(maze);
+
+    creator.setStart(4, 0);
+
+    std::cout << "Set start to x: 4 and y: 0" << std::endl;
+
+    // thread creatorThread(creator.PrimsAlgorithm());
+    // creatorThread.detach();
+
+    std::cout << "trying Prim's Algorithm ..." << std::endl;
+
+    creator.PrimsAlgorithm();
+
+    std::cout << "end of Prim's Algorithm" << std::endl;
+}
+
+
+
+
+
 
 int main()
 {
 
-    std::cout << "creating window and gui ..." << std::endl;
+    std::cout << "creating the maze ..." << std::endl;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "TGUI window");
+    // Create the main window
+    sf::RenderWindow window(sf::VideoMode(660, 660), "SFML window");
     tgui::Gui gui(window);
 
     std::cout << "setting global font ..." << std::endl;
@@ -27,6 +60,7 @@ int main()
 
     std::cout << "creating maze ... " << std::endl;
 
+    // Creating a 10 x 10 Maze
     Maze maze(10, 10);
 
     showTile tile;
@@ -39,6 +73,9 @@ int main()
 
     maze.move(120, 90);
 
+    bool once = false;
+
+    // Frame-counter
     int Frame = 0;
 
     Vector2i mousePosition;
@@ -104,9 +141,13 @@ int main()
 
         }
 
+        cout << "gonna draw it ..." << endl;
 
+        // Clear screen
         window.clear();
 
+
+        // drawing the Maze
         maze.drawMaze(&window);
 
         control.updateInfo();
@@ -116,7 +157,15 @@ int main()
         window.display();
         std::cout << "Frame: " << Frame << std::endl;
         Frame++;
+
+        if (!once) {
+            initAlgorithm(&maze);
+            once = true;
+        }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
+
+
+
