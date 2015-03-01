@@ -46,12 +46,6 @@ int main()
 
     bool once = false;
 
-    // Tile tile;
-//
-    // tile.setIndex(0);
-//
-    // tile.setSize(620, 620, 30, 30);
-
     // Frame-counter
     int Frame = 0;
 
@@ -76,9 +70,6 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
-        // tile.drawTile(&window);
-        // tile.drawWalls(&window);
-
         // Update the window
         window.display();
 
@@ -90,7 +81,6 @@ int main()
             initAlgorithm(&maze);
             once = true;
         }
-
     }
 
     return EXIT_SUCCESS;

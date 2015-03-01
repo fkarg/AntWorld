@@ -158,7 +158,7 @@ public:
         setSeed();
     }
 
-    // setting the @param maze1: Maze
+    // setting the @param maze1: Maze, and the sizes with it
     void setMaze (Maze *maze1 ) {
 
         maze = maze1;
@@ -192,8 +192,6 @@ public:
         out("Start set - x: " + to_string(x) + " y: " + to_string(y));
 
         int index = 0, dist = 0, distX = 2, distY = 1;
-        if (testStates(x, y, state))
-            return maze->getTile(x, y);
         index++;
 
         out("saving status");
@@ -214,6 +212,9 @@ public:
         }
 
         out("status set");
+
+        if (testStates(x, y, state))
+            return maze->getTile(x, y);
 
         while (dist <= sizeX + sizeY) {
 
@@ -273,40 +274,6 @@ public:
 
         return NULL;
 
-    }
-
-
-    // initiating Prim's Algorithm
-    void PrimsAlgorithm() {
-        out("Gonna search from the start ...");
-
-        Tile* startTile = searchForState(2);
-
-        if (startTile != NULL) {
-
-            int startX = startTile->getIndex() % maze->getSizeX(),
-                    startY = startTile->getIndex() / maze->getSizeY();
-
-            setSurroundingState1(startX, startY);
-
-
-            for (Tile *tile = searchForState(1, false, startX, startY );
-                  tile != NULL; tile = searchForState(1, true)) {
-                // ...
-                int X = startTile->getIndex() % maze->getSizeX(),
-                        Y = startTile->getIndex() / maze->getSizeY();
-
-                states[X][Y] = 2;
-
-                setSurroundingState1(X, Y);
-
-
-                connectTiles(tile, searchSurrounding2(X, Y) );
-
-
-
-            }
-        }
     }
 
     // connecting two Tiles if they are next to each other
@@ -391,6 +358,38 @@ public:
 
         return false;
     }
+
+
+
+    // initiating Prim's Algorithm
+    void PrimsAlgorithm() {
+        out("Gonna search from the start ...");
+
+        Tile* startTile = searchForState(2);
+
+        if (startTile != NULL) {
+
+            int startX = startTile->getIndex() % maze->getSizeX(),
+                    startY = startTile->getIndex() / maze->getSizeY();
+
+            setSurroundingState1(startX, startY);
+
+            for (Tile *tile = searchForState(1, false, startX, startY );
+                 tile != NULL; tile = searchForState(1, true)) {
+                // ...
+                int X = startTile->getIndex() % maze->getSizeX(),
+                        Y = startTile->getIndex() / maze->getSizeY();
+
+                states[X][Y] = 2;
+
+                setSurroundingState1(X, Y);
+
+                connectTiles(tile, searchSurrounding2(X, Y) );
+
+            }
+        }
+    }
+
 };
 
 
