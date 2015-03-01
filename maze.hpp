@@ -16,7 +16,6 @@ using namespace sf;
  * @param y: Y-location of the Tile later on
  * @param height2: the height of the tile
  * @param width2: the width of the tile
- * (the 2 is there since the scope resolution operator didn't work for some reason)
  * setting the size, position and color of the rect
  *
  *
@@ -31,8 +30,6 @@ class Tile {
 
 protected:
     int locX, locY, height, width, food = 0, index = -1;
-
-    float foodProduction = 0.0;
 
     bool wall[4] = {true, true, true, true};
 //       the directions: up, right, down, left
@@ -140,11 +137,6 @@ public:
         }
     }
 
-    // returns the current 'food' prduction
-    float getFoodProduction() const {
-        return foodProduction;
-    }
-
 // returns all the food currently on the tile
     int isFood() {
         return food;
@@ -192,6 +184,8 @@ public:
     }
 
 };
+
+
 
 
 class showTile : public Tile {
@@ -259,6 +253,7 @@ public:
         return tileToShow;
     }
 
+    // sets the Wall at @param dir: direction to @param setWall
     void setWall(int dir, bool setWall) {
         if (dir % 4 == dir ) {
             wall[dir] = setWall;
@@ -266,6 +261,7 @@ public:
         }
     }
 };
+
 
 
 /*
@@ -331,6 +327,7 @@ public:
         return NULL;
     }
 
+    // returns the tile at the @param index
     Tile* getTile(int index) {
         return &MAP[index / sizeX][index % sizeY];
     }
