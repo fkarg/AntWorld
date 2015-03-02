@@ -22,6 +22,7 @@ file(GLOB AntWorld_SRC
     "*.hpp"
     "*.conf"
     "*.ttf"
+    "GraphicsControl.hpp"
     "resources/DejaVuSans.ttf" )
 # )
 
