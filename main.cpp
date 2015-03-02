@@ -1,90 +1,122 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include "maze.hpp"
-#include "mazecreator.hpp"
+#include <TGUI/TGUI.hpp>
+#include "GraphicsControl.hpp"
 
-using namespace std;
-using namespace sf;
-
-
-
-void initAlgorithm(Maze *maze) {
-    MazeCreator creator;
-
-    cout << "MazeCreator created and adding Maze ..." << endl;
-
-    creator.setMaze(maze);
-
-    creator.setStart(4, 0);
-
-    cout << "Set start to x: 4 and y: 0" << endl;
-
-    // thread creatorThread(creator.PrimsAlgorithm());
-    // creatorThread.detach();
-
-    cout << "trying Prim's Algorithm ..." << endl;
-
-    creator.PrimsAlgorithm();
-
-    cout << "end of Prim's Algorithm" << endl;
-}
-
-
-
-
-
+#define THEME_CONFIG_FILE "resources/Black.conf"
 
 int main()
 {
-    // Create the main window
-    RenderWindow window(VideoMode(660, 660), "SFML window");
 
-    cout << "creating the maze ..." << endl;
+    std::cout << "creating window and gui ..." << std::endl;
 
-    // Creating a 20 x 20 Maze
+    sf::RenderWindow window(sf::VideoMode(800, 600), "TGUI window");
+    tgui::Gui gui(window);
+
+    std::cout << "setting global font ..." << std::endl;
+
+    if (!gui.setGlobalFont("resources/DejaVuSans.ttf"))
+        return 1;
+
+    /// tgui::Picture::Ptr picture(gui);
+    /// picture->load("resources/Black.png");
+
+    std::cout << "creating Button ..." << std::endl;
+
+    // creating the GraphicsControl
+    GraphicsControl control (&window);
+    control.addGui(&gui);
+
+    std::cout << "creating maze ... " << std::endl;
+
     Maze maze(10, 10);
 
-    bool once = false;
+    showTile tile;
 
-    // Frame-counter
+    tile.setSize(40, 60, 35, 35);
+
+    control.changeTextInfoLabel(&tile);
+
+    std::cout << "moving maze ... " << std::endl;
+
+    maze.move(120, 90);
+
     int Frame = 0;
 
-	// Start the game loop
+    Vector2i mousePosition;
+
+    std::cout << "starting main loop ... " << std::endl;
+
     while (window.isOpen())
     {
-        // Process events
-        Event event;
+        mousePosition = Mouse::getPosition(window);
+
+        sf::Event event;
+
         while (window.pollEvent(event))
         {
-            // Close window : exit
-            if (event.type == sf::Event::Closed)
-                window.close();
+
+            switch(event.type) {
+                case Event::Closed:
+                    window.close();
+                    break;
+                case Event::KeyPressed:
+                    if(event.key.code == Keyboard::Escape) {
+                        cout << "Escape" << endl;
+                        window.close();
+                    }
+                    break;
+                case Event::TextEntered:break;
+                case Event::KeyReleased:break;
+                case Event::MouseWheelMoved:break;
+                case Event::MouseButtonPressed:
+                    if (Mouse::isButtonPressed(Mouse::Left) ) {
+                        showTile *testptr = NULL;
+                        testptr = (showTile *) maze.getTileClicked(mousePosition.x, mousePosition.y);
+                        if (testptr != NULL) {
+                            tile = testptr;
+                        }
+                    }
+                    break;
+                case Event::MouseButtonReleased:break;
+                case Event::MouseMoved:break;
+                default:
+                    cout << "uncovered event" << endl;
+            }
+
+            gui.handleEvent(event);
         }
 
-        cout << "gonna draw it ..." << endl;
+        tgui::Callback callback;
+        while (gui.pollCallback(callback))
+        {
+            switch (callback.id) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    control.changeWalls(callback.id);
+                    break;
+                case 10:
+                    window.close();
+                    break;
+                default:
+                    cout << "uncought callback: " << to_string(callback.id) << endl;
+            }
 
-        // Clear screen
+        }
+
+
         window.clear();
 
-
-        // drawing the Maze
         maze.drawMaze(&window);
 
-        // Update the window
+        control.updateInfo();
+
+        gui.draw();
+
         window.display();
-
-        // shows the Frame number
-        cout << "Frame: " << Frame << endl;
+        std::cout << "Frame: " << Frame << std::endl;
         Frame++;
-
-        if (!once) {
-            initAlgorithm(&maze);
-            once = true;
-        }
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }
-
-
-

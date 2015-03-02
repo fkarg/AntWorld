@@ -1,7 +1,8 @@
 #ifndef MAZE_HPP
 #define MAZE_HPP
 
-#include <iostream>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 using namespace std;
 using namespace sf;
@@ -28,20 +29,20 @@ using namespace sf;
  */
 class Tile {
 
-private:
-    int index = -1, locX, locY, height, width, food = 0;
+protected:
+    int locX, locY, height, width, food = 0, index = -1;
 
-    bool wall[4] = { true, true, true, true };
-//    the directions: up, right, down, left
-//                     0 ,   1 ,   2 ,   3
+    float foodProduction = 0.0;
 
-    Tile* surrounding[4] = {}; // to direct an agent to the next one
+    bool wall[4] = {true, true, true, true};
+//       the directions: up, right, down, left
+
+    Tile *surrounding[4] = {}; // to direct an agent to the next one
 
     RectangleShape rect;
     RectangleShape Walls[4];
 
-    // adding or actualizing the Walls positions
-    void addWalls(){
+    void addWalls() {
 
         RectangleShape temp;
         temp.setFillColor(Color::Magenta);
@@ -69,18 +70,13 @@ private:
     }
 
 public:
-
     Tile(){
         // ctr
     }
 
-    void setIndex(int index) {
-        Tile::index = index;
-    }
-
     // setting the initial @param x: X and @param y: Y values,
-    // as well as the @param: height and @param: width
-    void setSize(int x, int y, int height2, int width2){
+    // as well as the height and width
+    void setSize(int x, int y, int height2, int width2) {
         locX = x;
         locY = y;
         height = height2;
@@ -88,20 +84,19 @@ public:
 
         addWalls();
 
-
         rect.setSize(Vector2f(height, width));
         rect.setFillColor(Color::Blue);
         rect.setPosition(Vector2f(locX, locY));
     }
 
     // Draws the Tile
-    void drawTile(RenderWindow *renderWindow){
+    void drawTile(RenderWindow *renderWindow) {
         renderWindow->draw(rect);
     }
 
     // Draws the Walls of the Tile
-    void drawWalls(RenderWindow *renderWindow){
-        for(int x = 0; x < 4; x++){
+    void drawWalls(RenderWindow *renderWindow) {
+        for (int x = 0; x < 4; x++) {
             if (wall[x]) {
                 renderWindow->draw(Walls[x]);
             }
@@ -109,29 +104,33 @@ public:
     }
 
     // moving the rect for @param x: X and @param y: Y pixels ...
-    void move(int x, int y){
-        rect.move(Vector2f(x, y));
+    void move(int x, int y) {
+        locX += x;
+        locY += y;
+
+        addWalls();
+
+        rect.setPosition(Vector2f(locX, locY));
     }
 
-    // returning if there is a wall at the @param dir: direction
-    bool isWall(int dir){
+    // returns if there is a wall at the @param dir: direction
+    bool isWall(int dir) {
         return wall[dir];
     }
 
-    // returning the x value of the Tile
-    int getX(){
+    // returns the x value of the Tile
+    virtual int getX() {
         return locX;
     }
 
-    // returning the y value of the Tile
-    int getY(){
+    // returns the y value of the Tile
+    virtual int getY() {
         return locY;
     }
 
-    // returning any food if there is on this Tile, but max 10
-    int getFood(){
-        cout << "in getFood" << endl;
-        if(food >= 10){
+    // returns any food if there is some on this Tile, but max 10
+    int getFood() {
+        if (food >= 10) {
             food -= 10;
             return 10;
         } else {
@@ -141,42 +140,132 @@ public:
         }
     }
 
-    // returns the surrounding Tile at @param dir: direction
-    Tile* getSurrounding(int dir){
-        return surrounding[dir];
+    // returns the current 'food' prduction
+    float getFoodProduction() const {
+        return foodProduction;
     }
 
-    // returns if there is something in this Direction (a tile)
-    bool isSurrounding(int dir){
-        return surrounding[dir] != NULL;
+// returns all the food currently on the tile
+    int isFood() {
+        return food;
     }
 
-    // sets the @param *tile: Tile next to it in @param dir: direction
-    void setSurrounding(int dir, Tile *tile){
-        surrounding[dir] = tile;
+    // returns true or false respectively to
+    // the mouse inside the tile
+    bool isInside(int x, int y) {
+        return locX <= x && locY <= y
+                && locX + width >= x
+                && locY + height >= y;
     }
 
-    // returns the index of the tile
-    int getIndex() {
+    // drawing the wall and the tile itself combined
+    void draw (RenderWindow *window) {
+        drawTile(window);
+        drawWalls(window);
+    }
+
+    // returning the Height of the tile (for displaying it)
+    virtual int getHeight() {
+        return height;
+    }
+
+    // returning the Height of the tile (for displaying it)
+    virtual int getWidth() {
+        return width;
+    }
+
+    // setting the Index of the tile
+    virtual int getIndex() const {
         return index;
     }
 
-    // setting the wall of @param dir: direction at @param setWall.
-    void setWall(int dir, bool setWall){
-        cout << "in setWall " << endl;
-        cout << " dir: " << to_string(dir) << endl;
-        cout << " newWallstate: " << noboolalpha << setWall << endl;
-        cout << " isWall: " << noboolalpha << isWall(dir) << endl;
-        cout << " oldWallstate: " << noboolalpha << wall[dir] << endl;
-        wall[dir] = setWall;
-        cout << "after setWall" << endl << endl;
+    // getting the index of the tile for 'Info'
+    virtual void setIndex(int index) {
+        Tile::index = index;
+    }
+
+    // setting the wall at @param dir: direction to @param setWall
+    virtual void setWall(int dir, bool setWall) {
+        if ( dir % 4 == dir ) {
+            wall[dir] = setWall;
+        }
     }
 
 };
 
 
+class showTile : public Tile {
+protected:
 
+    // values needed to be overridden
+    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1;
 
+    Tile* tileToShow;
+
+public:
+
+    showTile() {
+        // ctr
+    }
+
+    // operator overloading, needed not to override the wrong values
+    void operator=(Tile *tile){
+        pubX = tile->getX();
+        pubY = tile->getY();
+        pubHeight = tile->getHeight();
+        pubWidth = tile->getWidth();
+        pubIndex = tile->getIndex();
+        tileToShow = tile;
+
+        wall[0] = tile->isWall(0);
+        wall[1] = tile->isWall(1);
+        wall[2] = tile->isWall(2);
+        wall[3] = tile->isWall(3);
+
+    }
+
+    // returning the public height of the tile
+    int getHeight() {
+        return pubHeight;
+    }
+
+    // returning the public width of the tile
+    int getWidth() {
+        return pubWidth;
+    }
+
+    // returning the (public) X val
+    int getX() {
+        return pubX;
+    }
+
+    // returning the (public) Y val
+    int getY() {
+        return pubY;
+    }
+
+    // returning the index
+    int getIndex() const {
+        return pubIndex;
+    }
+
+    // setting the index
+    void setIndex(int index) {
+        showTile::pubIndex = index;
+    }
+
+    // returning a pointer to the tile currently shown
+    Tile* getTileToShow() {
+        return tileToShow;
+    }
+
+    void setWall(int dir, bool setWall) {
+        if (dir % 4 == dir ) {
+            wall[dir] = setWall;
+            tileToShow->setWall(dir, setWall);
+        }
+    }
+};
 
 
 /*
@@ -191,7 +280,7 @@ public:
  */
 class Maze {
 
-private:
+protected:
     int sizeX = -1, sizeY = -1;
     vector<vector<Tile> > MAP;
 
@@ -200,49 +289,30 @@ public:
     Maze(int xSize, int ySize) {
         sizeX = xSize;
         sizeY = ySize;
-        MAP = vector< vector<Tile> >(xSize, vector<Tile>(ySize));
+        MAP = vector<vector<Tile> >(
+                (unsigned int) xSize,
+                vector<Tile>( (unsigned int) ySize) );
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 Tile tile;
-                tile.setIndex(i * xSize + j);
-                tile.setSize(i * 31, j * 31, 30, 30);
+                tile.setSize(i * 30, j * 30, 30, 30);
+                tile.setIndex( i * xSize + j);
                 MAP[i][j] = tile;
-            }
-        }
-        setNeighbourTiles();
-    }
-
-    // setting the surrounding - variable
-    void setNeighbourTiles(){
-        for(int i = 0; i < sizeX; i++){
-            for(int j = 0; j < sizeY; j++){
-                if (j > 0)
-                    MAP[i][j].setSurrounding(0, &MAP[i][j - 1]);
-
-                if (i < sizeX - 1)
-                    MAP[i][j].setSurrounding(1, &MAP[i + 1][j]);
-
-                if(j < sizeY - 1)
-                    MAP[i][j].setSurrounding(2, &MAP[i][j + 1]);
-
-                if(i > 0)
-                    MAP[i][j].setSurrounding(3, &MAP[i - 1][j]);
             }
         }
     }
 
     // drawing the Maze on the @param renderWindow
-    void drawMaze (RenderWindow *renderWindow) {
+    void drawMaze(RenderWindow *renderWindow) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                MAP[i][j].drawTile(renderWindow);
-                MAP[i][j].drawWalls(renderWindow);
+                MAP[i][j].draw(renderWindow);
             }
         }
     }
 
     // moving the whole maze for @param x: X and @param y: Y pixels
-    void move(int x, int y){
+    void move(int x, int y) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].move(x, y);
@@ -250,21 +320,19 @@ public:
         }
     }
 
-    // returning a tile at a specific location
-    Tile* getTile(int i, int j){
-        if(i >= 0 && i < sizeX && j >= 0 && j < sizeY)
-            return &MAP[i][j];
+    // returns the tile the mouse is currently in if it is in one
+    Tile *getTileClicked(int x, int y) {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                if (MAP[i][j].isInside(x, y))
+                    return &MAP[i][j];
+            }
+        }
         return NULL;
     }
 
-    // returning the sizeX of the Maze
-    int getSizeX() {
-        return sizeX;
-    }
-
-    // returning the sizeY of the Maze
-    int getSizeY() {
-        return sizeY;
+    Tile* getTile(int index) {
+        return &MAP[index / sizeX][index % sizeY];
     }
 };
 
