@@ -61,10 +61,6 @@ int main()
     // Creating a 10 x 10 Maze
     Maze maze(10, 10);
 
-    tileToShow.setSize(30, 30, 35, 35);
-
-    control.changeTextInfoLabel(&tileToShow);
-
     std::cout << "moving maze ... " << std::endl;
 
     maze.move(120, 90);
@@ -123,7 +119,7 @@ int main()
                         Tile *testptr = NULL;
                         testptr = maze.getTileClicked(mousePosition.x, mousePosition.y);
                         if (testptr != NULL) {
-                            tileToShow = testptr;
+                            control.changeTextInfoLabel(testptr);
                         }
                     }
                     break;

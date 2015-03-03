@@ -15,8 +15,9 @@ protected:
 
     int tick = 0;
 
-    // pointer to the showTile
-    Tile *tile;
+    // pointer to the showTile and showTile
+    showTile *tileToShowPtr;
+    showTile tileToShowTile;
 
     // pointer for the RenderWindow to display the tile on it
     sf::RenderWindow *window;
@@ -25,6 +26,9 @@ public:
     // setting the window needed later
     GraphicsControl(sf::RenderWindow *renderWindow){
         window = renderWindow;
+        tileToShowPtr = &tileToShowTile;
+
+        tileToShowTile.setSize(30, 30, 35, 35);
     }
 
     // adding the gui to the window
@@ -104,27 +108,27 @@ public:
 
     // changing the displayed info to another @param tile1: tile
     void changeTextInfoLabel(Tile *tile1) {
-        tile = tile1;
+        tileToShowTile =  tile1;
     }
 
     // updating the InfoLabel and the seperately displayed tile
     void updateInfo () {
         InfoLabel->setText("Info: \n "
-                "\nIndex: " + std::to_string (tile->getIndex() ) +
-                "\nX: " + std::to_string (tile->getX() ) +
-                "\nY: " + std::to_string (tile->getY() ) +
+                "\nIndex: " + std::to_string (tileToShowPtr->getIndex() ) +
+                "\nX: " + std::to_string (tileToShowPtr->getX() ) +
+                "\nY: " + std::to_string (tileToShowPtr->getY() ) +
                 "\n\nFood: \n " +
-                std::to_string (tile->isFood() ) );
-        tile->draw(window);
+                std::to_string (tileToShowPtr->isFood() ) );
+        tileToShowPtr->draw(window);
     }
 
     // changes the state of the wall in @param dir
     void changeWalls(int dir) {
         if (dir % 4 == dir) {
-            if (tile->isSurrounding(dir)) {
-                tile->setWall(dir, !tile->isWall(dir));
-                tile->getSurrounding(dir)->setWall( (dir + 2) % 4,
-                        !tile->getSurrounding(dir)->isWall( (dir + 2) % 4) );
+            if (tileToShowPtr->isSurrounding(dir)) {
+                tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir));
+                tileToShowPtr->getSurrounding(dir)->setWall( (dir + 2) % 4,
+                        !tileToShowPtr->getSurrounding(dir)->isWall( (dir + 2) % 4) );
                 // FIXME: tile = tile->getSurrounding(dir);
                 // changeInfoTile(tile->getSurrounding(dir) );
             }
