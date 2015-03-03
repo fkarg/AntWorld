@@ -95,18 +95,17 @@ int main()
                     // change the walls if a key for direction is
                     // pressed
 
-                    if(Keyboard::isKeyPressed(Keyboard::Up)) {
+                    if(Keyboard::isKeyPressed(Keyboard::Up))
                         control.changeWalls(0, true);
-                    }
-                    if(Keyboard::isKeyPressed(Keyboard::Right)) {
+
+                    if(Keyboard::isKeyPressed(Keyboard::Right))
                         control.changeWalls(1, true);
-                    }
-                    if(Keyboard::isKeyPressed(Keyboard::Down)) {
+
+                    if(Keyboard::isKeyPressed(Keyboard::Down))
                         control.changeWalls(2, true);
-                    }
-                    if(Keyboard::isKeyPressed(Keyboard::Left)) {
+
+                    if(Keyboard::isKeyPressed(Keyboard::Left))
                         control.changeWalls(3, true);
-                    }
 
                     if(Keyboard::isKeyPressed(Keyboard::W))
                         control.changeWalls(0);

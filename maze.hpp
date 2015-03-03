@@ -280,7 +280,9 @@ public:
 
     // returning (for security) if there is a tile in @param dir
     bool isSurrounding(int dir) {
-        return tileToShow->isSurrounding(dir);
+        if(tileToShow != NULL)
+            return tileToShow->isSurrounding(dir);
+        return NULL;
     }
 
     // returns the tile in the @param dir if there is one
