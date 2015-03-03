@@ -199,6 +199,11 @@ public:
     void setSurrounding(int dir, Tile *tile){
         surrounding[dir] = tile;
     }
+
+    // for every special tile: something happens here!
+    virtual void doTick() {
+        // overridden by every tile where something happens
+    }
 };
 
 
@@ -293,6 +298,10 @@ public:
 
 
 
+
+
+
+
 /*
  * Maze: including all the Tiles, used to manipulate only specific Tiles
  * @param xSize: how many tiles are gonna be in x direction
@@ -371,6 +380,15 @@ public:
             }
         }
         return NULL;
+    };
+
+    // Doing a tick for every tile in the map
+    void doTick() {
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                MAP[i][j].doTick();
+            }
+        }
     }
 
     // returns the tile at the @param index

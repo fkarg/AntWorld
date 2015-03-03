@@ -13,6 +13,8 @@ protected:
 
     tgui::Button::Ptr ticksControl;
 
+    tgui::Checkbox::Ptr advancedMode;
+
     int tick = 0;
 
     // pointer to the showTile and showTile
@@ -94,6 +96,8 @@ public:
         buttonChangeWallLeft->setSize(90, 20);
 
 
+        // button to change the state of the ticks -
+        // stopped, paused, or started (running)
         tgui::Button::Ptr StartTicksButton( (*gui) );
         StartTicksButton->load(THEME_CONFIG_FILE);
         StartTicksButton->setPosition(90, 30);
@@ -103,6 +107,16 @@ public:
         StartTicksButton->setSize(90, 20);
 
         ticksControl = StartTicksButton;
+
+
+        // checkbox if it should be allowed to
+        tgui::Checkbox::Ptr checkbox(*gui);
+        checkbox->load(THEME_CONFIG_FILE);
+        checkbox->setPosition(15, 220);
+        checkbox->setText("Moving");
+        checkbox->setSize(20, 20);
+
+        advancedMode = checkbox;
 
     }
 
@@ -133,6 +147,10 @@ public:
                     changeTextInfoLabel(tileToShowPtr->getSurrounding(dir) );
             }
         }
+    }
+
+    bool isAdvancedMode() {
+        return advancedMode->isChecked();
     }
 
     void DoTick () {

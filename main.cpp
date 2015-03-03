@@ -1,31 +1,32 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
-#include "mazecreator.hpp"
+// #include "mazecreator.hpp"
+// #include "mazecreator.h"
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
 
 
 
-void initAlgorithm(Maze *maze) {
-    MazeCreator creator;
-
-    std::cout << "MazeCreator created and adding Maze ..." << std::endl;
-
-    creator.setMaze(maze);
-
-    creator.setStart(4, 0);
-
-    std::cout << "Set start to x: 4 and y: 0" << std::endl;
-
-    // thread creatorThread(creator.PrimsAlgorithm());
-    // creatorThread.detach();
-
-    std::cout << "trying Prim's Algorithm ..." << std::endl;
-
-    // creator.PrimsAlgorithm();
-
-    std::cout << "end of Prim's Algorithm" << std::endl;
-}
+//void initAlgorithm(Maze *maze) {
+//    MazeCreator creator;
+//
+//    std::cout << "MazeCreator created and adding Maze ..." << std::endl;
+//
+//    creator.setMaze(maze);
+//
+//    creator.setStart(4, 0);
+//
+//    std::cout << "Set start to x: 4 and y: 0" << std::endl;
+//
+//    // thread creatorThread(creator.PrimsAlgorithm());
+//    // creatorThread.detach();
+//
+//    std::cout << "trying Prim's Algorithm ..." << std::endl;
+//
+//    // creator.PrimsAlgorithm();
+//
+//    std::cout << "end of Prim's Algorithm" << std::endl;
+//}
 
 
 
@@ -96,16 +97,19 @@ int main()
                     // pressed
 
                     if(Keyboard::isKeyPressed(Keyboard::Up))
-                        control.changeWalls(0, true);
+                        control.changeWalls(0, control.isAdvancedMode() );
 
                     if(Keyboard::isKeyPressed(Keyboard::Right))
-                        control.changeWalls(1, true);
+                        control.changeWalls(1, control.isAdvancedMode() );
 
                     if(Keyboard::isKeyPressed(Keyboard::Down))
-                        control.changeWalls(2, true);
+                        control.changeWalls(2, control.isAdvancedMode() );
 
                     if(Keyboard::isKeyPressed(Keyboard::Left))
-                        control.changeWalls(3, true);
+                        control.changeWalls(3, control.isAdvancedMode() );
+
+                    // for the ASDW - Keys:
+                    // but not changing the selected tile
 
                     if(Keyboard::isKeyPressed(Keyboard::W))
                         control.changeWalls(0);
@@ -150,7 +154,7 @@ int main()
                 case 1:
                 case 2:
                 case 3:
-                    control.changeWalls(callback.id);
+                    control.changeWalls(callback.id, control.isAdvancedMode() );
                     break;
                 case 10:
                     window.close();
