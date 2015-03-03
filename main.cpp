@@ -1,7 +1,7 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
 // #include "mazecreator.hpp"
-// #include "mazecreator.h"
+#include "mazecreator.h"
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
 
