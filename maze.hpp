@@ -20,13 +20,8 @@ using namespace sf;
  * @param width2: the width of the tile
  * setting the size, position and color of the rect
  *
- *
- * drawTile:
- * @param renderWindow: the window the rect is drawn in
- * drawing the rect
- *
- * isWall:
- * @param dir: the direction, 0 = up, 1 = right, 2 = down, 3 = left
+ * setIndex:
+ * @param index: setting the index of the tile, needed for displaying
  */
 class Tile {
 
@@ -39,6 +34,7 @@ protected:
 
     Tile *surrounding[4] = {}; // to direct an agent to the next one
 
+    // RectangleShapes to draw the tile ad the walls later on
     RectangleShape rect;
     RectangleShape Walls[4];
 
@@ -74,10 +70,6 @@ public:
 
     Tile(){
         // ctr
-    }
-
-    void setIndex(int index) {
-        Tile::index = index;
     }
 
     // setting the initial @param x: X and @param y: Y values,
@@ -126,12 +118,12 @@ public:
     }
 
     // returning the x value of the Tile
-    int getX(){
+    virtual int getX(){
         return locX;
     }
 
     // returning the y value of the Tile
-    int getY(){
+    virtual int getY(){
         return locY;
     }
 
@@ -194,12 +186,12 @@ public:
     }
 
     // returns the surrounding Tile at @param dir: direction
-    Tile* getSurrounding(int dir){
+    virtual Tile* getSurrounding(int dir){
         return surrounding[dir];
     }
 
     // returns if there is something in this Direction (a tile)
-    bool isSurrounding(int dir){
+    virtual bool isSurrounding(int dir){
         return surrounding[dir] != NULL;
     }
 
@@ -207,23 +199,6 @@ public:
     void setSurrounding(int dir, Tile *tile){
         surrounding[dir] = tile;
     }
-
-    // returns the index of the tile
-    int getIndex() {
-        return index;
-    }
-
-    // setting the wall of @param dir: direction at @param setWall.
-    void setWall(int dir, bool setWall){
-        cout << "in setWall " << endl;
-        cout << " dir: " << to_string(dir) << endl;
-        cout << " newWallstate: " << noboolalpha << setWall << endl;
-        cout << " isWall: " << noboolalpha << isWall(dir) << endl;
-        cout << " oldWallstate: " << noboolalpha << wall[dir] << endl;
-        wall[dir] = setWall;
-        cout << "after setWall" << endl << endl;
-    }
-
 };
 
 
@@ -235,6 +210,7 @@ protected:
     // values needed to be overridden
     int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1;
 
+    // pointer to the tile to show
     Tile* tileToShow;
 
 public:
@@ -301,6 +277,16 @@ public:
             tileToShow->setWall(dir, setWall);
         }
     }
+
+    // returning (for security) if there is a tile in @param dir
+    bool isSurrounding(int dir) {
+        return tileToShow->isSurrounding(dir);
+    }
+
+    // returns the tile in the @param dir if there is one
+    Tile* getSurrounding(int dir) {
+        return tileToShow->getSurrounding(dir);
+    }
 };
 
 
@@ -310,14 +296,12 @@ public:
  * @param xSize: how many tiles are gonna be in x direction
  * @param ySize: how many tiles are gonna be in y direction
  * creating a Maze with with xSize x ySize Tiles
- *
- * drawMaze:
- * @param renderWindow: needed for the Tile.drawTile method to draw on
- * drawing all Tiles in the MAP
  */
 class Maze {
 
 protected:
+
+    // initializing the MAP and the two sizes of the maze
     int sizeX = -1, sizeY = -1;
     vector<vector<Tile> > MAP;
 
@@ -326,8 +310,7 @@ public:
     Maze(int xSize, int ySize) {
         sizeX = xSize;
         sizeY = ySize;
-        MAP = vector<vector<Tile> >(
-                (unsigned int) xSize,
+        MAP = vector<vector<Tile> >( (unsigned int) xSize,
                 vector<Tile>( (unsigned int) ySize) );
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {

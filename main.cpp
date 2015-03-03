@@ -1,13 +1,12 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include "maze.hpp"
 #include "mazecreator.hpp"
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
 
 
+
+showTile tileToShow;
 
 void initAlgorithm(Maze *maze) {
     MazeCreator creator;
@@ -25,11 +24,10 @@ void initAlgorithm(Maze *maze) {
 
     std::cout << "trying Prim's Algorithm ..." << std::endl;
 
-    creator.PrimsAlgorithm();
+    // creator.PrimsAlgorithm();
 
     std::cout << "end of Prim's Algorithm" << std::endl;
 }
-
 
 
 
@@ -63,17 +61,13 @@ int main()
     // Creating a 10 x 10 Maze
     Maze maze(10, 10);
 
-    showTile tile;
+    tileToShow.setSize(30, 30, 35, 35);
 
-    tile.setSize(40, 60, 35, 35);
-
-    control.changeTextInfoLabel(&tile);
+    control.changeTextInfoLabel(&tileToShow);
 
     std::cout << "moving maze ... " << std::endl;
 
     maze.move(120, 90);
-
-    bool once = false;
 
     // Frame-counter
     int Frame = 0;
@@ -82,34 +76,54 @@ int main()
 
     std::cout << "starting main loop ... " << std::endl;
 
+
+    // WHILE the main window is open ...
     while (window.isOpen())
     {
+        // actualizing the vector of the mousePosition
         mousePosition = Mouse::getPosition(window);
 
         sf::Event event;
 
         while (window.pollEvent(event))
         {
-
             switch(event.type) {
                 case Event::Closed:
                     window.close();
                     break;
                 case Event::KeyPressed:
+                    // exit the window if 'Escape'
                     if(event.key.code == Keyboard::Escape) {
                         cout << "Escape" << endl;
                         window.close();
                     }
+
+                    // change the walls if a key for direction is
+                    // pressed
+
+                    if(Keyboard::isKeyPressed(Keyboard::Up)) {
+                        control.changeWalls(0);
+                    }
+                    if(Keyboard::isKeyPressed(Keyboard::Right)) {
+                        control.changeWalls(1);
+                    }
+                    if(Keyboard::isKeyPressed(Keyboard::Down)) {
+                        control.changeWalls(2);
+                    }
+                    if(Keyboard::isKeyPressed(Keyboard::Left)) {
+                        control.changeWalls(3);
+                    }
+
                     break;
                 case Event::TextEntered:break;
                 case Event::KeyReleased:break;
-                case Event::MouseWheelMoved:break;
                 case Event::MouseButtonPressed:
+                    // 'select' the clicked tile
                     if (Mouse::isButtonPressed(Mouse::Left) ) {
-                        showTile *testptr = NULL;
-                        testptr = (showTile *) maze.getTileClicked(mousePosition.x, mousePosition.y);
+                        Tile *testptr = NULL;
+                        testptr = maze.getTileClicked(mousePosition.x, mousePosition.y);
                         if (testptr != NULL) {
-                            tile = testptr;
+                            tileToShow = testptr;
                         }
                     }
                     break;
@@ -125,6 +139,7 @@ int main()
         tgui::Callback callback;
         while (gui.pollCallback(callback))
         {
+            // catches the callback of the buttons
             switch (callback.id) {
                 case 0:
                 case 1:
@@ -146,22 +161,19 @@ int main()
         // Clear screen
         window.clear();
 
-
         // drawing the Maze
         maze.drawMaze(&window);
 
         control.updateInfo();
 
+        // drawing the gui
         gui.draw();
 
+        // displaying it
         window.display();
         std::cout << "Frame: " << Frame << std::endl;
         Frame++;
 
-        if (!once) {
-            initAlgorithm(&maze);
-            once = true;
-        }
     }
 
     return EXIT_SUCCESS;
