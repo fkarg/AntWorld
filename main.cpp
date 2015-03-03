@@ -6,8 +6,6 @@
 
 
 
-showTile tileToShow;
-
 void initAlgorithm(Maze *maze) {
     MazeCreator creator;
 
@@ -116,10 +114,10 @@ int main()
                 case Event::MouseButtonPressed:
                     // 'select' the clicked tile
                     if (Mouse::isButtonPressed(Mouse::Left) ) {
-                        Tile *testptr = NULL;
-                        testptr = maze.getTileClicked(mousePosition.x, mousePosition.y);
-                        if (testptr != NULL) {
-                            control.changeTextInfoLabel(testptr);
+                        Tile *testPtr = NULL;
+                        testPtr = maze.getTileClicked(mousePosition.x, mousePosition.y);
+                        if (testPtr != NULL) {
+                            control.changeTextInfoLabel(testPtr);
                         }
                     }
                     break;
