@@ -96,17 +96,29 @@ int main()
                     // pressed
 
                     if(Keyboard::isKeyPressed(Keyboard::Up)) {
-                        control.changeWalls(0);
+                        control.changeWalls(0, true);
                     }
                     if(Keyboard::isKeyPressed(Keyboard::Right)) {
-                        control.changeWalls(1);
+                        control.changeWalls(1, true);
                     }
                     if(Keyboard::isKeyPressed(Keyboard::Down)) {
-                        control.changeWalls(2);
+                        control.changeWalls(2, true);
                     }
                     if(Keyboard::isKeyPressed(Keyboard::Left)) {
-                        control.changeWalls(3);
+                        control.changeWalls(3, true);
                     }
+
+                    if(Keyboard::isKeyPressed(Keyboard::W))
+                        control.changeWalls(0);
+
+                    if(Keyboard::isKeyPressed(Keyboard::D))
+                        control.changeWalls(1);
+
+                    if(Keyboard::isKeyPressed(Keyboard::S))
+                        control.changeWalls(2);
+
+                    if(Keyboard::isKeyPressed(Keyboard::A))
+                        control.changeWalls(3);
 
                     break;
                 case Event::TextEntered:break;

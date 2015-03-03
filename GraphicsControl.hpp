@@ -123,14 +123,14 @@ public:
     }
 
     // changes the state of the wall in @param dir
-    void changeWalls(int dir) {
+    void changeWalls(int dir, bool move = false) {
         if (dir % 4 == dir) {
             if (tileToShowPtr->isSurrounding(dir)) {
                 tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir));
                 tileToShowPtr->getSurrounding(dir)->setWall( (dir + 2) % 4,
                         !tileToShowPtr->getSurrounding(dir)->isWall( (dir + 2) % 4) );
-                // FIXME: tile = tile->getSurrounding(dir);
-                // changeInfoTile(tile->getSurrounding(dir) );
+                if (move)
+                    changeTextInfoLabel(tileToShowPtr->getSurrounding(dir) );
             }
         }
     }
