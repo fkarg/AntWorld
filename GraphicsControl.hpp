@@ -132,8 +132,7 @@ public:
                 "\nIndex: " + std::to_string (tileToShowPtr->getIndex() ) +
                 "\nX: " + std::to_string (tileToShowPtr->getX() ) +
                 "\nY: " + std::to_string (tileToShowPtr->getY() ) +
-                "\n\nFood: \n " +
-                std::to_string (tileToShowPtr->isFood() ) );
+                "\n\nFood: \n " + std::to_string (tileToShowPtr->isFood() ) );
         tileToShowPtr->draw(window);
     }
 
@@ -150,10 +149,12 @@ public:
         }
     }
 
+    // returns if the Checkbox is checked or not
     bool isAdvancedMode() {
         return advancedMode->isChecked();
     }
 
+    // doing a tick - TODO: NOT WORKING YET
     void DoTick () {
 
 

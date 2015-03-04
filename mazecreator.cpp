@@ -2,7 +2,7 @@
 
 
 
-
+// needs a @param: *maze: mazepointer to get initialized
 RandomCreator::RandomCreator(Maze *maze) {
 
     mazetoDo = maze;
@@ -12,13 +12,13 @@ RandomCreator::RandomCreator(Maze *maze) {
     srand((unsigned int) time(0));
 
     std::cout << "Runs: " << std::to_string(runs) << std::endl;
-
 }
 
 
+// Does the @param num: specified number of ticks, if num > 0
+// standard - param is 1
 void RandomCreator::doTicks(int num) {
     if(tick + num <= runs) {
-
         for(num; num > 0; num--) {
             Tile *toChange = mazetoDo->getTile(rand() %
                     (mazetoDo->getSizeX() * mazetoDo->getSizeY()));
@@ -36,12 +36,11 @@ void RandomCreator::doTicks(int num) {
 
             tick++;
         }
-
-
     }
 }
 
 
+// resetting the tick-counter to randomize a new one
 void RandomCreator::reset() {
     tick = 0;
 }

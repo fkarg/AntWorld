@@ -285,10 +285,12 @@ public:
         return tileToShow->getSurrounding(dir);
     }
 
+    // returns the food on the tile (whole)
     int isFood(){
         return pubFood;
     }
 
+    // Whatever happens at a tick is sure to get updated
     void doTick(){
         if (tileToShow != NULL) {
             pubX = tileToShow->getX();

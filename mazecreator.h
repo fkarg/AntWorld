@@ -11,8 +11,11 @@
 
 class RandomCreator {
 private:
-    int runs = -1, tick = -1;
-    Maze *mazetoDo;
+    int runs = -1, tick = -1;   // how many ticks it should go on,
+                                // and how many have already happened
+
+    Maze *mazetoDo;             // the maze to be modified
+
 public:
     RandomCreator(Maze *maze);
     void doTicks(int num = 1);
