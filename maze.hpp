@@ -45,25 +45,19 @@ protected:
         RectangleShape temp;
         temp.setFillColor(Color::Magenta);
 
-        temp.setPosition(locX, locY);
-
-        temp.setSize(Vector2f(width, 2));
-
+        temp.setPosition(locX - 2, locY);
+        temp.setSize(Vector2f(width + 4, 2) );
         Walls[0] = temp;
 
-        temp.setSize(Vector2f(2, height));
+        temp.setPosition(locX - 2, locY + height - 2);
+        Walls[2] = temp;
 
+        temp.setPosition(locX, locY - 2);
+        temp.setSize(Vector2f(2, height + 4) );
         Walls[3] = temp;
 
-        temp.setPosition(locX + width - 2, locY);
-        temp.setSize(Vector2f(2, height));
-
+        temp.setPosition(locX + width - 2, locY - 2);
         Walls[1] = temp;
-
-        temp.setPosition(locX, locY + height - 2);
-        temp.setSize(Vector2f(width, 2));
-
-        Walls[2] = temp;
 
     }
 
@@ -75,14 +69,13 @@ public:
 
     // setting the initial @param x: X and @param y: Y values,
     // as well as the height and width
-    void setSize(int x, int y, int height2, int width2) {
+    void setSize(int x, int y, int width, int height) {
         locX = x;
         locY = y;
-        height = height2;
-        width = width2;
+        Tile::height = height;
+        Tile::width = width;
 
         addWalls();
-
 
         rect.setSize(Vector2f(height, width));
         rect.setFillColor(Color::Blue);
@@ -325,9 +318,16 @@ class Maze : public tickInterface {
 
 protected:
 
-    // initializing the MAP and the two sizes of the maze
-    int sizeX = -1, sizeY = -1;
+
+    int sizeX = -1, sizeY = -1, tileHeight = 30, tileWidth = 30, x = 0, y = 0;
     vector<vector<Tile> > MAP;
+    RectangleShape OuterWalls[4];
+
+    void drawOuterWalls(RenderWindow *renderWindow) {
+        for (int x = 0; x < 4; x++) {
+            renderWindow->draw(OuterWalls[x]);
+        }
+    }
 
 public:
     // creating the Maze with @param xSize times @param ySize Tiles
@@ -339,12 +339,40 @@ public:
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
                 Tile tile;
-                tile.setSize(i * 30, j * 30, 30, 30);
+                tile.setSize(i * (tileWidth), j * (tileHeight), tileWidth, tileHeight);
                 tile.setIndex( i * xSize + j);
                 MAP[i][j] = tile;
             }
         }
         setNeighbourTiles();
+        setOuterWalls();
+    }
+
+    void setOuterWalls() {
+
+        RectangleShape temp;
+        temp.setFillColor(Color::Magenta);
+
+        temp.setPosition(x - 3, y - 3);
+
+        temp.setSize(Vector2f(sizeX * tileWidth + 6, 3) );
+
+        OuterWalls[0] = temp;
+
+        temp.setSize(Vector2f(3, sizeY * tileHeight + 6) );
+
+        OuterWalls[3] = temp;
+
+        temp.setPosition(Vector2f(x + 3 + sizeX * tileWidth,
+                y + 3 + sizeY * tileWidth) );
+
+        temp.setSize(Vector2f(- (sizeX * tileWidth + 6 ), -3) );
+
+        OuterWalls[2] = temp;
+
+        temp.setSize(Vector2f(-3, -(sizeY * tileHeight + 6) ) );
+
+        OuterWalls[1] = temp;
     }
 
     // setting the surrounding - variable
@@ -370,13 +398,22 @@ public:
     void drawMaze (RenderWindow *renderWindow) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                MAP[i][j].draw(renderWindow);
+                MAP[i][j].drawTile(renderWindow);
             }
         }
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                MAP[i][j].drawWalls(renderWindow);
+            }
+        }
+        drawOuterWalls(renderWindow);
     }
 
     // moving the whole maze for @param x: X and @param y: Y pixels
     void move(int x, int y) {
+        Maze::x += x;
+        Maze::y += y;
+        setOuterWalls();
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].move(x, y);

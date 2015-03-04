@@ -116,6 +116,7 @@ public:
         checkbox->setPosition(15, 220);
         checkbox->setText("Moving");
         checkbox->setSize(20, 20);
+        checkbox->check();
 
         advancedMode = checkbox;
 
