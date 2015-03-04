@@ -130,6 +130,9 @@ int main()
                 case 3:
                     control.changeWalls(callback.id, control.isAdvancedMode() );
                     break;
+                case 4:
+                    randomCreator.reset();
+                    break;
                 case 10:
                     window.close();
                     break;

@@ -7,7 +7,7 @@ RandomCreator::RandomCreator(Maze *maze) {
 
     mazetoDo = maze;
     runs = mazetoDo->getSizeX() * mazetoDo->getSizeY() * 2;
-    tick = 0;
+    tick = runs;
 
     srand((unsigned int) time(0));
 
@@ -39,4 +39,9 @@ void RandomCreator::doTicks(int num) {
 
 
     }
+}
+
+
+void RandomCreator::reset() {
+    tick = 0;
 }

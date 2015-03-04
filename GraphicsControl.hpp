@@ -127,6 +127,7 @@ public:
 
     // updating the InfoLabel and the seperately displayed tile
     void updateInfo () {
+        tileToShowPtr->doTick();
         InfoLabel->setText("Info: \n "
                 "\nIndex: " + std::to_string (tileToShowPtr->getIndex() ) +
                 "\nX: " + std::to_string (tileToShowPtr->getX() ) +

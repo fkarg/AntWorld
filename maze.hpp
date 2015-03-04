@@ -140,7 +140,7 @@ public:
     }
 
 // returns all the food currently on the tile
-    int isFood() {
+    virtual int isFood() {
         return food;
     }
 
@@ -213,7 +213,7 @@ class showTile : public Tile {
 protected:
 
     // values needed to be overridden
-    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1;
+    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1, pubFood = 0;
 
     // pointer to the tile to show
     Tile* tileToShow;
@@ -226,18 +226,8 @@ public:
 
     // operator overloading, needed not to override the wrong values
     void operator=(Tile *tile){
-        pubX = tile->getX();
-        pubY = tile->getY();
-        pubHeight = tile->getHeight();
-        pubWidth = tile->getWidth();
-        pubIndex = tile->getIndex();
         tileToShow = tile;
-
-        wall[0] = tile->isWall(0);
-        wall[1] = tile->isWall(1);
-        wall[2] = tile->isWall(2);
-        wall[3] = tile->isWall(3);
-
+        doTick();
     }
 
     // returning the public height of the tile
@@ -293,6 +283,26 @@ public:
     // returns the tile in the @param dir if there is one
     Tile* getSurrounding(int dir) {
         return tileToShow->getSurrounding(dir);
+    }
+
+    int isFood(){
+        return pubFood;
+    }
+
+    void doTick(){
+        if (tileToShow != NULL) {
+            pubX = tileToShow->getX();
+            pubY = tileToShow->getY();
+            pubHeight = tileToShow->getHeight();
+            pubWidth = tileToShow->getWidth();
+            pubIndex = tileToShow->getIndex();
+            pubFood = tileToShow->isFood();
+
+            wall[0] = tileToShow->isWall(0);
+            wall[1] = tileToShow->isWall(1);
+            wall[2] = tileToShow->isWall(2);
+            wall[3] = tileToShow->isWall(3);
+        }
     }
 };
 
