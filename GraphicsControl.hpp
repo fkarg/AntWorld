@@ -4,9 +4,10 @@
 
 #include <TGUI/TGUI.hpp>
 #include "maze.hpp"
+#include "ticksystem.h"
 
 
-class GraphicsControl {
+class GraphicsControl : public tickInterface {
 protected:
     // pointer to the InfoLabel for accessing it later
     tgui::Label::Ptr InfoLabel;
@@ -155,8 +156,7 @@ public:
     }
 
     // doing a tick - TODO: NOT WORKING YET
-    void DoTick () {
-
+    void doTick () {
 
 
 

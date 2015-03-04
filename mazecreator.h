@@ -6,10 +6,11 @@
 #include <cstdlib>
 #include <math.h>
 #include <iostream>
+#include "ticksystem.h"
 
 
 
-class RandomCreator {
+class RandomCreator : public tickInterface {
 private:
     int runs = -1, tick = -1;   // how many ticks it should go on,
                                 // and how many have already happened
@@ -20,6 +21,7 @@ public:
     RandomCreator(Maze *maze);
     void doTicks(int num = 1);
     void reset();
+    void doTick();
 };
 
 

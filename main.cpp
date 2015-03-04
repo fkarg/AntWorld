@@ -1,6 +1,5 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
-// #include "mazecreator.hpp"
 #include "mazecreator.h"
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
@@ -145,14 +144,21 @@ int main()
         if (Frame % 4 == 0)
             randomCreator.doTicks();
 
+        cout << "gonna draw it ..." << endl;
 
         // Clear screen
         window.clear();
 
+        cout << "drawing the maze ..." << endl;
+
         // drawing the Maze
         maze.drawMaze(&window);
 
+        cout << "updating the label" << endl;
+
         control.updateInfo();
+
+        cout << "drawing gui" << endl;
 
         // drawing the gui
         gui.draw();

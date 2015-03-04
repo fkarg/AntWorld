@@ -2,7 +2,7 @@
 
 
 
-// needs a @param: *maze: mazepointer to get initialized
+// needs a @param: *maze: maze-pointer to get initialized
 RandomCreator::RandomCreator(Maze *maze) {
 
     mazetoDo = maze;
@@ -43,4 +43,10 @@ void RandomCreator::doTicks(int num) {
 // resetting the tick-counter to randomize a new one
 void RandomCreator::reset() {
     tick = 0;
+}
+
+
+// from the tickInterface, for polymorphism
+void RandomCreator::doTick() {
+    doTicks();
 }

@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include <iostream>
+#include "ticksystem.h"
 
 using namespace std;
 using namespace sf;
@@ -23,7 +24,7 @@ using namespace sf;
  * setIndex:
  * @param index: setting the index of the tile, needed for displaying
  */
-class Tile {
+class Tile : public tickInterface {
 
 protected:
     int locX, locY, height, width, food = 0, index = -1;
@@ -201,8 +202,8 @@ public:
     }
 
     // for every special tile: something happens here!
-    virtual void doTick() {
-        // overridden by every tile where something happens
+    void doTick() {
+        // overridden by every tile since implemented!
     }
 };
 
@@ -216,7 +217,7 @@ protected:
     int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1, pubFood = 0;
 
     // pointer to the tile to show
-    Tile* tileToShow;
+    Tile* tileToShow = NULL;
 
 public:
 
@@ -320,7 +321,7 @@ public:
  * @param ySize: how many tiles are gonna be in y direction
  * creating a Maze with with xSize x ySize Tiles
  */
-class Maze {
+class Maze : public tickInterface {
 
 protected:
 
