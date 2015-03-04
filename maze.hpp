@@ -180,7 +180,7 @@ public:
 
     // setting the wall at @param dir: direction to @param setWall
     virtual void setWall(int dir, bool setWall) {
-        if ( dir % 4 == dir ) {
+        if ( dir % 4 == dir && isSurrounding(dir)) {
             wall[dir] = setWall;
         }
     }

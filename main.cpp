@@ -6,32 +6,6 @@
 #define THEME_CONFIG_FILE "resources/Black.conf"
 
 
-
-//void initAlgorithm(Maze *maze) {
-//    MazeCreator creator;
-//
-//    std::cout << "MazeCreator created and adding Maze ..." << std::endl;
-//
-//    creator.setMaze(maze);
-//
-//    creator.setStart(4, 0);
-//
-//    std::cout << "Set start to x: 4 and y: 0" << std::endl;
-//
-//    // thread creatorThread(creator.PrimsAlgorithm());
-//    // creatorThread.detach();
-//
-//    std::cout << "trying Prim's Algorithm ..." << std::endl;
-//
-//    // creator.PrimsAlgorithm();
-//
-//    std::cout << "end of Prim's Algorithm" << std::endl;
-//}
-
-
-
-
-
 int main()
 {
 
@@ -46,8 +20,6 @@ int main()
     if (!gui.setGlobalFont("resources/DejaVuSans.ttf"))
         return 1;
 
-    /// tgui::Picture::Ptr picture(gui);
-    /// picture->load("resources/Black.png");
 
     std::cout << "creating Button ..." << std::endl;
 
@@ -59,6 +31,8 @@ int main()
 
     // Creating a 10 x 10 Maze
     Maze maze(10, 10);
+
+    RandomCreator randomCreator(&maze);
 
     std::cout << "moving maze ... " << std::endl;
 
@@ -165,7 +139,9 @@ int main()
 
         }
 
-        cout << "gonna draw it ..." << endl;
+        if (Frame % 4 == 0)
+            randomCreator.doTicks(1);
+
 
         // Clear screen
         window.clear();
