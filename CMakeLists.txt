@@ -23,6 +23,7 @@ file(GLOB AntWorld_SRC
     "*.conf"
     "*.ttf"
     "GraphicsControl.hpp"
+    "mazecreator.*"
     "resources/DejaVuSans.ttf" )
 # )
 
