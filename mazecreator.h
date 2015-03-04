@@ -15,7 +15,7 @@ private:
     Maze *mazetoDo;
 public:
     RandomCreator(Maze *maze);
-    void doTicks(int num);
+    void doTicks(int num = 1);
 };
 
 

@@ -9,12 +9,15 @@ RandomCreator::RandomCreator(Maze *maze) {
     runs = mazetoDo->getSizeX() * mazetoDo->getSizeY() * 2;
     tick = 0;
 
+    srand((unsigned int) time(0));
+
+    std::cout << "Runs: " << std::to_string(runs) << std::endl;
+
 }
 
 
-void RandomCreator::doTicks(int num = 1) {
+void RandomCreator::doTicks(int num) {
     if(tick + num <= runs) {
-        srand((unsigned int) time(0));
 
         for(num; num > 0; num--) {
             Tile *toChange = mazetoDo->getTile(rand() %
@@ -22,14 +25,18 @@ void RandomCreator::doTicks(int num = 1) {
 
             int dir = rand() % 4;
 
-            std::cout << "Index: " << std::to_string(toChange->getIndex() ) <<
-                    "\n dir: " << std::to_string(dir) << std::endl << std::endl;
+            std::cout << "\nIndex: " << std::to_string(toChange->getIndex() ) <<
+                    " dir: " << std::to_string(dir) << std::endl << std::endl;
 
-            toChange->setWall(dir, !toChange->isWall(dir));
-            if(toChange->getSurrounding(dir) != 0)
-                toChange->getSurrounding(dir)->setWall( (dir + 2) % 4,
-                        !(toChange->getSurrounding(dir)->isWall(dir + 2 % 4) ) );
+            if(toChange->isSurrounding(dir) ) {
+                toChange->setWall(dir, !toChange->isWall(dir));
+                toChange->getSurrounding(dir)->setWall((dir + 2) % 4,
+                        !toChange->getSurrounding(dir)->isWall( (dir + 2) % 4) );
+            }
+
+            tick++;
         }
+
 
     }
 }

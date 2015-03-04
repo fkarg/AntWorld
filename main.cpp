@@ -140,7 +140,7 @@ int main()
         }
 
         if (Frame % 4 == 0)
-            randomCreator.doTicks(1);
+            randomCreator.doTicks();
 
 
         // Clear screen
