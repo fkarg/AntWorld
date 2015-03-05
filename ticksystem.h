@@ -11,6 +11,9 @@ public:
     virtual void doTick() = 0;
 };
 
+/*
+ * the TickControl for the tickInterface
+ */
 class TickControl : public tickInterface {
 protected:
     int tickCount = -1, tickerSize = 0;
@@ -35,8 +38,6 @@ public:
     float getInterval();
     int getTickCount();
 };
-
-
 
 
 #endif
