@@ -1,6 +1,7 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
 #include "mazecreator.h"
+#include "ant.h"
 
 #define THEME_CONFIG_FILE "resources/Black.conf"
 
@@ -29,13 +30,17 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(10, 10);
+    Maze maze(15, 15);
 
     RandomCreator randomCreator(&maze);
 
     std::cout << "moving maze ... " << std::endl;
 
     maze.move(120, 90);
+
+    Ant ant;
+
+    ant.setCurrent(maze.getTile(66) );
 
     // Frame-counter
     int Frame = 0;
@@ -96,6 +101,20 @@ int main()
                     if(Keyboard::isKeyPressed(Keyboard::A))
                         control.changeWalls(3);
 
+                    // for moving the ant
+
+                    if(Keyboard::isKeyPressed(Keyboard::I) )
+                        ant.move(0);
+
+                    if(Keyboard::isKeyPressed(Keyboard::L) )
+                        ant.move(1);
+
+                    if(Keyboard::isKeyPressed(Keyboard::K) )
+                        ant.move(2);
+
+                    if(Keyboard::isKeyPressed(Keyboard::J) )
+                        ant.move(3);
+
                     break;
                 case Event::TextEntered:break;
                 case Event::KeyReleased:break;
@@ -149,6 +168,8 @@ int main()
 
         // drawing the Maze
         maze.drawMaze(&window);
+
+        ant.draw(&window);
 
         control.updateInfo();
 
