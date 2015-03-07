@@ -9,11 +9,10 @@
 
 class GraphicsControl : public tickInterface {
 protected:
-    // pointer to the InfoLabel for accessing it later
+    // pointer to the InfoLabel, the tickControl Button and
+    // the advancedMode checkbox for accessing it later
     tgui::Label::Ptr InfoLabel;
-
     tgui::Button::Ptr ticksControl;
-
     tgui::Checkbox::Ptr advancedMode;
 
     int tick = 0;
@@ -49,7 +48,7 @@ public:
         button->bindCallback(tgui::Button::LeftMouseClicked);
         button->setSize(60, 20);
 
-        // Label to show information about the selectedt tile
+        // Label to show information about the selected tile
         tgui::Label::Ptr label( (*gui ) );
         label->load(THEME_CONFIG_FILE);
         label->setText("Info: \n\n Food: \n\n Scent1: \n\n Scent2: "
@@ -113,7 +112,7 @@ public:
         ticksControl = StartTicksButton;
 
 
-        // checkbox if it should be allowed to
+        // checkbox if it should be allowed to 'Jump'
         tgui::Checkbox::Ptr checkbox(*gui);
         checkbox->load(THEME_CONFIG_FILE);
         checkbox->setPosition(15, 220);
@@ -144,6 +143,15 @@ public:
     }
 
 
+    // changing the shown text on the button
+    void TicksControlChangeState() {
+        if (ticksControl->getText() == "Start" || ticksControl->getText() == "Resume")
+            ticksControl->setText("Pause");
+        else
+            ticksControl->setText("Resume");
+    }
+
+
     // changes the state of the wall in @param dir
     void changeWalls(int dir, bool move = false) {
         if (dir % 4 == dir) {
@@ -166,8 +174,6 @@ public:
 
     // doing a tick - TODO: NOT WORKING YET
     void doTick () {
-
-
 
         std::cout << "Tick: " << std::to_string(tick) << std::endl;
         tick++;

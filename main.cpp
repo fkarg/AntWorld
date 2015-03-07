@@ -150,6 +150,7 @@ int main()
                     break;
                 case 4:
                     randomCreator.reset();
+                    control.TicksControlChangeState();
                     break;
                 case 10:
                     window.close();
