@@ -16,6 +16,8 @@ protected:
 
     tgui::Checkbox::Ptr advancedMode;
 
+    TickControl tickControl;
+
     int tick = 0;
 
     // pointer to the showTile and showTile
@@ -120,6 +122,10 @@ public:
 
         advancedMode = checkbox;
 
+        tickControl.setState(false);
+
+        tickControl.addTicker(tileToShowPtr);
+
     }
 
     // changing the displayed info to another @param tile1: tile
@@ -129,7 +135,6 @@ public:
 
     // updating the InfoLabel and the seperately displayed tile
     void updateInfo () {
-        tileToShowPtr->doTick();
         InfoLabel->setText("Info: \n "
                 "\nIndex: " + std::to_string (tileToShowPtr->getIndex() ) +
                 "\nX: " + std::to_string (tileToShowPtr->getX() ) +
@@ -156,10 +161,23 @@ public:
         return advancedMode->isChecked();
     }
 
+    void startResumeTicks() {
+        if (tickControl.isRunning() ) {
+            tickControl.pauseTicks();
+            ticksControl->setText("Resume");
+        } else {
+            tickControl.startTicks();
+            ticksControl->setText("Pause");
+        }
+    }
+
+    void addTicker(tickInterface* tickInterface) {
+        tickControl.addTicker(tickInterface);
+    }
+
+
     // doing a tick - TODO: NOT WORKING YET
     void doTick () {
-
-
 
         std::cout << "Tick: " << std::to_string(tick) << std::endl;
         tick++;
