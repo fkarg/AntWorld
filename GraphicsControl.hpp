@@ -26,6 +26,8 @@ protected:
     sf::RenderWindow *window;
 
 public:
+
+
     // setting the window needed later
     GraphicsControl(sf::RenderWindow *renderWindow){
         window = renderWindow;
@@ -33,6 +35,7 @@ public:
 
         tileToShowTile.setSize(30, 30, 35, 35);
     }
+
 
     // adding the gui to the window
     void addGui (tgui::Gui *gui) {
@@ -122,21 +125,24 @@ public:
 
     }
 
+
     // changing the displayed info to another @param tile1: tile
     void changeTextInfoLabel(Tile *tile1) {
         tileToShowTile =  tile1;
     }
 
-    // updating the InfoLabel and the seperately displayed tile
+
+    // updating the InfoLabel and the separately displayed tile
     void updateInfo () {
         tileToShowPtr->doTick();
         InfoLabel->setText("Info: \n "
-                "\nIndex: " + std::to_string (tileToShowPtr->getIndex() ) +
+                "\nIndex: " + std::to_string (tileToShowPtr->getIndex() + 1) +
                 "\nX: " + std::to_string (tileToShowPtr->getX() ) +
                 "\nY: " + std::to_string (tileToShowPtr->getY() ) +
                 "\n\nFood: \n " + std::to_string (tileToShowPtr->isFood() ) );
         tileToShowPtr->draw(window);
     }
+
 
     // changes the state of the wall in @param dir
     void changeWalls(int dir, bool move = false) {
@@ -151,10 +157,12 @@ public:
         }
     }
 
+
     // returns if the Checkbox is checked or not
     bool isAdvancedMode() {
         return advancedMode->isChecked();
     }
+
 
     // doing a tick - TODO: NOT WORKING YET
     void doTick () {
