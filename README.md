@@ -54,4 +54,6 @@ well - at least that's the idea.
 
 
 
+THIS is only a branch to try things out, or at least not commit code full of errors to the main branch
 
+current try: Implementing the multithread supporting TickSystem necessarry to pause and or resume the World the Ants live in
