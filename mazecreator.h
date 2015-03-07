@@ -26,8 +26,34 @@ public:
 
 
 
+// testing if there is a connection between two tiles
+class Craver : public tickInterface {
+private:
+    int searchIndex = 0, searchDir = 0, withoutFound = 0;
+    bool startSet = false, aimSet = false, mazeSet = false;
+    Tile *startTile = NULL, *aimTile = NULL;
+    Maze *maze = NULL;
+    vector<vector<int> > visited;
 
+    void initVec();
 
+public:
+    void setStart(Tile *startTile);
+    void setAim(Tile *aimTile);
+    void setMaze(Maze *maze);
+
+    bool connected();
+
+    Tile *getDirectlyConnected(Tile *check);
+
+    void setVisited(int Index, int state);
+
+    int searchForState1();
+    int testForConnected(int index);
+
+    void doTick();
+
+};
 
 
 
