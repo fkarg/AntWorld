@@ -1,6 +1,7 @@
 #include "ant.h"
 
 
+// creating the ant, loading the image and setting it
 Ant::Ant() {
     if (!texture.loadFromFile("resources/Ant.png") )
         std::cout << "Error loading AntImage" << std::endl;
@@ -17,6 +18,8 @@ Ant::Ant() {
 }
 
 
+// setting the @param current: tile the ant is currently on
+// necessary for getting the location and setting the position
 void Ant::setCurrent(Tile *current) {
     Ant::current = current;
 
@@ -27,6 +30,8 @@ void Ant::setCurrent(Tile *current) {
 }
 
 
+// letting the ant move in the direction @param dir
+// avoiding going through walls, just turning in that direction then
 void Ant::move(int dir) {
     Ant::dir = dir;
 
@@ -55,13 +60,14 @@ void Ant::move(int dir) {
 }
 
 
-
+// turning the ant and drawing it at the @param window
 void Ant::draw(sf::RenderWindow *window) {
 
     sprite.setRotation(90 * dir);
 
     window->draw(sprite);
 }
+
 
 Ant::~Ant() {
     // dtr
