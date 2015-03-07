@@ -21,8 +21,6 @@ using namespace sf;
  * @param width2: the width of the tile
  * setting the size, position and color of the rect
  *
- * setIndex:
- * @param index: setting the index of the tile, needed for displaying
  */
 class Tile : public tickInterface {
 
@@ -38,6 +36,7 @@ protected:
     // RectangleShapes to draw the tile ad the walls later on
     RectangleShape rect;
     RectangleShape Walls[4];
+
 
     // adding or actualizing the Walls positions
     void addWalls() {
@@ -61,11 +60,13 @@ protected:
 
     }
 
+
 public:
 
     Tile(){
         // ctr
     }
+
 
     // setting the initial @param x: X and @param y: Y values,
     // as well as the height and width
@@ -78,14 +79,23 @@ public:
         addWalls();
 
         rect.setSize(Vector2f(height, width));
-        rect.setFillColor(Color::Blue);
+        setColor(Color::Blue);
         rect.setPosition(Vector2f(locX, locY));
     }
+
+
+    // setting the Color of the tile
+    // interesting for path-finding algorithm visualisation etc.
+    void setColor(sf::Color color) {
+        rect.setFillColor(color);
+    }
+
 
     // Draws the Tile
     void drawTile(RenderWindow *renderWindow) {
         renderWindow->draw(rect);
     }
+
 
     // Draws the Walls of the Tile
     void drawWalls(RenderWindow *renderWindow) {
@@ -95,6 +105,7 @@ public:
             }
         }
     }
+
 
     // moving the rect for @param x: X and @param y: Y pixels ...
     void move(int x, int y) {
@@ -106,20 +117,24 @@ public:
         rect.setPosition(Vector2f(locX, locY));
     }
 
+
     // returning if there is a wall at the @param dir: direction
     bool isWall(int dir){
         return wall[dir];
     }
+
 
     // returning the x value of the Tile
     virtual int getX(){
         return locX;
     }
 
+
     // returning the y value of the Tile
     virtual int getY(){
         return locY;
     }
+
 
     // returns any food if there is some on this Tile, but max 10
     int getFood() {
@@ -138,6 +153,7 @@ public:
         return food;
     }
 
+
     // returns true or false respectively to
     // the mouse inside the tile
     bool isInside(int x, int y) {
@@ -146,16 +162,19 @@ public:
                 && locY + height >= y;
     }
 
+
     // drawing the wall and the tile itself combined
     void draw (RenderWindow *window) {
         drawTile(window);
         drawWalls(window);
     }
 
+
     // returning the Height of the tile (for displaying it)
     virtual int getHeight() {
         return height;
     }
+
 
     // returning the Height of the tile (for displaying it)
     virtual int getWidth() {
@@ -218,46 +237,55 @@ public:
         // ctr
     }
 
+
     // operator overloading, needed not to override the wrong values
     void operator=(Tile *tile){
         tileToShow = tile;
         doTick();
     }
 
+
     // returning the public height of the tile
     int getHeight() {
         return pubHeight;
     }
+
 
     // returning the public width of the tile
     int getWidth() {
         return pubWidth;
     }
 
+
     // returning the (public) X val
     int getX() {
         return pubX;
     }
+
 
     // returning the (public) Y val
     int getY() {
         return pubY;
     }
 
+
     // returning the index
     int getIndex() const {
         return pubIndex;
     }
+
 
     // setting the index
     void setIndex(int index) {
         showTile::pubIndex = index;
     }
 
+
     // returning a pointer to the tile currently shown
     Tile* getTileToShow() {
         return tileToShow;
     }
+
 
     // sets the Wall at @param dir: direction to @param setWall
     void setWall(int dir, bool setWall) {
@@ -267,6 +295,7 @@ public:
         }
     }
 
+
     // returning (for security) if there is a tile in @param dir
     bool isSurrounding(int dir) {
         if(tileToShow != NULL)
@@ -274,15 +303,18 @@ public:
         return NULL;
     }
 
+
     // returns the tile in the @param dir if there is one
     Tile* getSurrounding(int dir) {
         return tileToShow->getSurrounding(dir);
     }
 
+
     // returns the food on the tile (whole)
     int isFood(){
         return pubFood;
     }
+
 
     // Whatever happens at a tick is sure to get updated
     void doTick(){
@@ -348,6 +380,8 @@ public:
         setOuterWalls();
     }
 
+
+    // setting the outer walls (a bit thicker than the usual ones)
     void setOuterWalls() {
 
         RectangleShape temp;
@@ -375,6 +409,7 @@ public:
         OuterWalls[1] = temp;
     }
 
+
     // setting the surrounding - variable
     void setNeighbourTiles(){
         for(int i = 0; i < sizeX; i++){
@@ -394,6 +429,7 @@ public:
         }
     }
 
+
     // drawing the Maze on the @param renderWindow
     void drawMaze (RenderWindow *renderWindow) {
         for (int i = 0; i < sizeX; i++) {
@@ -409,6 +445,7 @@ public:
         drawOuterWalls(renderWindow);
     }
 
+
     // moving the whole maze for @param x: X and @param y: Y pixels
     void move(int x, int y) {
         Maze::x += x;
@@ -421,6 +458,7 @@ public:
         }
     }
 
+
     // returns the tile the mouse is currently in if it is in one
     Tile *getTileClicked(int x, int y) {
         for (int i = 0; i < sizeX; i++) {
@@ -432,6 +470,7 @@ public:
         return NULL;
     };
 
+
     // Doing a tick for every tile in the map
     void doTick() {
         for (int i = 0; i < sizeX; i++) {
@@ -441,10 +480,12 @@ public:
         }
     }
 
+
     // returns the tile at the @param index
     Tile* getTile(int index) {
         return &MAP[index / sizeX][index % sizeY];
     }
+
 
     // returning a tile at a specific location
     Tile* getTile(int i, int j){
@@ -453,14 +494,22 @@ public:
         return NULL;
     }
 
+
     // returning the sizeX of the Maze
     int getSizeX() {
         return sizeX;
     }
 
+
     // returning the sizeY of the Maze
     int getSizeY() {
         return sizeY;
+    }
+
+
+    // returning the Index_max of the maze
+    int INDEX_MAX() {
+        return sizeX * sizeY;
     }
 };
 
