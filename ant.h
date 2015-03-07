@@ -9,7 +9,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-class Ant {
+class Ant : public tickInterface {
 
 private:
     int locX = -1, locY = -1, dir = 0;
@@ -32,6 +32,8 @@ public:
     void move(int dir);
 
     void draw(sf::RenderWindow *window);
+
+    void doTick();
 
 };
 

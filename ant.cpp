@@ -18,6 +18,11 @@ Ant::Ant() {
 }
 
 
+Ant::~Ant() {
+    // dtr
+}
+
+
 // setting the @param current: tile the ant is currently on
 // necessary for getting the location and setting the position
 void Ant::setCurrent(Tile *current) {
@@ -69,8 +74,20 @@ void Ant::draw(sf::RenderWindow *window) {
 }
 
 
-Ant::~Ant() {
-    // dtr
+
+// Reacting and moving to environmental changes
+void Ant::doTick() {
+    // TODO: what to do at a tick
+
+    // TODO: sensing - reacting - moving
+    // TODO: sensing: food/scent/wall/direction
+    // TODO: reacting: ifFood/maxScent/noScent, deciding what to do
+    // TODO: moving: doing what has been devided to do
+
+    /*
+     * Idea: multiThreading all sensing/reacting Ants after them
+     * moving (multiThreaded) and wait for the next Tick
+     */
 }
 
 
