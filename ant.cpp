@@ -1,9 +1,12 @@
 #include "ant.h"
 
+#ifndef SOURCES
+#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#endif
 
 // creating the ant, loading the image and setting it
 Ant::Ant() {
-    if (!texture.loadFromFile("resources/Ant.png") )
+    if (!texture.loadFromFile(SOURCES"Ant.png") )
         std::cout << "Error loading AntImage" << std::endl;
     else
         sprite.setTexture(texture);
@@ -16,6 +19,7 @@ Ant::Ant() {
 
     sprite.scale(sf::Vector2f(0.2, 0.2) );
 }
+
 
 
 Ant::~Ant() {
@@ -74,6 +78,11 @@ void Ant::draw(sf::RenderWindow *window) {
 }
 
 
+void Ant::senseFoodOnCurrentTile() {
+    if (current->isFood() > 0)
+        ownFood += current->getFood();
+}
+
 
 // Reacting and moving to environmental changes
 void Ant::doTick() {
@@ -82,7 +91,7 @@ void Ant::doTick() {
     // TODO: sensing - reacting - moving
     // TODO: sensing: food/scent/wall/direction
     // TODO: reacting: ifFood/maxScent/noScent, deciding what to do
-    // TODO: moving: doing what has been devided to do
+    // TODO: moving: doing what has been divided to do
 
     /*
      * Idea: multiThreading all sensing/reacting Ants after them

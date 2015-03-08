@@ -14,6 +14,8 @@ class Ant : public tickInterface {
 private:
     int locX = -1, locY = -1, dir = 0;
 
+    int ownFood = 0;
+
     sf::Texture texture;
     sf::Sprite sprite;
 
@@ -32,6 +34,8 @@ public:
     void move(int dir);
 
     void draw(sf::RenderWindow *window);
+
+    void senseFoodOnCurrentTile();
 
     void doTick();
 
