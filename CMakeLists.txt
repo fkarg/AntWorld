@@ -25,17 +25,16 @@ file(GLOB AntWorld_SRC
     "GraphicsControl.hpp"
     "mazecreator.*"
     "resources/DejaVuSans.ttf" )
-# )
 
-
-# include_directories ("${PROJECT_SOURCE_DIR}/resources/")
-#
-# add_subdirectory (resources)
 
 
 
 add_executable(AntWorld main.cpp ${AntWorld_SRC})
 target_link_libraries(AntWorld ${TGUI_LIBRARY} ${SFML_LIBRARIES})
+
+
+# add_dependencies(AntWorld "resources/*.*" )
+# add_custom_target(AntWorld "resources/*.*" )
 
 
 set(EXECUTABLE_NAME "Run_AntWorld2")
