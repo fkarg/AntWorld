@@ -351,10 +351,14 @@ class Maze : public tickInterface {
 protected:
 
 
+    // Declaring all 'own' or needed variables
     int sizeX = -1, sizeY = -1, tileHeight = 30, tileWidth = 30, x = 0, y = 0;
     vector<vector<Tile> > MAP;
     RectangleShape OuterWalls[4];
 
+
+    // drawing the outer walls of the maze
+    // necessary for the look
     void drawOuterWalls(RenderWindow *renderWindow) {
         for (int x = 0; x < 4; x++) {
             renderWindow->draw(OuterWalls[x]);
