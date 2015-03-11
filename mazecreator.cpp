@@ -109,7 +109,7 @@ void Craver::setStart(Tile *startTile) {
 
     srand((unsigned int) time(0));
 
-    out("StartTile set");
+    out("StartTile set: " + to_string(startTile->getIndex() ) );
 }
 
 
@@ -118,7 +118,7 @@ void Craver::setAim(Tile *aimTile) {
     Craver::aimTile = aimTile;
     aimSet = true;
 
-    out("AimTile set");
+    out("AimTile set: " + to_string(aimTile->getIndex() ) );
 }
 
 
@@ -351,7 +351,7 @@ bool Craver::searchAStar() {
 
     out("Craver started");
 
-    while(currentPath.size() >= 1) {
+    while(allPaths.size() >= 1) {
         index = IndexOfShortestPath(allPaths);
         currentPath = allPaths[index];
         length = (int) currentPath.size();
@@ -368,7 +368,7 @@ bool Craver::searchAStar() {
                 if (testTile == aimTile) {
                     out("INFO: found aimTile!");
                     if(currentModified)
-                        currentPath.erase(currentPath.end() );
+                        currentPath.erase(currentPath.end() - 1);
                     ColorTiles(currentPath);
                     return true;
                 }
@@ -376,18 +376,18 @@ bool Craver::searchAStar() {
                 if (testTile != currentPath[length - 1] && !currentModified) {
                     currentPath.push_back(testTile);
                     currentModified = true;
-                    out("tile added, index: " + to_string(testTile->getIndex() )
-                            + " dir: " + to_string(dir) );
+                    out("Tile added, index: " + to_string(testTile->getIndex() )
+                            + ", dir: " + to_string(dir) );
                 } else if (testTile != currentPath[length - 2]) {
                     allPaths.push_back(currentPath);
-                    currentPath.erase(currentPath.end() );
+                    currentPath.erase(currentPath.end() - 1);
                     currentPath.push_back(testTile);
-                    out("Tile " +  to_string(dir + 1) + " added, \n"
-                            "Index: " + to_string(testTile->getIndex() ) );
+                    out("Tile " +  to_string(testTile->getIndex() ) + " added, "
+                            "dir: " + to_string(dir + 1) );
                 }
             }
         }
-        out("updating currentPath ...");
+        out("updating currentPath ...\n");
         allPaths.erase(allPaths.begin() + index);
         if(currentModified)
             allPaths.push_back(currentPath);
