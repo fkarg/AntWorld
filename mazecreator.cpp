@@ -1,4 +1,14 @@
+#include <string.h>
+#include <strings.h>
 #include "mazecreator.h"
+
+
+/*
+ * Idee: falls nicht anders lösbar: vector mit 'schon bekannten' komplett visiteden
+ *
+ * oder: verschiedene states mit dem aktuellen vector
+ */
+
 
 
 
@@ -56,6 +66,11 @@ void RandomCreator::doTick() {
 
 
 
+
+
+
+
+
 // initializing the 'visited' vector in it's size to 0
 void Craver::initVec() {
     visited = vector<vector<int> >(
@@ -67,7 +82,24 @@ void Craver::initVec() {
             visited[i][j] = 0;
         }
     }
+
+    visited2 = vector<int>((unsigned long) maze->INDEX_MAX() );
+    for (int i = 0; i < maze->INDEX_MAX(); i++ ) {
+        visited2[i] = 0;
+    }
 }
+
+
+
+// Coloring all the Tiles in the @param vector tiles, and the start and aimTile
+void Craver::ColorTiles(vector<Tile*> tiles) {
+    for (int i = 0; i < tiles.size(); i++) {
+        tiles[i]->setColor(colorTiles);
+    }
+    startTile->setColor(sf::Color::Yellow);
+    aimTile->setColor(sf::Color::Green);
+}
+
 
 
 // setting the @param startTile as tile to start from
@@ -76,6 +108,8 @@ void Craver::setStart(Tile *startTile) {
     startSet = true;
 
     srand((unsigned int) time(0));
+
+    out("StartTile set");
 }
 
 
@@ -83,13 +117,17 @@ void Craver::setStart(Tile *startTile) {
 void Craver::setAim(Tile *aimTile) {
     Craver::aimTile = aimTile;
     aimSet = true;
+
+    out("AimTile set");
 }
 
 
-// setting the @param maze (necessary to get the size etc
+// setting the @param maze (necessary to get the size, etc. )
 void Craver::setMaze(Maze *maze) {
     Craver::maze = maze;
     mazeSet = true;
+
+    out("Maze set");
 }
 
 
@@ -100,8 +138,14 @@ bool Craver::connected() {
     if (!startSet || !aimSet || !mazeSet)
         return false;
 
-    if (startTile == aimTile)
+    cout << "start: " << startTile << " aim: " << aimTile << endl;
+
+    if ( (void*) startTile == (void*) aimTile) {
+        out("StartTile and AimTile are Equal");
         return true;
+    }
+
+    out("Testing ...");
 
     vector<Tile*> accessible;
 
@@ -117,32 +161,42 @@ bool Craver::connected() {
 
         int state1Index = searchForState1();
 
-        int newDir = -1;
-        newDir = testForConnected(state1Index);
+        int newDir = testForConnected(state1Index);
 
         int newIndex = -1;
 
         if (newDir >= 0)
             newIndex = maze->getTile(state1Index)->getSurrounding(newDir)->getIndex();
 
+        out("state1Index: " + std::to_string(state1Index)
+                + ", newDir: " + std::to_string(newDir)
+                + ", newIndex: " + std::to_string(newIndex) );
+
         if (newIndex >= 0 && newIndex <= maze->INDEX_MAX() ) {
             added = true;
             Tile *newTile = maze->getTile(newIndex);
+
+            out("Comparing: " + std::to_string(newTile->getIndex() ) );
+
             accessible.push_back(newTile);
             setVisited(newIndex, 1);
-            if (newTile == aimTile)
+            if ( aimTile == newTile ) {
+                ColorTiles(accessible);
+                out("INFO:     Found AimTile");
                 return true;
+            }
+
+            out("currentTile != AimTile");
+
         } else
             added = false;
-
-
     }
 
     return false;
 }
 
 
-
+// setting visited at @param Index to @param state
 void Craver::setVisited(int Index, int state) {
     visited[Index / maze->getSizeX()][Index % maze->getSizeY()] = state;
 }
@@ -166,7 +220,7 @@ Tile *Craver::getDirectlyConnected(Tile *check) {
 
 
 
-
+// searching for a state1,
 int Craver::searchForState1() {
     if (maze == NULL)
         return -1;
@@ -175,6 +229,10 @@ int Craver::searchForState1() {
         for (int j = searchIndex % maze->getSizeY(); j < maze->getSizeY(); j++) {
             if(visited[i][j] >= 1)
                 return searchIndex;
+
+            cout << "Index: " + to_string(searchIndex) + ", visited: "
+                    + to_string(visited[i][j]) << endl;
+
             searchIndex++;
         }
     }
@@ -189,28 +247,35 @@ int Craver::searchForState1() {
 int Craver::testForConnected(int index) {
 
     if(!maze->getTile(index)->isWall(0) &&
-            visited[index / maze->getSizeX()][index % maze->getSizeY() - 1] >= 1 )
+            visited[index / maze->getSizeX()][index % maze->getSizeY() - 1] < 1 )
         return 0;
 
 
     if(!maze->getTile(index)->isWall(1) &&
-            visited[index / maze->getSizeX() + 1][index % maze->getSizeY()] >= 1 )
+            visited[index / maze->getSizeX() + 1][index % maze->getSizeY()] < 1 )
         return 1;
 
 
     if(!maze->getTile(index)->isWall(2) &&
-            visited[index / maze->getSizeX()][index % maze->getSizeY() + 1] >= 1 )
+            visited[index / maze->getSizeX()][index % maze->getSizeY() + 1] < 1 )
         return 2;
 
 
     if(!maze->getTile(index)->isWall(3) &&
-            visited[index / maze->getSizeX() - 1][index % maze->getSizeY()] >= 1 )
+            visited[index / maze->getSizeX() - 1][index % maze->getSizeY()] < 1 )
         return 3;
 
     return -1;
 
 }
 
+
+
+// coloring the path with @param color, if there is one
+void Craver::colorPath(sf::Color color) {
+    Craver::colorTiles = color;
+    out("Color set");
+}
 
 
 void Craver::doTick() {
@@ -223,3 +288,131 @@ void Craver::doTick() {
 
 
 
+/*
+ * Idea: setting a startTile and a aimTile, a maze for all necessary size allocations (needed?)
+ * then: searching from the startTile to every accessible tile from there if it is the aimTile
+ * states: tiles accessible, and all tiles around them are already included -> 2
+ * states: tiles accessible, but there are tiles around them not yet included -> 1
+ * states: tiles not yet accessed or not even connected to the startTile -> 0
+ *
+ * either with one states-Array or with several lists of Tile*
+ *
+ * with states-Array needed functions and methods:
+ *  - find a tile that is not yet fully connected
+ *  - testing if tiles are fully connected already
+ *  - setting tiles fully connected
+ *  - searching for tiles next to them not fully connected
+ *  - (searching the closest to the startTile) Academical correct way
+ *  - Information about distance to the startTile -> two state-Arrays?
+ *  - If found, information if the tile is on the currently shortest path
+ *
+ *  - somewhat 'nodes' - Tiles
+ *  - dynamic multidimensional arrays
+ *  - searching for a 'ongoing' node
+ *  - removing dead ends? - Affirmitive
+ *  - what to do with crossing paths?
+ *  - what to do with loops?
+ *  - a 'visited' thing is necessary
+ *
+ *
+ * with lists of Tile* needed:
+ *  - dynamic array of lists of Tile*, each indicating a path
+ *  - solvable with a dynamic array of connected Tiles
+ *  - when more than one free connectible tile -> copying path and splitting from then forth
+ *  - what to do when two ways are of equal length? return the one first found?
+ *  - some tiles are accessible several times, exclude them?
+ *  - some tiles might lead to a dead end, delete those paths?
+ *  - if a path is found, search for another one?
+ *  - returning the whole path or only if it is accessible?
+ *  - DIFFERENT NODE SYSTEM?
+ *
+ */
+
+
+
+
+
+bool Craver::searchAStar() {
+
+    if (!startSet || !aimSet || !mazeSet)
+        return false;
+    if (startTile == aimTile)
+        return true;
+
+    int index = 0, length = 0;
+
+    vector<vector<Tile*> > allPaths;
+
+    vector<Tile*> currentPath;
+
+    Tile *currentTile = startTile;
+    currentPath.push_back(currentTile);
+    allPaths.push_back(currentPath);
+
+    out("Craver started");
+
+    while(currentPath.size() >= 1) {
+        index = IndexOfShortestPath(allPaths);
+        currentPath = allPaths[index];
+        length = (int) currentPath.size();
+        length--;
+        currentTile = currentPath[length];
+        bool currentModified = false;
+
+        out("Test at: " + std::to_string(index) + ", Tile Index: "
+                + to_string(currentTile->getIndex() ) );
+
+        for (int dir = 0; dir < 4; dir++) {
+            Tile* testTile = currentTile->getSurrounding(dir);
+            if (testTile != NULL && !currentTile->isWall(dir)) {
+                if (testTile == aimTile) {
+                    out("INFO: found aimTile!");
+                    if(currentModified)
+                        currentPath.erase(currentPath.end() );
+                    ColorTiles(currentPath);
+                    return true;
+                }
+
+                if (testTile != currentPath[length - 1] && !currentModified) {
+                    currentPath.push_back(testTile);
+                    currentModified = true;
+                    out("tile added, index: " + to_string(testTile->getIndex() )
+                            + " dir: " + to_string(dir) );
+                } else if (testTile != currentPath[length - 2]) {
+                    allPaths.push_back(currentPath);
+                    currentPath.erase(currentPath.end() );
+                    currentPath.push_back(testTile);
+                    out("Tile " +  to_string(dir + 1) + " added, \n"
+                            "Index: " + to_string(testTile->getIndex() ) );
+                }
+            }
+        }
+        out("updating currentPath ...");
+        allPaths.erase(allPaths.begin() + index);
+        if(currentModified)
+            allPaths.push_back(currentPath);
+    }
+
+    return true;
+}
+
+
+
+
+int Craver::IndexOfShortestPath(vector<vector<Tile *> > allPaths) {
+
+    int shortestLength = (int) allPaths[0].size(), shortestIndex = 0;
+
+    for (int index = 0; index < allPaths.size(); index++) {
+
+        if (shortestLength > allPaths[index].size() ) {
+            shortestLength = (int) allPaths[index].size();
+            shortestIndex = index;
+        }
+    }
+
+    out("shortestIndex: " + to_string(shortestIndex)
+            + ", with length: " + to_string(shortestLength));
+
+    return shortestIndex;
+}

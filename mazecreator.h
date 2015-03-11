@@ -10,6 +10,7 @@
 
 
 
+// creates a @param maze Random maze
 class RandomCreator : public tickInterface {
 private:
     int runs = -1, tick = -1;   // how many ticks it should go on,
@@ -34,8 +35,15 @@ private:
     Tile *startTile = NULL, *aimTile = NULL;
     Maze *maze = NULL;
     vector<vector<int> > visited;
+    vector<int> visited2;
+
+    sf::Color colorTiles = sf::Color(Color::Blue);
 
     void initVec();
+
+    void ColorTiles(vector<Tile*> tiles);
+
+    void out(std::string msg) { cout << "Creator: " + msg << endl; }
 
 public:
     void setStart(Tile *startTile);
@@ -51,8 +59,16 @@ public:
     int searchForState1();
     int testForConnected(int index);
 
+    void colorPath(sf::Color color);
+
     void doTick();
 
+    // bool searchAStar(Tile *startTile = Craver::startTile,
+    //         Tile *aimTile = Craver::aimTile, Maze *maze = Craver::maze);
+
+    bool searchAStar();
+
+    int IndexOfShortestPath(vector<vector<Tile *> > allPaths);
 };
 
 
