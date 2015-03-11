@@ -27,6 +27,7 @@ class Tile : public tickInterface {
 protected:
     int locX, locY, height, width, food = 0, index = -1;
 
+    // bool wall[4] = { false, false, false, false };
     bool wall[4] = { true, true, true, true };
 //    the directions: up, right, down, left
 //                     0 ,   1 ,   2 ,   3
