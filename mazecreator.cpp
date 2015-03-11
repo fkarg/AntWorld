@@ -378,7 +378,9 @@ bool Craver::searchAStar() {
                     currentModified = true;
                     out("Tile added, index: " + to_string(testTile->getIndex() )
                             + ", dir: " + to_string(dir) );
-                } else if (testTile != currentPath[length - 2]) {
+                } else if (testTile != currentPath[length - 2] &&
+                        testTile != currentPath[length] &&
+                        testTile != currentPath[length - 1]) {
                     allPaths.push_back(currentPath);
                     currentPath.erase(currentPath.end() - 1);
                     currentPath.push_back(testTile);
