@@ -43,7 +43,9 @@ private:
 
     void ColorTiles(vector<Tile*> tiles);
 
-    void out(std::string msg) { cout << "Creator: " + msg << endl; }
+    void out(std::string msg) {
+        // cout << "Creator: " + msg << endl;
+    }
 
 public:
     void setStart(Tile *startTile);
@@ -69,6 +71,8 @@ public:
     bool searchAStar();
 
     int IndexOfShortestPath(vector<vector<Tile *> > allPaths);
+
+    bool gettingCloser(Tile* currentTile, int pathLength);
 };
 
 

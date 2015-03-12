@@ -362,33 +362,37 @@ bool Craver::searchAStar() {
         out("Test at: " + std::to_string(index) + ", Tile Index: "
                 + to_string(currentTile->getIndex() ) );
 
-        for (int dir = 0; dir < 4; dir++) {
-            Tile* testTile = currentTile->getSurrounding(dir);
-            if (testTile != NULL && !currentTile->isWall(dir)) {
-                if (testTile == aimTile) {
-                    out("INFO: found aimTile!");
-                    if(currentModified)
-                        currentPath.erase(currentPath.end() - 1);
-                    ColorTiles(currentPath);
-                    return true;
-                }
+        if (gettingCloser(currentTile, length) ) {
 
-                if (testTile != currentPath[length - 1] && !currentModified) {
-                    currentPath.push_back(testTile);
-                    currentModified = true;
-                    out("Tile added, index: " + to_string(testTile->getIndex() )
-                            + ", dir: " + to_string(dir) );
-                } else if (testTile != currentPath[length - 2] &&
-                        testTile != currentPath[length] &&
-                        testTile != currentPath[length - 1]) {
-                    allPaths.push_back(currentPath);
-                    currentPath.erase(currentPath.end() - 1);
-                    currentPath.push_back(testTile);
-                    out("Tile " +  to_string(testTile->getIndex() ) + " added, "
-                            "dir: " + to_string(dir + 1) );
+            for (int dir = 0; dir < 4; dir++) {
+                Tile* testTile = currentTile->getSurrounding(dir);
+                if (testTile != NULL && !currentTile->isWall(dir)) {
+                    if (testTile == aimTile) {
+                        out("INFO: found aimTile!");
+                        if(currentModified)
+                            currentPath.erase(currentPath.end() - 1);
+                        ColorTiles(currentPath);
+                        return true;
+                    }
+
+                    if (testTile != currentPath[length - 1] && !currentModified) {
+                        currentPath.push_back(testTile);
+                        currentModified = true;
+                        out("Tile added, index: " + to_string(testTile->getIndex() )
+                                + ", dir: " + to_string(dir) );
+                    } else if (testTile != currentPath[length - 2] &&
+                            testTile != currentPath[length] &&
+                            testTile != currentPath[length - 1]) {
+                        allPaths.push_back(currentPath);
+                        currentPath.erase(currentPath.end() - 1);
+                        currentPath.push_back(testTile);
+                        out("Tile " +  to_string(testTile->getIndex() ) + " added, "
+                                "dir: " + to_string(dir + 1) );
+                    }
                 }
             }
         }
+
         out("updating currentPath ...\n");
         allPaths.erase(allPaths.begin() + index);
         if(currentModified)
@@ -403,18 +407,69 @@ bool Craver::searchAStar() {
 
 int Craver::IndexOfShortestPath(vector<vector<Tile *> > allPaths) {
 
-    int shortestLength = (int) allPaths[0].size(), shortestIndex = 0;
+    // int shortestLength = (int) allPaths[0].size(), shortestIndex = 0;
+//
+    // for (int index = 0; index < allPaths.size(); index++) {
+//
+    //     if (shortestLength > allPaths[index].size() ) {
+    //         shortestLength = (int) allPaths[index].size();
+    //         shortestIndex = index;
+    //     }
+    // }
+//
+    // out("shortestIndex: " + to_string(shortestIndex)
+    //         + ", with length: " + to_string(shortestLength));
+//
+    // return shortestIndex;
 
-    for (int index = 0; index < allPaths.size(); index++) {
-
-        if (shortestLength > allPaths[index].size() ) {
-            shortestLength = (int) allPaths[index].size();
-            shortestIndex = index;
-        }
-    }
-
-    out("shortestIndex: " + to_string(shortestIndex)
-            + ", with length: " + to_string(shortestLength));
-
-    return shortestIndex;
+    return 0;
 }
+
+
+
+
+
+bool Craver::gettingCloser(Tile * currentTile, int pathLength) {
+    int aimX, aimY, currX, currY, startX, startY, aimInd, currInd, startInd;
+
+    aimInd = aimTile->getIndex();
+    aimX = aimInd / maze->getSizeX();
+    aimY = aimInd % maze->getSizeY();
+
+    currInd = currentTile->getIndex();
+    currX = currInd / maze->getSizeX();
+    currY = currInd % maze->getSizeY();
+
+    startInd = startTile->getIndex();
+    startX = startInd / maze->getSizeX();
+    startY = startInd % maze->getSizeY();
+
+    int dist = (int) (sqrt((currX - aimX) * (currX - aimX))
+            + sqrt((currY - aimY) * (currY - aimY)));
+
+    int TotalDist = (int) (sqrt((startX - aimX) * (startX - aimX))
+            + sqrt((startY - aimY) * (startY - aimY)));
+
+    out("aimInd: " + to_string(aimInd) + ", currInd: " + to_string(currInd)
+            + ", startInd: " + to_string(startInd)
+            + ", dist: " + to_string(dist) + ", length: " + to_string(pathLength)
+            + ", totalDist: " + to_string(TotalDist) );
+
+    // return ( (currX + 2 + dist >= aimX && currX - 2 + dist <= aimX)
+    //         || (currX + 2 - dist >= aimX && currX - 2 - dist <= aimX) )
+    //         && ( (currY + 2 + dist >= aimY && currY - 2 + dist <= aimY)
+    //         || (currY + 2 - dist >= aimY && currY - 2 - dist <= aimY) );
+
+
+    // (currX - aimX) + 2 >= dist
+    // (currY - aimY) - 2 <= dist
+    // (aimX - currX) + 2 >= dist
+    // (aimY - currY) - 2 <= dist
+
+
+    // return dist + pathLength + 1 >= TotalDist && dist + pathLength - 1 <= TotalDist;
+    return dist + pathLength == TotalDist;
+
+}
+
+
