@@ -165,6 +165,8 @@ void Craver::doTick() {
  *  - returning the whole path or only if it is accessible?
  *  - DIFFERENT NODE SYSTEM?
  *
+ * TODO: update comments
+ *
  */
 
 

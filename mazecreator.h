@@ -33,8 +33,6 @@ private:
     bool startSet = false, aimSet = false, mazeSet = false;
     Tile *startTile = NULL, *aimTile = NULL;
     Maze *maze = NULL;
-    vector<vector<int> > visited;
-    vector<int> visited2;
 
     sf::Color colorTiles = sf::Color(Color::Blue);
 
