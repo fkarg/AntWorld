@@ -30,7 +30,6 @@ public:
 // testing if there is a connection between two tiles
 class Craver : public tickInterface {
 private:
-    int searchIndex = 0, searchDir = 0, withoutFound = 0;
     bool startSet = false, aimSet = false, mazeSet = false;
     Tile *startTile = NULL, *aimTile = NULL;
     Maze *maze = NULL;
@@ -38,8 +37,6 @@ private:
     vector<int> visited2;
 
     sf::Color colorTiles = sf::Color(Color::Blue);
-
-    void initVec();
 
     void ColorTiles(vector<Tile*> tiles);
 
@@ -51,15 +48,6 @@ public:
     void setStart(Tile *startTile);
     void setAim(Tile *aimTile);
     void setMaze(Maze *maze);
-
-    bool connected();
-
-    Tile *getDirectlyConnected(Tile *check);
-
-    void setVisited(int Index, int state);
-
-    int searchForState1();
-    int testForConnected(int index);
 
     void colorPath(sf::Color color);
 

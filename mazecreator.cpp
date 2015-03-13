@@ -70,27 +70,6 @@ void RandomCreator::doTick() {
 
 
 
-
-// initializing the 'visited' vector in it's size to 0
-void Craver::initVec() {
-    visited = vector<vector<int> >(
-            (unsigned long) maze->getSizeX(),
-            vector<int>((unsigned long) maze->getSizeY()) );
-
-    for (int i = 0; i < maze->getSizeX(); i++) {
-        for (int j = 0; j < maze->getSizeY(); j++) {
-            visited[i][j] = 0;
-        }
-    }
-
-    visited2 = vector<int>((unsigned long) maze->INDEX_MAX() );
-    for (int i = 0; i < maze->INDEX_MAX(); i++ ) {
-        visited2[i] = 0;
-    }
-}
-
-
-
 // Coloring all the Tiles in the @param vector tiles, and the start and aimTile
 void Craver::ColorTiles(vector<Tile*> tiles) {
     for (int i = 0; i < tiles.size(); i++) {
@@ -99,7 +78,6 @@ void Craver::ColorTiles(vector<Tile*> tiles) {
     startTile->setColor(sf::Color::Yellow);
     aimTile->setColor(sf::Color::Green);
 }
-
 
 
 // setting the @param startTile as tile to start from
@@ -128,145 +106,6 @@ void Craver::setMaze(Maze *maze) {
     mazeSet = true;
 
     out("Maze set");
-}
-
-
-// returns false if either the start, the aim or the aren't set yet
-// returns true if the two tiles are the same or are connected
-bool Craver::connected() {
-
-    if (!startSet || !aimSet || !mazeSet)
-        return false;
-
-    cout << "start: " << startTile << " aim: " << aimTile << endl;
-
-    if ( (void*) startTile == (void*) aimTile) {
-        out("StartTile and AimTile are Equal");
-        return true;
-    }
-
-    out("Testing ...");
-
-    vector<Tile*> accessible;
-
-    accessible.push_back(startTile);
-
-    initVec();
-
-    setVisited(startTile->getIndex(), 2);
-
-    bool added = true;
-
-    while (added) {
-
-        int state1Index = searchForState1();
-
-        int newDir = testForConnected(state1Index);
-
-        int newIndex = -1;
-
-        if (newDir >= 0)
-            newIndex = maze->getTile(state1Index)->getSurrounding(newDir)->getIndex();
-
-        out("state1Index: " + std::to_string(state1Index)
-                + ", newDir: " + std::to_string(newDir)
-                + ", newIndex: " + std::to_string(newIndex) );
-
-        if (newIndex >= 0 && newIndex <= maze->INDEX_MAX() ) {
-            added = true;
-            Tile *newTile = maze->getTile(newIndex);
-
-            out("Comparing: " + std::to_string(newTile->getIndex() ) );
-
-            accessible.push_back(newTile);
-            setVisited(newIndex, 1);
-            if ( aimTile == newTile ) {
-                ColorTiles(accessible);
-                out("INFO:     Found AimTile");
-                return true;
-            }
-
-            out("currentTile != AimTile");
-
-        } else
-            added = false;
-    }
-
-    return false;
-}
-
-
-// setting visited at @param Index to @param state
-void Craver::setVisited(int Index, int state) {
-    visited[Index / maze->getSizeX()][Index % maze->getSizeY()] = state;
-}
-
-
-
-// returns either a directly connected tile or NULL
-// or rather, returns a pointer to the first tile in the array,
-// there are still tiles after that FIXME: unused memory allocation?
-Tile *Craver::getDirectlyConnected(Tile *check) {
-
-    Tile *surrounds[4] = {NULL, NULL, NULL, NULL};
-
-    for (int dir = 0; dir < 4; dir++) {
-        if (check->isSurrounding(dir) && !check->isWall(dir) )
-            surrounds[dir] = check->getSurrounding(dir);
-    }
-
-    return surrounds[0];
-}
-
-
-
-// searching for a state1,
-int Craver::searchForState1() {
-    if (maze == NULL)
-        return -1;
-
-    for (int i = searchIndex / maze->getSizeX(); i < maze->getSizeX(); i++) {
-        for (int j = searchIndex % maze->getSizeY(); j < maze->getSizeY(); j++) {
-            if(visited[i][j] >= 1)
-                return searchIndex;
-
-            cout << "Index: " + to_string(searchIndex) + ", visited: "
-                    + to_string(visited[i][j]) << endl;
-
-            searchIndex++;
-        }
-    }
-
-    searchIndex = 0;
-    return searchForState1();
-}
-
-
-// Testing if there possibly is a tile with connection to
-// one that is not visited yet
-int Craver::testForConnected(int index) {
-
-    if(!maze->getTile(index)->isWall(0) &&
-            visited[index / maze->getSizeX()][index % maze->getSizeY() - 1] < 1 )
-        return 0;
-
-
-    if(!maze->getTile(index)->isWall(1) &&
-            visited[index / maze->getSizeX() + 1][index % maze->getSizeY()] < 1 )
-        return 1;
-
-
-    if(!maze->getTile(index)->isWall(2) &&
-            visited[index / maze->getSizeX()][index % maze->getSizeY() + 1] < 1 )
-        return 2;
-
-
-    if(!maze->getTile(index)->isWall(3) &&
-            visited[index / maze->getSizeX() - 1][index % maze->getSizeY()] < 1 )
-        return 3;
-
-    return -1;
-
 }
 
 
