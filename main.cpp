@@ -1,9 +1,15 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.hpp"
-#include "mazecreator.h"
 #include "ant.h"
 
-#define THEME_CONFIG_FILE "resources/Black.conf"
+
+
+#ifdef DEBUG
+#define SOURCES /home/bz/ClionProjects/AntWorld/resources
+#else
+#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#endif
+
 
 
 int main()
@@ -17,7 +23,7 @@ int main()
 
     std::cout << "setting global font ..." << std::endl;
 
-    if (!gui.setGlobalFont("resources/DejaVuSans.ttf"))
+    if (!gui.setGlobalFont(SOURCES"DejaVuSans.ttf"))
         return 1;
 
 
@@ -33,6 +39,7 @@ int main()
     Maze maze(15, 15);
 
     RandomCreator randomCreator(&maze);
+    control.setMaze(&maze);
 
     std::cout << "moving maze ... " << std::endl;
 
@@ -40,7 +47,7 @@ int main()
 
     Ant ant;
 
-    ant.setCurrent(maze.getTile(66) );
+    ant.setPosition(maze.getTile(rand() % maze.INDEX_MAX() ) );
 
     // Frame-counter
     int Frame = 0;
@@ -51,7 +58,7 @@ int main()
 
 
     // WHILE the main window is open ...
-    while (window.isOpen())
+    while (window.isOpen() )
     {
         // actualizing the vector of the mousePosition
         mousePosition = Mouse::getPosition(window);
@@ -100,6 +107,7 @@ int main()
 
                     if(Keyboard::isKeyPressed(Keyboard::A))
                         control.changeWalls(3);
+
 
                     // for moving the ant
 
@@ -152,17 +160,19 @@ int main()
                     randomCreator.reset();
                     control.TicksControlChangeState();
                     break;
+                case 5:
+                    control.testConnectedButtonClicked();
+                    break;
                 case 10:
                     window.close();
                     break;
                 default:
                     cout << "uncought callback: " << to_string(callback.id) << endl;
             }
-
         }
 
         if (Frame % 4 == 0)
-            randomCreator.doTicks();
+            randomCreator.doTicks(10);
 
         // Clear screen
         window.clear();
@@ -170,8 +180,10 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
+        // drawing the ant TODO: AntController
         ant.draw(&window);
 
+        // updating the InfoPanel
         control.updateInfo();
 
         // drawing the gui

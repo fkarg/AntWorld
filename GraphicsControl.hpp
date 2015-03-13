@@ -1,10 +1,16 @@
 #ifndef UI_HPP
 #define UI_HPP
-#define THEME_CONFIG_FILE "resources/Black.conf"
 
 #include <TGUI/TGUI.hpp>
 #include "maze.hpp"
 #include "ticksystem.h"
+#include "mazecreator.h"
+
+#ifndef SOURCES
+#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#endif
+
+#define THEME_CONFIG_FILE "/home/bz/ClionProjects/AntWorld/resources/Black.conf"
 
 
 class GraphicsControl : public tickInterface {
@@ -12,10 +18,12 @@ protected:
     // pointer to the InfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
     tgui::Label::Ptr InfoLabel;
-    tgui::Button::Ptr ticksControl;
+    tgui::Button::Ptr ticksControl, testConntectedButton;
     tgui::Checkbox::Ptr advancedMode;
 
     int tick = 0;
+
+    bool connect = false;
 
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;
@@ -23,6 +31,8 @@ protected:
 
     // pointer for the RenderWindow to display the tile on it
     sf::RenderWindow *window;
+
+    Craver craver;
 
 public:
 
@@ -42,7 +52,7 @@ public:
         // button for closing the window (for test purposes)
         tgui::Button::Ptr button( (*gui) );
         button->load(THEME_CONFIG_FILE);
-        button->setPosition(20, 400);
+        button->setPosition(20, 440);
         button->setText("Close");
         button->setCallbackId(10);
         button->bindCallback(tgui::Button::LeftMouseClicked);
@@ -122,12 +132,33 @@ public:
 
         advancedMode = checkbox;
 
+
+        tgui::Button::Ptr TestConnectedButton( (*gui) );
+        TestConnectedButton->load(THEME_CONFIG_FILE);
+        TestConnectedButton->setPosition(15, 400);
+        TestConnectedButton->setText("TestConnected");
+        TestConnectedButton->setCallbackId(5);
+        TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
+        TestConnectedButton->setSize(90, 20);
+
+        testConntectedButton = TestConnectedButton;
+
+
     }
 
 
     // changing the displayed info to another @param tile1: tile
     void changeTextInfoLabel(Tile *tile1) {
-        tileToShowTile =  tile1;
+        tileToShowTile = tile1;
+
+        if (connect) {
+            craver.setAim(tileToShowPtr->getTileToShow());
+            craver.colorPath(sf::Color(sf::Color::Cyan) );
+
+            craver.searchAStar();
+
+            connect = false;
+        }
     }
 
 
@@ -140,6 +171,12 @@ public:
                 "\nY: " + std::to_string (tileToShowPtr->getY() ) +
                 "\n\nFood: \n " + std::to_string (tileToShowPtr->isFood() ) );
         tileToShowPtr->draw(window);
+    }
+
+
+    void testConnectedButtonClicked() {
+        connect = true;
+        craver.setStart(tileToShowPtr->getTileToShow() );
     }
 
 
@@ -169,6 +206,11 @@ public:
     // returns if the Checkbox is checked or not
     bool isAdvancedMode() {
         return advancedMode->isChecked();
+    }
+
+
+    void setMaze(Maze *maze) {
+        craver.setMaze(maze);
     }
 
 
