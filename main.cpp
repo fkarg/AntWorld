@@ -36,7 +36,7 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(5, 5);
+    Maze maze(15, 15);
 
     RandomCreator randomCreator(&maze);
     control.setMaze(&maze);
