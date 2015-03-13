@@ -51,9 +51,6 @@ public:
 
     void doTick();
 
-    // bool searchAStar(Tile *startTile = Craver::startTile,
-    //         Tile *aimTile = Craver::aimTile, Maze *maze = Craver::maze);
-
     bool searchAStar();
 
     int IndexOfClosestToTile(vector<vector<Tile *> > allPaths);
@@ -64,6 +61,36 @@ public:
 };
 
 
+
+class perfectCreator : public tickInterface {
+private:
+
+    int startX = -1, startY = -1;
+
+    vector<vector<bool> > visitable;
+
+    Maze *maze;
+
+    Craver craver;
+
+    bool mazeSet = false, startSet = false;
+
+    void initVec();
+
+    int searchForClosest(bool state, int IndexFrom);
+
+
+public:
+
+    void setMaze(Maze *maze);
+
+    void setStart(int x, int y);
+
+    bool start();
+
+    void doTick();
+
+};
 
 
 

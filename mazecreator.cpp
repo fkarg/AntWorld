@@ -1,14 +1,4 @@
-#include <string.h>
-#include <strings.h>
 #include "mazecreator.h"
-
-
-/*
- * Idee: falls nicht anders lösbar: vector mit 'schon bekannten' komplett visiteden
- *
- * oder: verschiedene states mit dem aktuellen vector
- */
-
 
 
 
@@ -214,8 +204,8 @@ bool Craver::searchAStar() {
                         return true;
                     }
 
-                    if (!alreadyIncluded(currentPath, testTile)
-                            && !currentModified) {
+                    if (!currentModified &&
+                            !alreadyIncluded(currentPath, testTile) ) {
                         currentPath.push_back(testTile);
                         currentModified = true;
                         out("Tile added, index: " + to_string(testTile->getIndex() )
@@ -236,7 +226,7 @@ bool Craver::searchAStar() {
             allPaths.push_back(currentPath);
     }
 
-    return true;
+    return false;
 }
 
 
@@ -298,3 +288,76 @@ int Craver::getDistToAim(Tile *currentTile) {
     return (int) (sqrt((currX - aimX) * (currX - aimX)) + sqrt((currY - aimY) * (currY - aimY)));
 }
 
+
+
+
+
+
+
+
+void perfectCreator::initVec() {
+    visitable = vector<vector<bool> >( (unsigned long) maze->getSizeX(),
+            vector<bool>( (unsigned long) maze->getSizeY()) );
+
+    if (mazeSet) {
+        for(int i = 0; i < maze->getSizeX(); i++) {
+            for(int j = 0; j < maze->getSizeY(); j++) {
+                visitable[i][j] = false;
+            }
+        }
+    }
+}
+
+
+
+void perfectCreator::setMaze(Maze *maze) {
+    perfectCreator::maze = maze;
+    initVec();
+    mazeSet = true;
+    craver.setMaze(maze);
+}
+
+
+
+void perfectCreator::setStart(int x, int y) {
+    visitable[x][y] = true;
+    startX = x;
+    startY = y;
+    startSet = true;
+}
+
+
+
+bool perfectCreator::start() {
+    if(!mazeSet || !startSet)
+        return false;
+
+
+
+
+
+    return false;
+}
+
+
+
+
+int perfectCreator::searchForClosest(bool state, int IndexFrom) {
+
+    if (!mazeSet)
+        return -1;
+
+    int x = IndexFrom / maze->getSizeX(), y = IndexFrom % maze->getSizeY();
+
+
+
+
+    return -1;
+}
+
+
+
+
+void perfectCreator::doTick() {
+    // for implementations sake ...
+}
