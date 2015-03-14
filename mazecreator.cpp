@@ -328,11 +328,11 @@ bool perfectCreator::start() {
     if(!mazeSet)
         return false;
 
-    int Xstart = -1, Ystart = -1, dir = -1;
+    int Xstart, Ystart, dir;
 
     out("setting vars");
 
-    for(int p = 0; p < maze->getSizeY() * maze->getSizeX(); p++) {
+    for(int p = 0; p < maze->getSizeY() * maze->getSizeX() * 2; p++) {
         Xstart = rand() % maze->getSizeX();
         Ystart = rand() % maze->getSizeY();
         dir = rand() % 4;
@@ -341,6 +341,13 @@ bool perfectCreator::start() {
                 + ", dir: " + to_string(dir));
 
         connect(Xstart, Ystart, dir);
+    }
+
+    for(int i = 0; i < maze->getSizeX(); i++) {
+        for (int j = 0; j < maze->getSizeY(); j++) {
+            dir = rand() % 4;
+            connect(i, j, dir);
+        }
     }
 
 

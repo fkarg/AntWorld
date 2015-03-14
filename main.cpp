@@ -163,11 +163,15 @@ int main()
                 case 5:
                     control.testConnectedButtonClicked();
                     break;
+                case 6:
+                    control.createPerfect();
+                    break;
                 case 10:
                     window.close();
                     break;
                 default:
                     cout << "uncought callback: " << to_string(callback.id) << endl;
+                    break;
             }
         }
 

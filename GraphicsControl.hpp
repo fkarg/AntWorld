@@ -144,6 +144,16 @@ public:
         TestConnectedButton->setSize(90, 20);
 
 
+        // button for creating a perfect maze
+        tgui::Button::Ptr createPerfectButton( (*gui) );
+        createPerfectButton->load(THEME_CONFIG_FILE);
+        createPerfectButton->setPosition(200, 30);
+        createPerfectButton->setText("Create Perfect");
+        createPerfectButton->setCallbackId(6);
+        createPerfectButton->bindCallback(tgui::Button::LeftMouseClicked);
+        createPerfectButton->setSize(90, 20);
+
+
     }
 
 
@@ -160,7 +170,6 @@ public:
         }
 
         std::cout << "starting perf" << std::endl;
-        perf.start();
     }
 
 
@@ -181,6 +190,12 @@ public:
     void testConnectedButtonClicked() {
         connect = true;
         craver.setStart(tileToShowPtr->getTileToShow() );
+    }
+
+
+    // letting the perfectCreator run once
+    void createPerfect() {
+        perf.start();
     }
 
 
