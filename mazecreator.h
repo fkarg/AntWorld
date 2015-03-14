@@ -28,6 +28,7 @@ public:
 
 
 // testing if there is a connection between two tiles
+// with the A* search algorithm
 class Craver : public tickInterface {
 private:
     bool startSet = false, aimSet = false, mazeSet = false;
@@ -61,17 +62,13 @@ public:
 };
 
 
-
+// creating a 'perfect' fractured maze
 class perfectCreator : public tickInterface {
 private:
-
-    int startX = -1, startY = -1;
 
     vector<vector<int> > visitable;
 
     Maze *maze;
-
-    Craver craver;
 
     bool mazeSet = false;
 

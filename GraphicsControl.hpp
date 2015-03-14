@@ -18,7 +18,7 @@ protected:
     // pointer to the InfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
     tgui::Label::Ptr InfoLabel;
-    tgui::Button::Ptr ticksControl, testConntectedButton;
+    tgui::Button::Ptr ticksControl;
     tgui::Checkbox::Ptr advancedMode;
 
     int tick = 0;
@@ -134,6 +134,7 @@ public:
         advancedMode = checkbox;
 
 
+        // testConnectedButton, for initiating the A* search
         tgui::Button::Ptr TestConnectedButton( (*gui) );
         TestConnectedButton->load(THEME_CONFIG_FILE);
         TestConnectedButton->setPosition(15, 400);
@@ -141,8 +142,6 @@ public:
         TestConnectedButton->setCallbackId(5);
         TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
         TestConnectedButton->setSize(90, 20);
-
-        testConntectedButton = TestConnectedButton;
 
 
     }
@@ -178,6 +177,7 @@ public:
     }
 
 
+    // testing if two tiles are connected, showing it in the GUI if they are
     void testConnectedButtonClicked() {
         connect = true;
         craver.setStart(tileToShowPtr->getTileToShow() );
@@ -213,6 +213,7 @@ public:
     }
 
 
+    // setting the maze to the craver and the creator
     void setMaze(Maze *maze) {
         craver.setMaze(maze);
         perf.setMaze(maze);

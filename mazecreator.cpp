@@ -109,7 +109,6 @@ void Craver::colorPath(sf::Color color) {
 
 void Craver::doTick() {
     // for overriding it ...
-    // TODO: doing the colouring while searching and 'pausing' the search
 }
 
 
@@ -118,51 +117,30 @@ void Craver::doTick() {
 
 
 /*
- * Idea: setting a startTile and a aimTile, a maze for all necessary size allocations (needed?)
- * then: searching from the startTile to every accessible tile from there if it is the aimTile
- * states: tiles accessible, and all tiles around them are already included -> 2
- * states: tiles accessible, but there are tiles around them not yet included -> 1
- * states: tiles not yet accessed or not even connected to the startTile -> 0
  *
- * either with one states-Array or with several lists of Tile*
+ *       A* search algorithm
  *
- * with states-Array needed functions and methods:
- *  - find a tile that is not yet fully connected
- *  - testing if tiles are fully connected already
- *  - setting tiles fully connected
- *  - searching for tiles next to them not fully connected
- *  - (searching the closest to the startTile) Academical correct way
- *  - Information about distance to the startTile -> two state-Arrays?
- *  - If found, information if the tile is on the currently shortest path
+ * Before start:
+ *  - setting the environment
+ *  - setting the startTile
+ *  - setting the aimTile
  *
- *  - somewhat 'nodes' - Tiles
- *  - dynamic multidimensional arrays
- *  - searching for a 'ongoing' node
- *  - removing dead ends? - Affirmitive
- *  - what to do with crossing paths?
- *  - what to do with loops?
- *  - a 'visited' thing is necessary
- *
- *
- * with lists of Tile* needed:
- *  - dynamic array of lists of Tile*, each indicating a path
- *  - solvable with a dynamic array of connected Tiles
- *  - when more than one free connectible tile -> copying path and splitting from then forth
- *  - what to do when two ways are of equal length? return the one first found?
- *  - some tiles are accessible several times, exclude them?
- *  - some tiles might lead to a dead end, delete those paths?
- *  - if a path is found, search for another one?
- *  - returning the whole path or only if it is accessible?
- *  - DIFFERENT NODE SYSTEM?
- *
- * TODO: update comments
+ * THEN:
+ *  - starting a path, including the startTile
+ *  - adding every accessible tile to the path and creating a new one
+ *      if necessary
+ *  - not including it if it got included already (... Looops)
+ *  - selecting the path currently shortest to the aimTile and looking for
+ *      new tiles etc
+ *  - deletion of dead ends
  *
  */
 
 
 
 
-
+// searching with the A* search algorithm from the startTile onwards if the
+// aimTile is reachable and if, showing it in the GUI
 bool Craver::searchAStar() {
 
     if (!startSet || !aimSet || !mazeSet)
@@ -271,9 +249,8 @@ bool Craver::alreadyIncluded(vector<Tile*> path, Tile *currentAim) {
 }
 
 
-
+// returns the absolute distance from the @param currentTile to the aimTile
 int Craver::getDistToAim(Tile *currentTile) {
-
 
     int aimX, aimY, currX, currY, aimInd, currInd;
 
@@ -304,15 +281,15 @@ int Craver::getDistToAim(Tile *currentTile) {
 
 
 
-
+// seeding the random and giving the vector it's size and initializing the values
 void perfectCreator::initVec() {
 
     srand((unsigned int) time(0));
 
-    visitable = vector<vector<int> >( (unsigned long) maze->getSizeX(),
-            vector<int>( (unsigned long) maze->getSizeY()) );
-
     if (mazeSet) {
+
+        visitable = vector<vector<int> >( (unsigned long) maze->getSizeX(),
+                vector<int>( (unsigned long) maze->getSizeY()) );
         for(int i = 0; i < maze->getSizeX(); i++) {
             for(int j = 0; j < maze->getSizeY(); j++) {
                 visitable[i][j] = i * maze->getSizeX() + j + 1;
@@ -323,6 +300,7 @@ void perfectCreator::initVec() {
 }
 
 
+// replacing every @param oldNum with the @param newNum
 void perfectCreator::replaceEvery(int oldNum, int newNum) {
     for(int i = 0; i < maze->getSizeX(); i++) {
         for(int j = 0; j < maze->getSizeY(); j++) {
@@ -333,16 +311,16 @@ void perfectCreator::replaceEvery(int oldNum, int newNum) {
 }
 
 
-
+// setting the @param maze and initializing the vector
 void perfectCreator::setMaze(Maze *maze) {
     perfectCreator::maze = maze;
     mazeSet = true;
     initVec();
-    craver.setMaze(maze);
 }
 
 
-
+// starting the perfectCreator and letting it run once over
+// 'about' every tile
 bool perfectCreator::start() {
 
     out("start");
@@ -368,16 +346,13 @@ bool perfectCreator::start() {
 
     // ...
 
-
-
-
-
-    return false;
+    return true;
 }
 
 
 
-
+// connecting the tile at @param X and @param Y with the one in @param dir
+// if the tile is not included already or there is no tile (...)
 void perfectCreator::connect(int X, int Y, int dir) {
 
     int currentNum = visitable[X][Y], otherNum = -1;
