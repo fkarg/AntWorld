@@ -295,15 +295,39 @@ int Craver::getDistToAim(Tile *currentTile) {
 
 
 
+
+
+
+
+
+
+
+
+
+
 void perfectCreator::initVec() {
-    visitable = vector<vector<bool> >( (unsigned long) maze->getSizeX(),
-            vector<bool>( (unsigned long) maze->getSizeY()) );
+
+    srand((unsigned int) time(0));
+
+    visitable = vector<vector<int> >( (unsigned long) maze->getSizeX(),
+            vector<int>( (unsigned long) maze->getSizeY()) );
 
     if (mazeSet) {
         for(int i = 0; i < maze->getSizeX(); i++) {
             for(int j = 0; j < maze->getSizeY(); j++) {
-                visitable[i][j] = false;
+                visitable[i][j] = i * maze->getSizeX() + j + 1;
             }
+        }
+    }
+
+}
+
+
+void perfectCreator::replaceEvery(int oldNum, int newNum) {
+    for(int i = 0; i < maze->getSizeX(); i++) {
+        for(int j = 0; j < maze->getSizeY(); j++) {
+            if (visitable[i][j] == oldNum)
+                visitable[i][j] = newNum;
         }
     }
 }
@@ -312,25 +336,37 @@ void perfectCreator::initVec() {
 
 void perfectCreator::setMaze(Maze *maze) {
     perfectCreator::maze = maze;
-    initVec();
     mazeSet = true;
+    initVec();
     craver.setMaze(maze);
 }
 
 
 
-void perfectCreator::setStart(int x, int y) {
-    visitable[x][y] = true;
-    startX = x;
-    startY = y;
-    startSet = true;
-}
-
-
-
 bool perfectCreator::start() {
-    if(!mazeSet || !startSet)
+
+    out("start");
+
+    if(!mazeSet)
         return false;
+
+    int Xstart = -1, Ystart = -1, dir = -1;
+
+    out("setting vars");
+
+    for(int p = 0; p < maze->getSizeY() * maze->getSizeX(); p++) {
+        Xstart = rand() % maze->getSizeX();
+        Ystart = rand() % maze->getSizeY();
+        dir = rand() % 4;
+
+        out("connecting x: " + to_string(Xstart) + ", y: " + to_string(Ystart)
+                + ", dir: " + to_string(dir));
+
+        connect(Xstart, Ystart, dir);
+    }
+
+
+    // ...
 
 
 
@@ -342,17 +378,44 @@ bool perfectCreator::start() {
 
 
 
-int perfectCreator::searchForClosest(bool state, int IndexFrom) {
+void perfectCreator::connect(int X, int Y, int dir) {
 
-    if (!mazeSet)
-        return -1;
+    int currentNum = visitable[X][Y], otherNum = -1;
 
-    int x = IndexFrom / maze->getSizeX(), y = IndexFrom % maze->getSizeY();
-
+    if(maze->getTile(X, Y)->isSurrounding(dir) ) {
 
 
+        switch (dir) {
+            case 0:
+                otherNum = visitable[X][Y - 1];
+                break;
+            case 1:
+                otherNum = visitable[X + 1][Y];
+                break;
+            case 2:
+                otherNum = visitable[X][Y + 1];
+                break;
+            case 3:
+                otherNum = visitable[X - 1][Y];
+                break;
+            default:
+                break;
+        }
 
-    return -1;
+        out("curNum: " + to_string(currentNum) + ", othNum: " + to_string(otherNum));
+
+        if (currentNum != otherNum) {
+            if (currentNum > otherNum) {
+                replaceEvery(currentNum, otherNum);
+            } else {
+                replaceEvery(otherNum, currentNum);
+            }
+            maze->getTile(X, Y)->setWall(dir, false);
+            maze->getTile(X, Y)->getSurrounding(dir)->setWall((dir + 2) % 4, false);
+        }
+
+    }
+
 }
 
 

@@ -67,26 +67,29 @@ private:
 
     int startX = -1, startY = -1;
 
-    vector<vector<bool> > visitable;
+    vector<vector<int> > visitable;
 
     Maze *maze;
 
     Craver craver;
 
-    bool mazeSet = false, startSet = false;
+    bool mazeSet = false;
 
     void initVec();
 
-    int searchForClosest(bool state, int IndexFrom);
+    void replaceEvery(int oldNum, int newNum);
 
+    void out(std::string msg) {
+        cout << "perfCreator: " + msg << endl;
+    }
 
 public:
 
     void setMaze(Maze *maze);
 
-    void setStart(int x, int y);
-
     bool start();
+
+    void connect(int X, int Y, int dir);
 
     void doTick();
 

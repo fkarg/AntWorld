@@ -33,6 +33,7 @@ protected:
     sf::RenderWindow *window;
 
     Craver craver;
+    perfectCreator perf;
 
 public:
 
@@ -154,12 +155,15 @@ public:
         if (connect) {
             craver.setAim(tileToShowPtr->getTileToShow());
             craver.colorPath(sf::Color(sf::Color::Cyan) );
-
             craver.searchAStar();
 
             connect = false;
         }
+
+        std::cout << "starting perf" << std::endl;
+        perf.start();
     }
+
 
 
     // updating the InfoLabel and the separately displayed tile
@@ -211,6 +215,7 @@ public:
 
     void setMaze(Maze *maze) {
         craver.setMaze(maze);
+        perf.setMaze(maze);
     }
 
 

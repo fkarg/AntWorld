@@ -1,3 +1,5 @@
 #include "ticksystem.h"
 
-// FIXME: do the TickControl!
+// the interval of how many seconds are between two ticks (at least)
+// float TickControl::interval;
+
