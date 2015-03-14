@@ -320,7 +320,8 @@ void perfectCreator::setMaze(Maze *maze) {
 
 
 // starting the perfectCreator and letting it run once over
-// 'about' every tile
+// 'about' every tile and then again over every single one
+// resulting in a definite perfect maze
 bool perfectCreator::start() {
 
     out("start");
