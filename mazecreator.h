@@ -80,6 +80,8 @@ private:
         cout << "perfCreator: " + msg << endl;
     }
 
+    bool areAllConnected();
+
 public:
 
     void setMaze(Maze *maze);

@@ -311,6 +311,20 @@ void perfectCreator::replaceEvery(int oldNum, int newNum) {
 }
 
 
+bool perfectCreator::areAllConnected() {
+    int start = visitable[0][0];
+
+    for(int i = 0; i < maze->getSizeX(); i++) {
+        for (int j = 0; j < maze->getSizeY(); j++) {
+            if (visitable[i][j] != start)
+                return false;
+        }
+    }
+
+    return true;
+}
+
+
 // setting the @param maze and initializing the vector
 void perfectCreator::setMaze(Maze *maze) {
     perfectCreator::maze = maze;
@@ -344,15 +358,16 @@ bool perfectCreator::start() {
         connect(Xstart, Ystart, dir);
     }
 
-    for(int i = 0; i < maze->getSizeX(); i++) {
-        for (int j = 0; j < maze->getSizeY(); j++) {
-            dir = rand() % 4;
-            connect(i, j, dir);
+    do {
+
+        for (int i = 0; i < maze->getSizeX(); i++) {
+            for (int j = 0; j < maze->getSizeY(); j++) {
+                dir = rand() % 4;
+                connect(i, j, dir);
+            }
         }
-    }
 
-
-    // ...
+    } while (!areAllConnected() );
 
     return true;
 }

@@ -168,8 +168,6 @@ public:
 
             connect = false;
         }
-
-        std::cout << "starting perf" << std::endl;
     }
 
 
