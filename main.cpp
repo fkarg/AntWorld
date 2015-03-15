@@ -157,7 +157,6 @@ int main()
                     control.changeWalls(callback.id, control.isAdvancedMode() );
                     break;
                 case 4:
-                    randomCreator.reset();
                     control.TicksControlChangeState();
                     break;
                 case 5:
@@ -165,6 +164,9 @@ int main()
                     break;
                 case 6:
                     control.createPerfect();
+                    break;
+                case 7:
+                    randomCreator.reset();
                     break;
                 case 10:
                     window.close();

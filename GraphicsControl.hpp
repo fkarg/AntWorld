@@ -154,6 +154,14 @@ public:
         createPerfectButton->setSize(90, 20);
 
 
+        tgui::Button::Ptr createRandomButton( (*gui) );
+        createRandomButton->load(THEME_CONFIG_FILE);
+        createRandomButton->setPosition(305, 30);
+        createRandomButton->setText("CreateRandom");
+        createRandomButton->setCallbackId(7);
+        createRandomButton->bindCallback(tgui::Button::LeftMouseClicked);
+        createRandomButton->setSize(90, 20);
+
     }
 
 
