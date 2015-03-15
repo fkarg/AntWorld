@@ -169,40 +169,48 @@ bool Craver::searchAStar() {
         bool currentModified = false;
 
         out("Test at: " + std::to_string(index) + ", Tile Index: "
-                + to_string(currentTile->getIndex() ) );
+                + to_string(currentTile->getIndex()));
 
-            for (int dir = 0; dir < 4; dir++) {
-                Tile* testTile = currentTile->getSurrounding(dir);
-                if (testTile != NULL && !currentTile->isWall(dir)) {
-                    if (testTile == aimTile) {
-                        out("INFO: found aimTile!");
-                        if(currentModified)
-                            currentPath.erase(currentPath.end() - 1);
-                        ColorTiles(currentPath);
-                        return true;
-                    }
+        int actDir = rand() % 4;
 
-                    if (!currentModified &&
-                            !alreadyIncluded(currentPath, testTile) ) {
-                        currentPath.push_back(testTile);
-                        currentModified = true;
-                        out("Tile added, index: " + to_string(testTile->getIndex() )
-                                + ", dir: " + to_string(dir) );
-                    } else if (!alreadyIncluded(currentPath, testTile) ) {
-                        allPaths.push_back(currentPath);
+        for (int dir = 0; dir < 4; dir++) {
+            actDir++;
+            actDir %= 4;
+            Tile *testTile = currentTile->getSurrounding(actDir);
+            if (testTile != NULL && !currentTile->isWall(actDir)) {
+                if (testTile == aimTile) {
+                    out("INFO: found aimTile!");
+                    if (currentModified)
                         currentPath.erase(currentPath.end() - 1);
-                        currentPath.push_back(testTile);
-                        out("Tile " +  to_string(testTile->getIndex() ) + " added, "
-                                "dir: " + to_string(dir) );
-                    }
+                    ColorTiles(currentPath);
+                    return true;
+                }
+
+                if (!currentModified &&
+                        !alreadyIncluded(currentPath, testTile)) {
+                    currentPath.push_back(testTile);
+                    currentModified = true;
+                    out("Tile added, index: " + to_string(testTile->getIndex())
+                            + ", actDir: " + to_string(actDir));
+                } else if (!alreadyIncluded(currentPath, testTile)) {
+                    allPaths.push_back(currentPath);
+                    currentPath.erase(currentPath.end() - 1);
+                    currentPath.push_back(testTile);
+                    out("Tile " + to_string(testTile->getIndex()) + " added, "
+                            "actDir: " + to_string(actDir));
                 }
             }
+        }
 
         out("updating currentPath ...\n");
         allPaths.erase(allPaths.begin() + index);
-        if(currentModified)
+        if (currentModified)
             allPaths.push_back(currentPath);
     }
+
+    out("INFO: couldn't find aimTile");
+    startTile->setColor(Color::Yellow);
+    aimTile->setColor(Color::Red);
 
     return false;
 }
