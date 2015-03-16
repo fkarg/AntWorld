@@ -82,6 +82,8 @@ private:
 
     bool areAllConnected();
 
+    bool areDirectlyConnected(int x, int y, int dir);
+
 public:
 
     void setMaze(Maze *maze);
@@ -89,6 +91,8 @@ public:
     bool start();
 
     void connect(int X, int Y, int dir);
+
+    void mazeChanged();
 
     void doTick();
 

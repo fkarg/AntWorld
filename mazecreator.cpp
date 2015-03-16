@@ -298,6 +298,7 @@ void perfectCreator::initVec() {
 
         visitable = vector<vector<int> >( (unsigned long) maze->getSizeX(),
                 vector<int>( (unsigned long) maze->getSizeY()) );
+
         for(int i = 0; i < maze->getSizeX(); i++) {
             for(int j = 0; j < maze->getSizeY(); j++) {
                 visitable[i][j] = i * maze->getSizeX() + j + 1;
@@ -319,6 +320,7 @@ void perfectCreator::replaceEvery(int oldNum, int newNum) {
 }
 
 
+// tests if all tiles are connected already
 bool perfectCreator::areAllConnected() {
     int start = visitable[0][0];
 
@@ -333,11 +335,18 @@ bool perfectCreator::areAllConnected() {
 }
 
 
+// returns if two tiles are directly connected
+bool perfectCreator::areDirectlyConnected(int x, int y, int dir) {
+    if (maze->getTile(x, y)->isSurrounding(dir) )
+        return !maze->getTile(x, y)->isWall(dir);
+    return false;
+}
+
+
 // setting the @param maze and initializing the vector
 void perfectCreator::setMaze(Maze *maze) {
     perfectCreator::maze = maze;
     mazeSet = true;
-    initVec();
 }
 
 
@@ -350,6 +359,8 @@ bool perfectCreator::start() {
 
     if(!mazeSet)
         return false;
+
+    mazeChanged();
 
     int Xstart, Ystart, dir;
 
@@ -390,7 +401,6 @@ void perfectCreator::connect(int X, int Y, int dir) {
 
     if(maze->getTile(X, Y)->isSurrounding(dir) ) {
 
-
         switch (dir) {
             case 0:
                 otherNum = visitable[X][Y - 1];
@@ -422,6 +432,32 @@ void perfectCreator::connect(int X, int Y, int dir) {
 
     }
 
+}
+
+
+
+// reading in the maze from it's current state in
+void perfectCreator::mazeChanged() {
+    initVec();
+    for (int i = 0; i < maze->getSizeX(); i++) {
+        for (int j = 0; j < maze->getSizeY(); j++) {
+            if (areDirectlyConnected(i, j, 1) ) {
+                if (visitable[i][j] > visitable[i + 1][j])
+                    replaceEvery(visitable[i][j], visitable[i + 1][j]);
+                else if (visitable[i][j] < visitable[i + 1][j])
+                    replaceEvery(visitable[i + 1][j], visitable[i][j]);
+            }
+
+            if (areDirectlyConnected(i, j, 2) ) {
+                if (visitable[i][j] > visitable[i][j + 1])
+                    replaceEvery(visitable[i][j], visitable[i][j + 1]);
+                else if (visitable[i][j] < visitable[i][j + 1])
+                    replaceEvery(visitable[i][j + 1], visitable[i][j]);
+            }
+            out("Added x: " + to_string(i) + ", y: " + to_string(j) + ", num: "
+                    + to_string(visitable[i][j]));
+        }
+    }
 }
 
 
