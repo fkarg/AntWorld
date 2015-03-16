@@ -436,7 +436,7 @@ void perfectCreator::connect(int X, int Y, int dir) {
 
 
 
-// reading in the maze from it's current state in
+// reading in the state of the current maze and giving it it's 'visitable' values
 void perfectCreator::mazeChanged() {
     initVec();
     for (int i = 0; i < maze->getSizeX(); i++) {

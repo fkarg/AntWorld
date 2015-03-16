@@ -62,7 +62,8 @@ public:
 };
 
 
-// creating a 'perfect' fractured maze
+// creating a 'perfect' fractured maze, not-so-perfect when
+// some walls or free spaces are there already
 class perfectCreator : public tickInterface {
 private:
 
