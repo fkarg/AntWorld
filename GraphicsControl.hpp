@@ -2,7 +2,7 @@
 #define UI_HPP
 
 #include <TGUI/TGUI.hpp>
-#include "maze.hpp"
+#include "maze.h"
 #include "ticksystem.h"
 #include "mazecreator.h"
 

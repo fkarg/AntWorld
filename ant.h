@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include "ticksystem.h"
-#include "maze.hpp"
+#include "maze.h"
 
 #include <iostream>
 #include <SFML/Graphics/Sprite.hpp>

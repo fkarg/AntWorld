@@ -4,11 +4,7 @@
 
 
 
-#ifdef DEBUG
-#define SOURCES /home/bz/ClionProjects/AntWorld/resources
-#else
 #define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
-#endif
 
 
 
@@ -52,7 +48,7 @@ int main()
     // Frame-counter
     int Frame = 0;
 
-    Vector2i mousePosition;
+    sf::Vector2i mousePosition;
 
     std::cout << "starting main loop ... " << std::endl;
 
@@ -61,74 +57,74 @@ int main()
     while (window.isOpen() )
     {
         // actualizing the vector of the mousePosition
-        mousePosition = Mouse::getPosition(window);
+        mousePosition = sf::Mouse::getPosition(window);
 
         sf::Event event;
 
         while (window.pollEvent(event))
         {
             switch(event.type) {
-                case Event::Closed:
+                case sf::Event::Closed:
                     window.close();
                     break;
-                case Event::KeyPressed:
+                case sf::Event::KeyPressed:
                     // exit the window if 'Escape'
-                    if(event.key.code == Keyboard::Escape) {
-                        cout << "Escape" << endl;
+                    if(event.key.code == sf::Keyboard::Escape) {
+                        std::cout << "Escape" << std::endl;
                         window.close();
                     }
 
                     // change the walls if a key for direction is
                     // pressed
 
-                    if(Keyboard::isKeyPressed(Keyboard::Up))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                         control.changeWalls(0, control.isAdvancedMode() );
 
-                    if(Keyboard::isKeyPressed(Keyboard::Right))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
                         control.changeWalls(1, control.isAdvancedMode() );
 
-                    if(Keyboard::isKeyPressed(Keyboard::Down))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                         control.changeWalls(2, control.isAdvancedMode() );
 
-                    if(Keyboard::isKeyPressed(Keyboard::Left))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                         control.changeWalls(3, control.isAdvancedMode() );
 
                     // for the ASDW - Keys:
                     // but not changing the selected tile
 
-                    if(Keyboard::isKeyPressed(Keyboard::W))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
                         control.changeWalls(0);
 
-                    if(Keyboard::isKeyPressed(Keyboard::D))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
                         control.changeWalls(1);
 
-                    if(Keyboard::isKeyPressed(Keyboard::S))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
                         control.changeWalls(2);
 
-                    if(Keyboard::isKeyPressed(Keyboard::A))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
                         control.changeWalls(3);
 
 
                     // for moving the ant
 
-                    if(Keyboard::isKeyPressed(Keyboard::I) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I) )
                         ant.move(0);
 
-                    if(Keyboard::isKeyPressed(Keyboard::L) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L) )
                         ant.move(1);
 
-                    if(Keyboard::isKeyPressed(Keyboard::K) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K) )
                         ant.move(2);
 
-                    if(Keyboard::isKeyPressed(Keyboard::J) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J) )
                         ant.move(3);
 
                     break;
-                case Event::TextEntered:break;
-                case Event::KeyReleased:break;
-                case Event::MouseButtonPressed:
+                case sf::Event::TextEntered:break;
+                case sf::Event::KeyReleased:break;
+                case sf::Event::MouseButtonPressed:
                     // 'select' the clicked tile
-                    if (Mouse::isButtonPressed(Mouse::Left) ) {
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) ) {
                         Tile *testPtr = NULL;
                         testPtr = maze.getTileClicked(mousePosition.x, mousePosition.y);
                         if (testPtr != NULL) {
@@ -136,10 +132,10 @@ int main()
                         }
                     }
                     break;
-                case Event::MouseButtonReleased:break;
-                case Event::MouseMoved:break;
+                case sf::Event::MouseButtonReleased:break;
+                case sf::Event::MouseMoved:break;
                 default:
-                    cout << "uncovered event" << endl;
+                    std::cout << "uncovered event" << std::endl;
             }
 
             gui.handleEvent(event);
@@ -172,7 +168,7 @@ int main()
                     window.close();
                     break;
                 default:
-                    cout << "uncought callback: " << to_string(callback.id) << endl;
+                    std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;
                     break;
             }
         }

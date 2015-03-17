@@ -60,8 +60,8 @@ void RandomCreator::doTick() {
 
 
 
-// Coloring all the Tiles in the @param vector tiles, and the start and aimTile
-void Craver::ColorTiles(vector<Tile*> tiles) {
+// Coloring all the Tiles in the @param std::vector tiles, and the start and aimTile
+void Craver::ColorTiles(std::vector<Tile*> tiles) {
     for (int i = 0; i < tiles.size(); i++) {
         tiles[i]->setColor(colorTiles);
     }
@@ -77,7 +77,7 @@ void Craver::setStart(Tile *startTile) {
 
     srand((unsigned int) time(0));
 
-    out("StartTile set: " + to_string(startTile->getIndex() ) );
+    out("StartTile set: " + std::to_string(startTile->getIndex() ) );
 }
 
 
@@ -86,7 +86,7 @@ void Craver::setAim(Tile *aimTile) {
     Craver::aimTile = aimTile;
     aimSet = true;
 
-    out("AimTile set: " + to_string(aimTile->getIndex() ) );
+    out("AimTile set: " + std::to_string(aimTile->getIndex() ) );
 }
 
 
@@ -150,9 +150,9 @@ bool Craver::searchAStar() {
 
     int index = 0, length = 0;
 
-    vector<vector<Tile*> > allPaths;
+    std::vector<std::vector<Tile*> > allPaths;
 
-    vector<Tile*> currentPath;
+    std::vector<Tile*> currentPath;
 
     Tile *currentTile = startTile;
     currentPath.push_back(currentTile);
@@ -169,7 +169,7 @@ bool Craver::searchAStar() {
         bool currentModified = false;
 
         out("Test at: " + std::to_string(index) + ", Tile Index: "
-                + to_string(currentTile->getIndex()));
+                + std::to_string(currentTile->getIndex()));
 
         int actDir = rand() % 4;
 
@@ -190,14 +190,14 @@ bool Craver::searchAStar() {
                         !alreadyIncluded(currentPath, testTile)) {
                     currentPath.push_back(testTile);
                     currentModified = true;
-                    out("Tile added, index: " + to_string(testTile->getIndex())
-                            + ", actDir: " + to_string(actDir));
+                    out("Tile added, index: " + std::to_string(testTile->getIndex())
+                            + ", actDir: " + std::to_string(actDir));
                 } else if (!alreadyIncluded(currentPath, testTile)) {
                     allPaths.push_back(currentPath);
                     currentPath.erase(currentPath.end() - 1);
                     currentPath.push_back(testTile);
-                    out("Tile " + to_string(testTile->getIndex()) + " added, "
-                            "actDir: " + to_string(actDir));
+                    out("Tile " + std::to_string(testTile->getIndex()) + " added, "
+                            "actDir: " + std::to_string(actDir));
                 }
             }
         }
@@ -209,8 +209,8 @@ bool Craver::searchAStar() {
     }
 
     out("INFO: couldn't find aimTile");
-    startTile->setColor(Color::Yellow);
-    aimTile->setColor(Color::Red);
+    startTile->setColor(sf::Color::Yellow);
+    aimTile->setColor(sf::Color::Red);
 
     return false;
 }
@@ -219,7 +219,7 @@ bool Craver::searchAStar() {
 
 // returning the shortest path between all paths
 // not needed anymore, since new ones are being pushed on the end
-int Craver::IndexOfClosestToTile(vector<vector<Tile *> > allPaths) {
+int Craver::IndexOfClosestToTile(std::vector<std::vector<Tile *> > allPaths) {
 
     // return 0;
 
@@ -234,8 +234,8 @@ int Craver::IndexOfClosestToTile(vector<vector<Tile *> > allPaths) {
         }
     }
 
-    out("shortestIndex: " + to_string(shortestIndex)
-            + ", with length: " + to_string(shortestLength));
+    out("shortestIndex: " + std::to_string(shortestIndex)
+            + ", with length: " + std::to_string(shortestLength));
 
     return shortestIndex;
 
@@ -246,7 +246,7 @@ int Craver::IndexOfClosestToTile(vector<vector<Tile *> > allPaths) {
 
 // returns if the currentTile is getting closer to the aimTile
 // only needed for bigger fields without any walls
-bool Craver::alreadyIncluded(vector<Tile*> path, Tile *currentAim) {
+bool Craver::alreadyIncluded(std::vector<Tile*> path, Tile *currentAim) {
 
     for(int i = 0; i < path.size(); i++) {
         if (path[i] == currentAim)
@@ -289,15 +289,15 @@ int Craver::getDistToAim(Tile *currentTile) {
 
 
 
-// seeding the random and giving the vector it's size and initializing the values
+// seeding the random and giving the std::vector it's size and initializing the values
 void perfectCreator::initVec() {
 
     srand((unsigned int) time(0));
 
     if (mazeSet) {
 
-        visitable = vector<vector<int> >( (unsigned long) maze->getSizeX(),
-                vector<int>( (unsigned long) maze->getSizeY()) );
+        visitable = std::vector<std::vector<int> >( (unsigned long) maze->getSizeX(),
+                std::vector<int>( (unsigned long) maze->getSizeY()) );
 
         for(int i = 0; i < maze->getSizeX(); i++) {
             for(int j = 0; j < maze->getSizeY(); j++) {
@@ -343,7 +343,7 @@ bool perfectCreator::areDirectlyConnected(int x, int y, int dir) {
 }
 
 
-// setting the @param maze and initializing the vector
+// setting the @param maze and initializing the std::vector
 void perfectCreator::setMaze(Maze *maze) {
     perfectCreator::maze = maze;
     mazeSet = true;
@@ -371,8 +371,8 @@ bool perfectCreator::start() {
         Ystart = rand() % maze->getSizeY();
         dir = rand() % 4;
 
-        out("connecting x: " + to_string(Xstart) + ", y: " + to_string(Ystart)
-                + ", dir: " + to_string(dir));
+        out("connecting x: " + std::to_string(Xstart) + ", y: " + std::to_string(Ystart)
+                + ", dir: " + std::to_string(dir));
 
         connect(Xstart, Ystart, dir);
     }
@@ -418,7 +418,7 @@ void perfectCreator::connect(int X, int Y, int dir) {
                 break;
         }
 
-        out("curNum: " + to_string(currentNum) + ", othNum: " + to_string(otherNum));
+        out("curNum: " + std::to_string(currentNum) + ", othNum: " + std::to_string(otherNum));
 
         if (currentNum != otherNum) {
             if (currentNum > otherNum) {
@@ -454,8 +454,8 @@ void perfectCreator::mazeChanged() {
                 else if (visitable[i][j] < visitable[i][j + 1])
                     replaceEvery(visitable[i][j + 1], visitable[i][j]);
             }
-            out("Added x: " + to_string(i) + ", y: " + to_string(j) + ", num: "
-                    + to_string(visitable[i][j]));
+            out("Added x: " + std::to_string(i) + ", y: " + std::to_string(j) + ", num: "
+                    + std::to_string(visitable[i][j]));
         }
     }
 }

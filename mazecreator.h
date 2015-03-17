@@ -1,7 +1,7 @@
 #ifndef MAZECREATOR_H
 #define MAZECREATOR_H
 
-#include "maze.hpp"
+#include "maze.h"
 #include <ctime>
 #include <cstdlib>
 #include <math.h>
@@ -35,12 +35,12 @@ private:
     Tile *startTile = NULL, *aimTile = NULL;
     Maze *maze = NULL;
 
-    sf::Color colorTiles = sf::Color(Color::Blue);
+    sf::Color colorTiles = sf::Color(sf::Color::Blue);
 
-    void ColorTiles(vector<Tile*> tiles);
+    void ColorTiles(std::vector<Tile*> tiles);
 
     void out(std::string msg) {
-        cout << "Creator: " + msg << endl;
+        std::cout << "Creator: " + msg << std::endl;
     }
 
 public:
@@ -54,9 +54,9 @@ public:
 
     bool searchAStar();
 
-    int IndexOfClosestToTile(vector<vector<Tile *> > allPaths);
+    int IndexOfClosestToTile(std::vector<std::vector<Tile *> > allPaths);
 
-    bool alreadyIncluded(vector<Tile*> path, Tile *currentTile);
+    bool alreadyIncluded(std::vector<Tile*> path, Tile *currentTile);
 
     int getDistToAim(Tile* currentTile);
 };
@@ -67,7 +67,7 @@ public:
 class perfectCreator : public tickInterface {
 private:
 
-    vector<vector<int> > visitable;
+    std::vector<std::vector<int> > visitable;
 
     Maze *maze;
 
@@ -78,7 +78,7 @@ private:
     void replaceEvery(int oldNum, int newNum);
 
     void out(std::string msg) {
-        cout << "perfCreator: " + msg << endl;
+        std::cout << "perfCreator: " + msg << std::endl;
     }
 
     bool areAllConnected();
