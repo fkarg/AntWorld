@@ -1,7 +1,7 @@
 #ifndef MAZECREATOR_HPP
 #define MAZECREATOR_HPP
 
-#include "maze.hpp"
+#include "maze.h"
 #include <ctime>
 #include <cstdlib>
 #include <math.h>

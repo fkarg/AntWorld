@@ -2,7 +2,7 @@
 #define UI_HPP
 
 #include <TGUI/TGUI.hpp>
-#include "maze.hpp"
+#include "maze.h"
 #include "ticksystem.h"
 #include "mazecreator.h"
 
@@ -18,7 +18,7 @@ protected:
     // pointer to the InfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
     tgui::Label::Ptr InfoLabel;
-    tgui::Button::Ptr ticksControl, testConntectedButton;
+    tgui::Button::Ptr ticksControl;
     tgui::Checkbox::Ptr advancedMode;
 
     int tick = 0;
@@ -33,6 +33,7 @@ protected:
     sf::RenderWindow *window;
 
     Craver craver;
+    perfectCreator perf;
 
 public:
 
@@ -133,6 +134,7 @@ public:
         advancedMode = checkbox;
 
 
+        // testConnectedButton, for initiating the A* search
         tgui::Button::Ptr TestConnectedButton( (*gui) );
         TestConnectedButton->load(THEME_CONFIG_FILE);
         TestConnectedButton->setPosition(15, 400);
@@ -141,8 +143,24 @@ public:
         TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
         TestConnectedButton->setSize(90, 20);
 
-        testConntectedButton = TestConnectedButton;
 
+        // button for creating a perfect maze
+        tgui::Button::Ptr createPerfectButton( (*gui) );
+        createPerfectButton->load(THEME_CONFIG_FILE);
+        createPerfectButton->setPosition(200, 30);
+        createPerfectButton->setText("Create Perfect");
+        createPerfectButton->setCallbackId(6);
+        createPerfectButton->bindCallback(tgui::Button::LeftMouseClicked);
+        createPerfectButton->setSize(90, 20);
+
+
+        tgui::Button::Ptr createRandomButton( (*gui) );
+        createRandomButton->load(THEME_CONFIG_FILE);
+        createRandomButton->setPosition(305, 30);
+        createRandomButton->setText("CreateRandom");
+        createRandomButton->setCallbackId(7);
+        createRandomButton->bindCallback(tgui::Button::LeftMouseClicked);
+        createRandomButton->setSize(90, 20);
 
     }
 
@@ -154,12 +172,12 @@ public:
         if (connect) {
             craver.setAim(tileToShowPtr->getTileToShow());
             craver.colorPath(sf::Color(sf::Color::Cyan) );
-
             craver.searchAStar();
 
             connect = false;
         }
     }
+
 
 
     // updating the InfoLabel and the separately displayed tile
@@ -174,9 +192,16 @@ public:
     }
 
 
+    // testing if two tiles are connected, showing it in the GUI if they are
     void testConnectedButtonClicked() {
         connect = true;
         craver.setStart(tileToShowPtr->getTileToShow() );
+    }
+
+
+    // letting the perfectCreator run once
+    void createPerfect() {
+        perf.start();
     }
 
 
@@ -209,8 +234,10 @@ public:
     }
 
 
+    // setting the maze to the craver and the creator
     void setMaze(Maze *maze) {
         craver.setMaze(maze);
+        perf.setMaze(maze);
     }
 
 
