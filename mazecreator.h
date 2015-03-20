@@ -23,6 +23,7 @@ public:
     void doTicks(int num = 1);
     void reset();
     void doTick();
+    void complete();
 };
 
 

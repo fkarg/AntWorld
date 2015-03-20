@@ -174,7 +174,7 @@ int main()
         }
 
         if (Frame % 4 == 0)
-            randomCreator.doTicks(10);
+            randomCreator.complete();
 
         // Clear screen
         window.clear();

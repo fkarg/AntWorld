@@ -63,7 +63,7 @@ class showTile : public Tile {
 protected:
     int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1;
     unsigned int pubFood = 0;
-    Tile *tileToShow = NULL;
+    Tile *tileToShow = NULL;    // the tile that is being 'copied'
 
 public:
     showTile(){};

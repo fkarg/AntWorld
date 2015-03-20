@@ -89,9 +89,9 @@ void Ant::doTick() {
     // TODO: what to do at a tick
 
     // TODO: sensing - reacting - moving
-    // TODO: sensing: food/scent/wall/direction
-    // TODO: reacting: ifFood/maxScent/noScent, deciding what to do
-    // TODO: moving: doing what has been divided to do
+    // - sensing: food/scent/wall/direction
+    // - reacting: ifFood/maxScent/noScent, deciding what to do
+    // - moving: doing what has been decided to do
 
     /*
      * Idea: multiThreading all sensing/reacting Ants after them

@@ -53,6 +53,12 @@ void RandomCreator::doTick() {
 
 
 
+void RandomCreator::complete() {
+    while (tick < runs) {
+        doTicks();
+    }
+}
+
 
 
 
