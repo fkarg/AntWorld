@@ -162,12 +162,22 @@ public:
         createRandomButton->bindCallback(tgui::Button::LeftMouseClicked);
         createRandomButton->setSize(90, 20);
 
+
+        tgui::Button::Ptr resetButton( (*gui) );
+        resetButton->load(THEME_CONFIG_FILE);
+        resetButton->setPosition(410, 30);
+        resetButton->setText("Reset");
+        resetButton->setCallbackId(8);
+        resetButton->bindCallback(tgui::Button::LeftMouseClicked);
+        resetButton->setSize(90, 20);
+
+
     }
 
 
     // changing the displayed info to another @param tile1: tile
-    void changeTextInfoLabel(Tile *tile1) {
-        tileToShowTile = tile1;
+    void changeTextInfoLabel(Tile *tile) {
+        tileToShowTile = tile;
 
         if (connect) {
             craver.setAim(tileToShowPtr->getTileToShow());
@@ -246,6 +256,12 @@ public:
 
         std::cout << "Tick: " << std::to_string(tick) << std::endl;
         tick++;
+    }
+
+
+    // resetting the Maze
+    void ResetMaze() {
+        perf.ResetMaze();
     }
 
 

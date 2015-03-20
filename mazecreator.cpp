@@ -15,6 +15,14 @@ RandomCreator::RandomCreator(Maze *maze) {
 }
 
 
+// changing the maze to the @param maze
+void RandomCreator::changeMaze(Maze *maze) {
+    mazetoDo = maze;
+    runs = mazetoDo->getSizeX() * mazetoDo->getSizeY() * 2;
+    tick = runs;
+}
+
+
 // Does the @param num: specified number of ticks, if num > 0
 // standard - param is 1
 void RandomCreator::doTicks(int num) {
@@ -151,8 +159,10 @@ bool Craver::searchAStar() {
 
     if (!startSet || !aimSet || !mazeSet)
         return false;
-    if (startTile == aimTile)
+    if (startTile == aimTile) {
+        startTile->setColor(sf::Color::White);
         return true;
+    }
 
     int index = 0, length = 0;
 
@@ -351,6 +361,7 @@ bool perfectCreator::areDirectlyConnected(int x, int y, int dir) {
 
 // setting the @param maze and initializing the std::vector
 void perfectCreator::setMaze(Maze *maze) {
+    out("Maze set");
     perfectCreator::maze = maze;
     mazeSet = true;
 }
@@ -471,4 +482,20 @@ void perfectCreator::mazeChanged() {
 
 void perfectCreator::doTick() {
     // for implementations sake ...
+}
+
+
+
+// resetting the maze
+void perfectCreator::ResetMaze() {
+
+    for (int i = 0; i < maze->getSizeX(); i++) {
+        for (int j = 0; j < maze->getSizeY(); j++) {
+            for (int dir = 0; dir < 4; dir++)
+                maze->getTile(i, j)->setWall(dir, true);
+        }
+    }
+
+    std::cout << "Maze is reset" << std::endl;
+
 }
