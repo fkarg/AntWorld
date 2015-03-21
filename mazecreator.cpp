@@ -493,6 +493,7 @@ void perfectCreator::ResetMaze() {
         for (int j = 0; j < maze->getSizeY(); j++) {
             for (int dir = 0; dir < 4; dir++)
                 maze->getTile(i, j)->setWall(dir, true);
+            maze->getTile(i, j)->setColor(sf::Color::Blue);
         }
     }
 
