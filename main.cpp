@@ -92,31 +92,31 @@ int main()
                     // for the ASDW - Keys:
                     // but not changing the selected tile
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::V))
                         control.changeWalls(0);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
                         control.changeWalls(1);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I))
                         control.changeWalls(2);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::U))
                         control.changeWalls(3);
 
 
                     // for moving the ant
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::G) )
                         ant.move(0);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::T) )
                         ant.move(1);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::K) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::R) )
                         ant.move(2);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::J) )
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::N) )
                         ant.move(3);
 
                     break;
@@ -164,6 +164,9 @@ int main()
                 case 7:
                     randomCreator.reset();
                     break;
+                case 8:
+                    control.ResetMaze();
+                    break;
                 case 10:
                     window.close();
                     break;
@@ -173,7 +176,7 @@ int main()
             }
         }
 
-        if (Frame % 4 == 0)
+        if (Frame % 20 == 0)
             randomCreator.complete();
 
         // Clear screen

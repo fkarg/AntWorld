@@ -444,7 +444,21 @@ int Maze::getSizeY() {
 }
 
 
+// returns the xPos of the maze
+int Maze::getX() {
+    return x;
+}
+
+
+// returns the yPos of the maze
+int Maze::getY() {
+    return y;
+}
+
+
 // returning the max index of the maze
 int Maze::INDEX_MAX() {
     return sizeX * sizeY;
 }
+
+
