@@ -108,7 +108,10 @@ public:
     Tile *getTile(int x, int y);   // getting the Tile at @param x and @param y
     int getSizeX();                 // returns the sizeX of the maze
     int getSizeY();                 // returns the sizeY of the maze
+    int getX();                     // returns the xPos of the maze
+    int getY();                     // returns the yPos of the maze
     int INDEX_MAX();                // returns the MAX Index of the maze
+    ~Maze(){};
 };
 
 

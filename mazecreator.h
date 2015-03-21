@@ -20,6 +20,7 @@ private:
 
 public:
     RandomCreator(Maze *maze);
+    void changeMaze(Maze *maze);
     void doTicks(int num = 1);
     void reset();
     void doTick();
@@ -41,7 +42,7 @@ private:
     void ColorTiles(std::vector<Tile*> tiles);
 
     void out(std::string msg) {
-        std::cout << "Creator: " + msg << std::endl;
+        std::cout << "Craver: " + msg << std::endl;
     }
 
 public:
@@ -97,6 +98,8 @@ public:
     void mazeChanged();
 
     void doTick();
+
+    void ResetMaze();
 
 };
 
