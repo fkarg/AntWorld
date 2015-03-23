@@ -34,6 +34,7 @@ protected:
 
     Craver craver;
     perfectCreator perf;
+    RandomCreator randomCreator;
 
 public:
 
@@ -144,34 +145,34 @@ public:
         TestConnectedButton->setSize(90, 20);
 
 
-        // button for creating a perfect maze
-        tgui::Button::Ptr createPerfectButton( (*gui) );
-        createPerfectButton->load(THEME_CONFIG_FILE);
-        createPerfectButton->setPosition(200, 30 + 20);
-        createPerfectButton->setText("Create Perfect");
-        createPerfectButton->setCallbackId(6);
-        createPerfectButton->bindCallback(tgui::Button::LeftMouseClicked);
-        createPerfectButton->setSize(90, 20);
+        // // button for creating a perfect maze
+        // tgui::Button::Ptr createPerfectButton( (*gui) );
+        // createPerfectButton->load(THEME_CONFIG_FILE);
+        // createPerfectButton->setPosition(200, 30 + 20);
+        // createPerfectButton->setText("Create Perfect");
+        // createPerfectButton->setCallbackId(6);
+        // createPerfectButton->bindCallback(tgui::Button::LeftMouseClicked);
+        // createPerfectButton->setSize(90, 20);
 
 
-        // button for creating a random maze
-        tgui::Button::Ptr createRandomButton( (*gui) );
-        createRandomButton->load(THEME_CONFIG_FILE);
-        createRandomButton->setPosition(305, 30 + 20);
-        createRandomButton->setText("CreateRandom");
-        createRandomButton->setCallbackId(7);
-        createRandomButton->bindCallback(tgui::Button::LeftMouseClicked);
-        createRandomButton->setSize(90, 20);
+        // // button for creating a random maze
+        // tgui::Button::Ptr createRandomButton( (*gui) );
+        // createRandomButton->load(THEME_CONFIG_FILE);
+        // createRandomButton->setPosition(305, 30 + 20);
+        // createRandomButton->setText("CreateRandom");
+        // createRandomButton->setCallbackId(7);
+        // createRandomButton->bindCallback(tgui::Button::LeftMouseClicked);
+        // createRandomButton->setSize(90, 20);
 
 
-        // button to reset the maze
-        tgui::Button::Ptr resetButton( (*gui) );
-        resetButton->load(THEME_CONFIG_FILE);
-        resetButton->setPosition(410, 30 + 20);
-        resetButton->setText("Reset");
-        resetButton->setCallbackId(8);
-        resetButton->bindCallback(tgui::Button::LeftMouseClicked);
-        resetButton->setSize(90, 20);
+        // // button to reset the maze
+        // tgui::Button::Ptr resetButton( (*gui) );
+        // resetButton->load(THEME_CONFIG_FILE);
+        // resetButton->setPosition(410, 30 + 20);
+        // resetButton->setText("Reset");
+        // resetButton->setCallbackId(8);
+        // resetButton->bindCallback(tgui::Button::LeftMouseClicked);
+        // resetButton->setSize(90, 20);
 
 
 
@@ -179,8 +180,10 @@ public:
         menu->load(THEME_CONFIG_FILE);
         menu->setSize(window->getSize().x, 20);
 
-
-
+        menu->addMenu("Maze");
+        menu->addMenuItem("Maze", "Reset");
+        menu->addMenuItem("Maze", "Create Random");
+        menu->addMenuItem("Maze", "Create Perfect");
 
         menu->addMenu("File");
         menu->addMenuItem("File", "Load");
@@ -190,6 +193,17 @@ public:
         menu->setCallbackId(11);
 
 
+    }
+
+    void handleCallback(tgui::Callback callback) {
+        if (callback.id == 11) {
+            if (callback.text == "Reset")
+                ResetMaze();
+            if (callback.text == "Create Random")
+                createRandom();
+            if (callback.text == "Create Perfect")
+                createPerfect();
+        }
     }
 
 
@@ -229,6 +243,7 @@ public:
 
     // letting the perfectCreator run once
     void createPerfect() {
+        ResetMaze();
         perf.start();
     }
 
@@ -266,11 +281,17 @@ public:
     void setMaze(Maze *maze) {
         craver.setMaze(maze);
         perf.setMaze(maze);
+        randomCreator.setMaze(maze);
     }
 
 
     // doing a tick - TODO: NOT WORKING YET
     void doTick () {
+
+
+        if (tick % 10 == 0)
+            randomCreator.complete();
+
 
         std::cout << "Tick: " << std::to_string(tick) << std::endl;
         tick++;
@@ -280,6 +301,12 @@ public:
     // resetting the Maze
     void ResetMaze() {
         perf.ResetMaze();
+    }
+
+    void createRandom() {
+        ResetMaze();
+        randomCreator.reset();
+        randomCreator.complete();
     }
 
 

@@ -34,7 +34,8 @@ int main()
     // Creating a 10 x 10 Maze
     Maze maze(15, 15);
 
-    RandomCreator randomCreator(&maze);
+    RandomCreator randomCreator;
+    randomCreator.setMaze(&maze);
     control.setMaze(&maze);
 
     std::cout << "moving maze ... " << std::endl;
@@ -158,15 +159,6 @@ int main()
                 case 5:
                     control.testConnectedButtonClicked();
                     break;
-                case 6:
-                    control.createPerfect();
-                    break;
-                case 7:
-                    randomCreator.reset();
-                    break;
-                case 8:
-                    control.ResetMaze();
-                    break;
                 case 10:
                     std::cout << "closing window" << std::endl;
                     window.close();
@@ -174,15 +166,14 @@ int main()
                 case 11:
                     if (callback.text == "Exit")
                         window.close();
+                    else
+                        control.handleCallback(callback);
                     break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;
                     break;
             }
         }
-
-        if (Frame % 20 == 0)
-            randomCreator.complete();
 
         // Clear screen
         window.clear();
