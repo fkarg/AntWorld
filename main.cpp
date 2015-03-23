@@ -39,7 +39,7 @@ int main()
 
     std::cout << "moving maze ... " << std::endl;
 
-    maze.move(120, 90);
+    maze.move(120, 110);
 
     Ant ant;
 
@@ -168,7 +168,12 @@ int main()
                     control.ResetMaze();
                     break;
                 case 10:
+                    std::cout << "closing window" << std::endl;
                     window.close();
+                    break;
+                case 11:
+                    if (callback.text == "Exit")
+                        window.close();
                     break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;

@@ -43,7 +43,7 @@ public:
         window = renderWindow;
         tileToShowPtr = &tileToShowTile;
 
-        tileToShowTile.setSize(30, 30, 35, 35);
+        tileToShowTile.setSize(30, 50, 35, 35);
     }
 
 
@@ -53,7 +53,7 @@ public:
         // button for closing the window (for test purposes)
         tgui::Button::Ptr button( (*gui) );
         button->load(THEME_CONFIG_FILE);
-        button->setPosition(20, 440);
+        button->setPosition(20, 440 + 20);
         button->setText("Close");
         button->setCallbackId(10);
         button->bindCallback(tgui::Button::LeftMouseClicked);
@@ -64,7 +64,7 @@ public:
         label->load(THEME_CONFIG_FILE);
         label->setText("Info: \n\n Food: \n\n Scent1: \n\n Scent2: "
             "\n\n Production: \n\n");
-        label->setPosition(20, 95);
+        label->setPosition(20, 95 + 20);
         label->setTextColor(sf::Color(200, 200, 200));
         label->setTextSize(12);
 
@@ -73,7 +73,7 @@ public:
         // button to change the state of the wall in upper direction
         tgui::Button::Ptr buttonChangeWallUp( (*gui) );
         buttonChangeWallUp->load(THEME_CONFIG_FILE);
-        buttonChangeWallUp->setPosition(15, 250);
+        buttonChangeWallUp->setPosition(15, 250 + 20);
         buttonChangeWallUp->setText("ChangeWallUp");
         buttonChangeWallUp->setCallbackId(0);
         buttonChangeWallUp->bindCallback(tgui::Button::LeftMouseClicked);
@@ -83,7 +83,7 @@ public:
         // button to change the state of the wall right to the tile
         tgui::Button::Ptr buttonChangeWallRight( (*gui) );
         buttonChangeWallRight->load(THEME_CONFIG_FILE);
-        buttonChangeWallRight->setPosition(15, 280);
+        buttonChangeWallRight->setPosition(15, 280 + 20);
         buttonChangeWallRight->setText("ChangeWallRight");
         buttonChangeWallRight->setCallbackId(1);
         buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
@@ -93,7 +93,7 @@ public:
         // button to change the state of the wall lower of the tile
         tgui::Button::Ptr buttonChangeWallDown( (*gui) );
         buttonChangeWallDown->load(THEME_CONFIG_FILE);
-        buttonChangeWallDown->setPosition(15, 310);
+        buttonChangeWallDown->setPosition(15, 310 + 20);
         buttonChangeWallDown->setText("ChangeWallDown");
         buttonChangeWallDown->setCallbackId(2);
         buttonChangeWallDown->bindCallback(tgui::Button::LeftMouseClicked);
@@ -103,7 +103,7 @@ public:
         // button to change the state of the wall left of the tile
         tgui::Button::Ptr buttonChangeWallLeft( (*gui) );
         buttonChangeWallLeft->load(THEME_CONFIG_FILE);
-        buttonChangeWallLeft->setPosition(15, 340);
+        buttonChangeWallLeft->setPosition(15, 340 + 20);
         buttonChangeWallLeft->setText("ChangeWallLeft");
         buttonChangeWallLeft->setCallbackId(3);
         buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
@@ -114,7 +114,7 @@ public:
         // stopped, paused, or started (running)
         tgui::Button::Ptr StartTicksButton( (*gui) );
         StartTicksButton->load(THEME_CONFIG_FILE);
-        StartTicksButton->setPosition(90, 30);
+        StartTicksButton->setPosition(90, 30 + 20);
         StartTicksButton->setText("Start");
         StartTicksButton->setCallbackId(4);
         StartTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -126,7 +126,7 @@ public:
         // checkbox if it should be allowed to 'Jump'
         tgui::Checkbox::Ptr checkbox(*gui);
         checkbox->load(THEME_CONFIG_FILE);
-        checkbox->setPosition(15, 220);
+        checkbox->setPosition(15, 220 + 20);
         checkbox->setText("Moving");
         checkbox->setSize(20, 20);
         checkbox->check();
@@ -137,7 +137,7 @@ public:
         // testConnectedButton, for initiating the A* search
         tgui::Button::Ptr TestConnectedButton( (*gui) );
         TestConnectedButton->load(THEME_CONFIG_FILE);
-        TestConnectedButton->setPosition(15, 400);
+        TestConnectedButton->setPosition(15, 400 + 20);
         TestConnectedButton->setText("TestConnected");
         TestConnectedButton->setCallbackId(5);
         TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -147,29 +147,47 @@ public:
         // button for creating a perfect maze
         tgui::Button::Ptr createPerfectButton( (*gui) );
         createPerfectButton->load(THEME_CONFIG_FILE);
-        createPerfectButton->setPosition(200, 30);
+        createPerfectButton->setPosition(200, 30 + 20);
         createPerfectButton->setText("Create Perfect");
         createPerfectButton->setCallbackId(6);
         createPerfectButton->bindCallback(tgui::Button::LeftMouseClicked);
         createPerfectButton->setSize(90, 20);
 
 
+        // button for creating a random maze
         tgui::Button::Ptr createRandomButton( (*gui) );
         createRandomButton->load(THEME_CONFIG_FILE);
-        createRandomButton->setPosition(305, 30);
+        createRandomButton->setPosition(305, 30 + 20);
         createRandomButton->setText("CreateRandom");
         createRandomButton->setCallbackId(7);
         createRandomButton->bindCallback(tgui::Button::LeftMouseClicked);
         createRandomButton->setSize(90, 20);
 
 
+        // button to reset the maze
         tgui::Button::Ptr resetButton( (*gui) );
         resetButton->load(THEME_CONFIG_FILE);
-        resetButton->setPosition(410, 30);
+        resetButton->setPosition(410, 30 + 20);
         resetButton->setText("Reset");
         resetButton->setCallbackId(8);
         resetButton->bindCallback(tgui::Button::LeftMouseClicked);
         resetButton->setSize(90, 20);
+
+
+
+        tgui::MenuBar::Ptr menu(*gui);
+        menu->load(THEME_CONFIG_FILE);
+        menu->setSize(window->getSize().x, 20);
+
+
+
+
+        menu->addMenu("File");
+        menu->addMenuItem("File", "Load");
+        menu->addMenuItem("File", "Save");
+        menu->addMenuItem("File", "Exit");
+        menu->bindCallback(tgui::MenuBar::MenuItemClicked);
+        menu->setCallbackId(11);
 
 
     }
