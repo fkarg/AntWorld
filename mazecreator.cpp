@@ -26,8 +26,8 @@ void RandomCreator::doTicks(int num) {
 
             int dir = rand() % 4;
 
-            std::cout << "\nIndex: " << std::to_string(toChange->getIndex() ) <<
-                    " dir: " << std::to_string(dir) << std::endl << std::endl;
+            std::cout << "Index: " << std::to_string(toChange->getIndex() ) <<
+                    " dir: " << std::to_string(dir) << std::endl;
 
             if(toChange->isSurrounding(dir) ) {
                 toChange->setWall(dir, !toChange->isWall(dir));

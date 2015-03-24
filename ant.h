@@ -1,6 +1,12 @@
 #ifndef ANT_H
 #define ANT_H
 
+
+#ifndef SOURCES
+#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#endif
+
+
 #include <SFML/Graphics/Texture.hpp>
 #include "ticksystem.h"
 #include "maze.h"
@@ -14,7 +20,7 @@ class Ant : public tickInterface {
 private:
     int locX = -1, locY = -1, dir = 0;
 
-    int ownFood = 0;
+    unsigned int ownFood = 0;
 
     sf::Texture texture;
     sf::Sprite sprite;

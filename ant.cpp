@@ -1,8 +1,5 @@
 #include "ant.h"
 
-#ifndef SOURCES
-#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
-#endif
 
 // creating the ant, loading the image and setting it
 Ant::Ant() {

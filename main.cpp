@@ -3,7 +3,6 @@
 #include "ant.h"
 
 
-
 #define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
 
 
@@ -14,7 +13,7 @@ int main()
     std::cout << "creating the maze ..." << std::endl;
 
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(660, 660), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(760, 750), "SFML window");
     tgui::Gui gui(window);
 
     std::cout << "setting global font ..." << std::endl;
@@ -32,10 +31,8 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(15, 15);
+    Maze maze(20, 20);
 
-    RandomCreator randomCreator;
-    randomCreator.setMaze(&maze);
     control.setMaze(&maze);
 
     std::cout << "moving maze ... " << std::endl;

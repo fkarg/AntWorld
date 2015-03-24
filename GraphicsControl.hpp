@@ -115,7 +115,7 @@ public:
         // stopped, paused, or started (running)
         tgui::Button::Ptr StartTicksButton( (*gui) );
         StartTicksButton->load(THEME_CONFIG_FILE);
-        StartTicksButton->setPosition(90, 30 + 20);
+        StartTicksButton->setPosition(500, 30 + 20);
         StartTicksButton->setText("Start");
         StartTicksButton->setCallbackId(4);
         StartTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -215,7 +215,6 @@ public:
 
     // letting the perfectCreator run once
     void createPerfect() {
-        ResetMaze();
         perf.start();
     }
 
@@ -276,7 +275,6 @@ public:
     }
 
     void createRandom() {
-        ResetMaze();
         randomCreator.reset();
         randomCreator.complete();
     }
