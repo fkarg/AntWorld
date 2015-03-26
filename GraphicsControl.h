@@ -6,6 +6,15 @@
 #define GRAPHICSCONTROL_H
 
 
+
+#ifndef SOURCES
+#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#endif
+
+#define THEME_CONFIG_FILE "/home/bz/ClionProjects/AntWorld/resources/Black.conf"
+
+
+
 #include <TGUI/Label.hpp>
 #include <TGUI/Button.hpp>
 #include <TGUI/Checkbox.hpp>
@@ -23,7 +32,7 @@ protected:
     int tick = 0;
     bool connect = false;
 
-    // pointer to the showtile
+    // pointer to the showTile and showTile
     showTile *tileToShowPtr;
     showTile tileToShowTile;
 
@@ -31,21 +40,22 @@ protected:
 
     Craver craver;
     perfectCreator perf;
-
+    RandomCreator randomCreator;
 
 public:
     GraphicsControl(sf::RenderWindow *renderWindow);
     void addGui(tgui::Gui *gui);
+    void setMaze(Maze *maze);
     void changeTextInfoLabel(Tile *tile);
     void updateInfo();
     void testConnectedButtonClicked();
     void createPerfect();
-    void TicksControlChangeState();
-    void changeWalls(int dir, bool move = false);
-    bool isAdvancedMode();
-    void setMaze(Maze *maze);
-    void doTick();
+    void createRandom();
     void ResetMaze();
+    bool isAdvancedMode();
+    void changeWalls(int dir, bool move = false);
+    void TicksControlChangeState();
+    void doTick();
 };
 
 
