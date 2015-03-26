@@ -13,26 +13,25 @@ void TickControl::Timer() {
     while (running) {
         startTime = time(0);
         for (int tickInd = 0; tickInd < toTick.size(); tickInd++) {
-            tickInterface* tickInt = toTick[tickInd];
-            std::thread tick(tickBuffer, tickInt);
-            tick.detach();
+
+            std::thread tickThread(toTick[tickInd]->doTick);
+            tickThread.detach();
+
+
         }
         time_t endTime = time(&startTime);
 
         std::cout << "TickControl: " + std::to_string(endTime) << std::endl;
 
         sleep(2000);
+
+        std::cout << "endThread";
     }
 
 
     // FIXME: Timer
 }
 
-
-
-void TickControl::tickBuffer(tickInterface *anInterface) {
-    anInterface->doTick();
-}
 
 
 

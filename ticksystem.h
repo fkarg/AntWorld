@@ -29,7 +29,6 @@ private:
 
     void sleep(unsigned int milliseconds);
     void Timer();
-    void tickBuffer(tickInterface *anInterface);
 
 
 public:
