@@ -12,7 +12,7 @@ protected:
     // pointer to the InfoLabel for accessing it later
     tgui::Label::Ptr InfoLabel;
 
-    tgui::Button::Ptr ticksControl;
+    tgui::Button::Ptr ticksControlButton;
 
     tgui::Checkbox::Ptr advancedMode;
 
@@ -109,7 +109,7 @@ public:
         StartTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
         StartTicksButton->setSize(90, 20);
 
-        ticksControl = StartTicksButton;
+        ticksControlButton = StartTicksButton;
 
 
         // checkbox if it should be allowed to
@@ -121,10 +121,6 @@ public:
         checkbox->check();
 
         advancedMode = checkbox;
-
-        tickControl.setState(false);
-
-        tickControl.addTicker(tileToShowPtr);
 
     }
 
@@ -161,26 +157,18 @@ public:
         return advancedMode->isChecked();
     }
 
-    void startResumeTicks() {
-        if (tickControl.isRunning() ) {
-            tickControl.pauseTicks();
-            ticksControl->setText("Resume");
-        } else {
-            tickControl.startTicks();
-            ticksControl->setText("Pause");
-        }
-    }
-
-    void addTicker(tickInterface* tickInterface) {
-        tickControl.addTicker(tickInterface);
-    }
-
 
     // doing a tick - TODO: NOT WORKING YET
     void doTick () {
 
         std::cout << "Tick: " << std::to_string(tick) << std::endl;
         tick++;
+    }
+
+    void changeTicksState() {
+        tickControl.addTicker(&tickControl);
+        tickControl.setRunning(true);
+        tickControl.start();
     }
 
 

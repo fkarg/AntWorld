@@ -4,6 +4,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <ctime>
 
 #include <string>
 #include <iostream>
@@ -15,41 +16,31 @@ public:
     virtual void doTick() = 0;
 };
 
-/*
- * the TickControl for the tickInterface
- */
+
+
+
+
 class TickControl : public tickInterface {
-protected:
-    int tickCount = -1, tickerSize = 0;
+private:
+    std::vector<tickInterface*> toTick;
     bool running = false, started = false;
+
     float interval = 0.2;
-    std::vector<tickInterface*> Ticker;
 
     void sleep(unsigned int milliseconds);
-
     void Timer();
+    void tickBuffer(tickInterface *anInterface);
 
-    void task1(std::string msg);
-    void task1();
-
-
-    void aspfioh () {
-        Ticker.size();
-    }
 
 public:
     void doTick();
-    void startTicks();
-    void pauseTicks();
-    void setState(bool newState);
-    void reset();
-    void setInterval(float interval);
-    void addTicker(tickInterface *newTick);
-
-    bool isRunning();
-    float getInterval();
-    int getTickCount();
+    void addTicker(tickInterface* ticker);
+    void setRunning(bool run);
+    void start();
 };
+
+
+
 
 
 #endif
