@@ -1,107 +1,62 @@
 #include "ticksystem.h"
 
-// the interval of how many seconds are between two ticks (at least)
-// float TickControl::interval;
-
-// can't be resolved for whatever the reason, working though
-// std::vector<tickInterface*> Ticker;
-
 
 void TickControl::sleep(unsigned int milliseconds) {
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds) );
 }
 
 
+
 void TickControl::Timer() {
+    time_t startTime;
 
-    do {
+    while (running) {
+        startTime = time(0);
+        for (int tickInd = 0; tickInd < toTick.size(); tickInd++) {
+            tickInterface* tickInt = toTick[tickInd];
+            std::thread tick(tickBuffer, tickInt);
+            tick.detach();
+        }
+        time_t endTime = time(&startTime);
 
-        doTick();
-        sleep( (unsigned int) interval * 1000 );
+        std::cout << "TickControl: " + std::to_string(endTime) << std::endl;
 
-    } while (running);
-
-}
-
-
-// 'calling' the other Ticks
-void TickControl::doTick() {
-    // what to do at a Tick?
-    for(int k = 0; k < Ticker.size(); k++) {
-        std::thread doTicks( (*Ticker[k]).doTick());
-        doTicks.detach();
+        sleep(2000);
     }
+
+
+    // FIXME: Timer
 }
 
 
-// starting the ticks at the given interval
-void TickControl::startTicks() {
-    running = true;
 
-    std::thread t0(task1);
-
-    t0.join();
-
-    std::thread t1(Timer);
-
-    t1.detach();
-
+void TickControl::tickBuffer(tickInterface *anInterface) {
+    anInterface->doTick();
 }
 
 
-void TickControl::task1(std::string msg) {
 
-    std::cout << "TickSystem: " << msg << std::endl;
 
-}
-
-void TickControl::task1() {
-    std::cout << "Ticksyste: second task1" << std::endl;
+void TickControl::doTick() {
+    // TODO: what to do at a tick
+    std::cout << "TickControl: doing tick!" << std::endl;
 }
 
 
-// pausing the ticks temporary
-void TickControl::pauseTicks() {
-    running = false;
+
+void TickControl::addTicker(tickInterface *ticker) {
+    toTick.push_back(ticker);
 }
 
 
-// setting the state of 'running' to @param newState
-void TickControl::setState(bool newState) {
-    running = newState;
+
+void TickControl::setRunning(bool run) {
+    running = run;
 }
 
 
-// resetting - whatever
-void TickControl::reset() {
-    // FIXME: dunno what to do yet
-}
 
-
-// setting the @param interval: new interval - must be bigger than zero
-void TickControl::setInterval(float interval) {
-    TickControl::interval = interval;
-}
-
-
-// adding a @param newTick: new object to get 'ticked'
-void TickControl::addTicker(tickInterface *newTick) {
-    Ticker.push_back(newTick);
-}
-
-
-// returns if the TickSystem is currently running
-bool TickControl::isRunning() {
-    return running;
-}
-
-
-// returns the currently set interval
-float TickControl::getInterval() {
-    return interval;
-}
-
-// returns of how many ticks there have been since the last reset
-int TickControl::getTickCount() {
-    return tickCount;
+void TickControl::start() {
+    std::thread ticking(Timer);
+    ticking.detach();
 }

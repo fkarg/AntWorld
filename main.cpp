@@ -37,11 +37,6 @@ int main()
 
     maze.move(120, 90);
 
-
-    control.addTicker(&control);
-    control.addTicker(&maze);
-    control.addTicker(&randomCreator);
-
     // Frame-counter
     int Frame = 0;
 
@@ -135,7 +130,6 @@ int main()
                     control.changeWalls(callback.id, control.isAdvancedMode() );
                     break;
                 case 4:
-                    control.startResumeTicks();
                     break;
                 case 10:
                     window.close();
