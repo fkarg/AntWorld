@@ -19,8 +19,8 @@ private:
     Maze *mazetoDo;             // the maze to be modified
 
 public:
-    RandomCreator(Maze *maze);
-    void changeMaze(Maze *maze);
+    RandomCreator(){};
+    void setMaze(Maze *maze);
     void doTicks(int num = 1);
     void reset();
     void doTick();

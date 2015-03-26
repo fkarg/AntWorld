@@ -5,8 +5,8 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "ticksystem.h"
 #include <iostream>
+#include "ticksystem.h"
 
 
 

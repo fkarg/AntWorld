@@ -2,8 +2,8 @@
 
 
 
-// needs a @param: *maze: maze-pointer to get initialized
-RandomCreator::RandomCreator(Maze *maze) {
+// changing the maze to the @param maze
+void RandomCreator::setMaze(Maze *maze) {
 
     mazetoDo = maze;
     runs = mazetoDo->getSizeX() * mazetoDo->getSizeY() * 2;
@@ -12,14 +12,7 @@ RandomCreator::RandomCreator(Maze *maze) {
     srand((unsigned int) time(0));
 
     std::cout << "Runs: " << std::to_string(runs) << std::endl;
-}
 
-
-// changing the maze to the @param maze
-void RandomCreator::changeMaze(Maze *maze) {
-    mazetoDo = maze;
-    runs = mazetoDo->getSizeX() * mazetoDo->getSizeY() * 2;
-    tick = runs;
 }
 
 
@@ -33,8 +26,8 @@ void RandomCreator::doTicks(int num) {
 
             int dir = rand() % 4;
 
-            std::cout << "\nIndex: " << std::to_string(toChange->getIndex() ) <<
-                    " dir: " << std::to_string(dir) << std::endl << std::endl;
+            std::cout << "Index: " << std::to_string(toChange->getIndex() ) <<
+                    " dir: " << std::to_string(dir) << std::endl;
 
             if(toChange->isSurrounding(dir) ) {
                 toChange->setWall(dir, !toChange->isWall(dir));

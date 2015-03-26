@@ -3,7 +3,6 @@
 #include "ant.h"
 
 
-
 #define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
 
 
@@ -14,7 +13,7 @@ int main()
     std::cout << "creating the maze ..." << std::endl;
 
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(660, 660), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(760, 750), "SFML window");
     tgui::Gui gui(window);
 
     std::cout << "setting global font ..." << std::endl;
@@ -32,14 +31,13 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(15, 15);
+    Maze maze(20, 20);
 
-    RandomCreator randomCreator(&maze);
     control.setMaze(&maze);
 
     std::cout << "moving maze ... " << std::endl;
 
-    maze.move(120, 90);
+    maze.move(120, 110);
 
     Ant ant;
 
@@ -158,26 +156,21 @@ int main()
                 case 5:
                     control.testConnectedButtonClicked();
                     break;
-                case 6:
-                    control.createPerfect();
-                    break;
-                case 7:
-                    randomCreator.reset();
-                    break;
-                case 8:
-                    control.ResetMaze();
-                    break;
                 case 10:
+                    std::cout << "closing window" << std::endl;
                     window.close();
+                    break;
+                case 11:
+                    if (callback.text == "Exit")
+                        window.close();
+                    else
+                        control.handleCallback(callback);
                     break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;
                     break;
             }
         }
-
-        if (Frame % 20 == 0)
-            randomCreator.complete();
 
         // Clear screen
         window.clear();
