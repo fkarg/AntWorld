@@ -100,3 +100,11 @@ void Ant::doTick() {
 }
 
 
+
+bool Ant::isInide(int x, int y) {
+
+    return x <= locX + height && x >= locX &&
+            y <= locY + width && y >= locY;
+
+}
+

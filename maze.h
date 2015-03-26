@@ -85,6 +85,10 @@ public:
 
 
 
+
+
+
+
 class Maze : public tickInterface {
 
 protected:
@@ -115,4 +119,4 @@ public:
 };
 
 
-#endif MAZE_H
+#endif

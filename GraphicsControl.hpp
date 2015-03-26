@@ -5,6 +5,7 @@
 #include "maze.h"
 #include "ticksystem.h"
 #include "mazecreator.h"
+#include "ant.h"
 
 #ifndef SOURCES
 #define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"

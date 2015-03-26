@@ -12,7 +12,7 @@
 class Ant : public tickInterface {
 
 private:
-    int locX = -1, locY = -1, dir = 0;
+    int locX = -1, locY = -1, dir = 0, height = 26, width = 26;
 
     int ownFood = 0;
 
@@ -39,7 +39,12 @@ public:
 
     void doTick();
 
+    bool isInide(int x, int y);
+
 };
+
+
+
 
 
 
