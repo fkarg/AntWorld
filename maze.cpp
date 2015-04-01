@@ -218,9 +218,21 @@ int showTile::getX() {
 }
 
 
+// returns the own X-pos
+int showTile::getOwnX() {
+    return locX;
+}
+
+
 // returns the Y-pos of the tileToShow
 int showTile::getY() {
     return pubY;
+}
+
+
+// returns the own Y-pos
+int showTile::getOwnY() {
+    return locY;
 }
 
 

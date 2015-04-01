@@ -71,7 +71,9 @@ public:
     int getHeight();    // returning the height
     int getWidth();     // returning the width
     int getX();         // returning x
+    int getOwnX();
     int getY();         // returning y
+    int getOwnY();
     void setIndex(int index); // setting the @param index
     int getIndex();     // returning the index
     int isFood();       // returning how much food there is on the Tile

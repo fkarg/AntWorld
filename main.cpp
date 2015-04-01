@@ -33,15 +33,11 @@ int main()
     // Creating a 10 x 10 Maze
     Maze maze(20, 20);
 
-    control.setMaze(&maze);
-
     std::cout << "moving maze ... " << std::endl;
 
     maze.move(120, 110);
 
-    Ant ant;
-
-    ant.setPosition(maze.getTile(rand() % maze.INDEX_MAX() ) );
+    control.setMaze(&maze);
 
     // Frame-counter
     int Frame = 0;
@@ -106,16 +102,16 @@ int main()
                     // for moving the ant
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::G) )
-                        ant.move(0);
+                        control.AntMove(0);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::T) )
-                        ant.move(1);
+                        control.AntMove(1);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::R) )
-                        ant.move(2);
+                        control.AntMove(2);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::N) )
-                        ant.move(3);
+                        control.AntMove(3);
 
                     break;
                 case sf::Event::TextEntered:break;
@@ -178,11 +174,10 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
-        // drawing the ant TODO: AntController
-        ant.draw(&window);
-
         // updating the InfoPanel
         control.updateInfo();
+
+        control.drawAnts();
 
         // drawing the gui
         gui.draw();

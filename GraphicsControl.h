@@ -37,6 +37,15 @@ protected:
     showTile *tileToShowPtr;
     showTile tileToShowTile;
 
+    showAnt *antToShowPtr;
+    showAnt antToShowAnt;
+
+    Ant selectedAnt;
+
+    AntBase base;
+
+    Maze* maze;
+
     sf::RenderWindow* window;
 
     Craver craver;
@@ -48,6 +57,7 @@ public:
     void addGui(tgui::Gui *gui);
     void setMaze(Maze *maze);
     void changeTextInfoLabel(Tile *tile);
+    void AntMove(int dir);
     void updateInfo();
     void testConnectedButtonClicked();
     void handleCallback(tgui::Callback callback);
@@ -57,6 +67,7 @@ public:
     bool isAdvancedMode();
     void changeWalls(int dir, bool move = false);
     void TicksControlChangeState();
+    void drawAnts();                             // TODO: Refactoring!
     void doTick();
 };
 

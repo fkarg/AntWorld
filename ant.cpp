@@ -27,6 +27,9 @@ void Ant::setCurrent(Tile *current) {
     locY = current->getY() + 2;
 
     sprite.setPosition(sf::Vector2f(locX, locY) );
+
+    std::cout << "Ant: current Tile: " + std::to_string(current->getIndex() + 1) << std::endl;
+
 }
 
 
@@ -57,6 +60,7 @@ void Ant::move(int dir) {
         default:break;
     }
 
+    std::cout << "Ant: current Tile: " + std::to_string(current->getIndex() + 1) << std::endl;
 }
 
 
@@ -143,33 +147,76 @@ Tile* Ant::getCurrent() {
 
 
 
+// returns an showAnt, scale for 35p
+showAnt::showAnt() {
+    sprite.setScale(0.24, 0.24);
+}
+
+
+// setting the currently selected Ant
 void showAnt::operator=(Ant *newAnt) {
     setAnt(newAnt);
 }
 
 
+// setting all the values for showing them (from the @param newAnt)
 void showAnt::setAnt(Ant *newAnt) {
-    locX = newAnt->getX();
-    locY = newAnt->getY();
+    AntToShow = newAnt;
+    pubX = newAnt->getX();
+    pubY = newAnt->getY();
     setDir(newAnt->getDir());
     ownFood = newAnt->getFood();
     current = newAnt->getCurrent();
 }
 
 
+// setting the position of the showAnt relational to the @param showTile
+void showAnt::setPosition(showTile *showTile1) {
+    showingTile = showTile1;
+
+    locX = showingTile->getOwnX() + 2;
+    locY = showingTile->getOwnY() + 2;
+
+    sprite.setPosition(sf::Vector2f(locX, locY) );
+}
+
+
+// setting the Dir of the showAnt to @param dir TODO: relational position
 void showAnt::setDir(int dir) {
     showAnt::dir = dir;
 }
 
 
+// setting the showAnt to @param visible or not
 void showAnt::setVisible(bool visible) {
-    show = visible;
+    setDir(AntToShow->getDir() );
+    isVisible = visible;
+    std::cout << "showAnt: visibility set to: " << visible << std::endl;
 }
 
 
+// returns if the showAnt is visible or not
+bool showAnt::getVisible() {
+    return isVisible;
+}
 
+
+// when moving the selected Ant ... TODO: focus
 void showAnt::move(int dir) {
     setVisible(false);
+}
+
+
+// drawing the showAnt on the @param window when visible
+void showAnt::draw(sf::RenderWindow *window) {
+    sprite.setRotation(dir * 90);
+    if (isVisible) window->draw(sprite);
+}
+
+
+// returns the selected Ant TODO: focus
+Ant* showAnt::getAntShown() {
+    return AntToShow;
 }
 
 

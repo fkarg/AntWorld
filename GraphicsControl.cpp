@@ -1,17 +1,16 @@
 #include "GraphicsControl.h"
 
 
-//
-
-
-
-
-
 GraphicsControl::GraphicsControl(sf::RenderWindow* renderWindow) {
     window = renderWindow;
     tileToShowPtr = &tileToShowTile;
+    antToShowPtr = &antToShowAnt;
 
     tileToShowTile.setSize(30, 50, 35, 35);
+
+    antToShowPtr->setPosition(tileToShowPtr);
+    antToShowPtr->setAnt(&selectedAnt);
+
 }
 
 
@@ -133,15 +132,24 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
 
 // setting the maze for the craver, the perfectCreator and the randomCreator
 void GraphicsControl::setMaze(Maze *maze) {
+    GraphicsControl::maze = maze;
     craver.setMaze(maze);
     perf.setMaze(maze);
     randomCreator.setMaze(maze);
+
+    selectedAnt.setPosition(maze->getTile(rand() % maze->INDEX_MAX() ) );
 }
 
 
 // changing the InfoLabel to the @param tile
 void GraphicsControl::changeTextInfoLabel(Tile *tile) {
     tileToShowTile = tile;
+
+    // TODO: Ant-foo
+
+    antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
+
+    if (antToShowPtr->getVisible() ) antToShowPtr->setDir( selectedAnt.getDir() );
 
     if (connect) {
         craver.setAim(tileToShowPtr->getTileToShow() );
@@ -150,6 +158,12 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
 
         connect = false;
     }
+}
+
+
+// moving the currently selected Ant
+void GraphicsControl::AntMove(int dir) {
+    selectedAnt.move(dir);
 }
 
 
@@ -231,6 +245,13 @@ void GraphicsControl::TicksControlChangeState() {
         ticksControl->setText("Pause");
     else
         ticksControl->setText("Resume");
+}
+
+
+// drawing the Ants from the base and the showAnt
+void GraphicsControl::drawAnts() {
+    selectedAnt.draw(window);
+    antToShowPtr->draw(window);
 }
 
 

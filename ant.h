@@ -12,6 +12,7 @@
 #include "maze.h"
 
 #include <iostream>
+#include <string>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -27,7 +28,8 @@ protected:
 
     Tile *current;
 
-    Maze *maze;
+public:
+    Ant();
 
     int getX();
     int getY();
@@ -35,9 +37,6 @@ protected:
     unsigned int getFood();
     Tile* getCurrent();
 
-
-public:
-    Ant();
 
     void setCurrent(Tile *current);
 
@@ -47,15 +46,13 @@ public:
 
     virtual void move(int dir);
 
-    void draw(sf::RenderWindow *window);
+    virtual void draw(sf::RenderWindow *window);
 
     void senseFoodOnCurrentTile();
 
     void doTick();
 
     bool isInside(int x, int y);
-
-    friend void showAnt::setAnt(Ant *newAnt);
 
 };
 
@@ -68,14 +65,21 @@ class showAnt : public Ant {
 
 protected:
     int pubX = -1, pubY = -1;
-    bool show = false;
+    bool isVisible = false;
+    showTile* showingTile;
+    Ant* AntToShow;
 
 public:
+    showAnt();
     void operator=(Ant* newAnt);
     void setAnt(Ant* newAnt);
+    void setPosition(showTile *showTile1);
     void setDir(int dir);
     void setVisible(bool visible);
+    bool getVisible();
     void move(int dir);
+    void draw(sf::RenderWindow *window);
+    Ant* getAntShown();
 };
 
 
