@@ -18,12 +18,6 @@ Ant::Ant() {
 }
 
 
-
-Ant::~Ant() {
-    // dtr
-}
-
-
 // setting the @param current: tile the ant is currently on
 // necessary for getting the location and setting the position
 void Ant::setCurrent(Tile *current) {
@@ -97,11 +91,132 @@ void Ant::doTick() {
 }
 
 
-
-bool Ant::isInide(int x, int y) {
+// returns if the @param x and @param y are inside the Ant
+bool Ant::isInside(int x, int y) {
 
     return x <= locX + height && x >= locX &&
             y <= locY + width && y >= locY;
 
 }
+
+
+// returns the X coordinate of the Ant
+int Ant::getX() {
+    return locX;
+}
+
+
+// returns the Y coordinate of the Ant
+int Ant::getY() {
+    return locY;
+}
+
+
+// returns the current direction of the Ant
+int Ant::getDir() {
+    return dir;
+}
+
+
+// returns how much food the Ant is carrying
+unsigned int Ant::getFood() {
+    return ownFood;
+}
+
+
+// returns the ID of the Ant
+unsigned int Ant::getID() {
+    return AntID;
+}
+
+
+// returns the Tile the Ant is currently on
+Tile* Ant::getCurrent() {
+    return current;
+}
+
+
+
+
+
+
+
+
+
+void showAnt::operator=(Ant *newAnt) {
+    setAnt(newAnt);
+}
+
+
+void showAnt::setAnt(Ant *newAnt) {
+    locX = newAnt->getX();
+    locY = newAnt->getY();
+    setDir(newAnt->getDir());
+    ownFood = newAnt->getFood();
+    current = newAnt->getCurrent();
+}
+
+
+void showAnt::setDir(int dir) {
+    showAnt::dir = dir;
+}
+
+
+void showAnt::setVisible(bool visible) {
+    show = visible;
+}
+
+
+
+void showAnt::move(int dir) {
+    setVisible(false);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+void AntBase::addAnt(Ant ant) {
+    ownAnts.push_back(ant);
+    antCount++;
+}
+
+
+
+void AntBase::drawAll(sf::RenderWindow *renderWindow) {
+    for (int i = 0; i < ownAnts.size(); i++) {
+        ownAnts[i].draw(renderWindow);
+    }
+}
+
+
+
+void AntBase::doTick() {
+    // TODO: doTick
+}
+
+
+
+Ant* AntBase::getAnt(int AntID) {
+    // getting the Ant with the ID
+    return NULL;
+}
+
+
+
+
+
+
+
+
+
+
 
