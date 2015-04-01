@@ -1,9 +1,9 @@
 #include <TGUI/TGUI.hpp>
-#include "GraphicsControl.hpp"
+#include "GraphicsControl.h"
 #include "ant.h"
 
 
-#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#define SOURCES "/usr/resources_coding/"
 
 
 

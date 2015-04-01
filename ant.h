@@ -3,7 +3,7 @@
 
 
 #ifndef SOURCES
-#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#define SOURCES "/usr/resources_coding/"
 #endif
 
 

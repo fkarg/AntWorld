@@ -8,20 +8,21 @@
 
 
 #ifndef SOURCES
-#define SOURCES "/home/bz/ClionProjects/AntWorld/resources/"
+#define SOURCES "/usr/resources_coding/"
 #endif
 
-#define THEME_CONFIG_FILE "/home/bz/ClionProjects/AntWorld/resources/Black.conf"
+#define THEME_CONFIG_FILE "/usr/resources_coding/Black.conf"                                    
 
 
 
-#include <TGUI/Label.hpp>
-#include <TGUI/Button.hpp>
-#include <TGUI/Checkbox.hpp>
+#include <TGUI/TGUI.hpp>
 #include "maze.h"
 #include "mazecreator.h"
+#include "ticksystem.h"
+#include "ant.h"
 
-class GraphicsControl {
+
+class GraphicsControl : tickInterface {
 protected:
     // pointer to the InfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
@@ -36,7 +37,7 @@ protected:
     showTile *tileToShowPtr;
     showTile tileToShowTile;
 
-    sf::RenderWindow *window;
+    sf::RenderWindow* window;
 
     Craver craver;
     perfectCreator perf;
@@ -49,6 +50,7 @@ public:
     void changeTextInfoLabel(Tile *tile);
     void updateInfo();
     void testConnectedButtonClicked();
+    void handleCallback(tgui::Callback callback);
     void createPerfect();
     void createRandom();
     void ResetMaze();
@@ -68,4 +70,4 @@ public:
 
 
 
-#endif //_ANTWORLD_GRAPHICSCONTROL_H_
+#endif
