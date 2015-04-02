@@ -4,7 +4,7 @@
 // creating the ant, loading the image and setting it
 Ant::Ant() {
     if (!texture.loadFromFile(SOURCES"Ant.png") )
-        std::cout << "Error loading AntImage" << std::endl;
+        std::cout << "Error loading Ant_Image" << std::endl;
     else
         sprite.setTexture(texture);
 
@@ -256,21 +256,50 @@ Ant* showAnt::getAntShown() {
 
 
 
+// initializing texture and position, as well as Ants
+AntBase::AntBase() {
+
+    if (!texture.loadFromFile(SOURCES"Home_1.png") )
+        std::cout << "Error loading Home_Image" << std::endl;
+    else
+        sprite.setTexture(texture);
+
+    texture.setSmooth(true);
+
+    // sprite.setScale(sf::Vector2f(30, 30) );
+
+    // sprite.setColor(sf::Color(0, 255, 0, 255) );
+
+    sprite.scale(sf::Vector2f(0.2, 0.2) );
+}
 
 
+// adding an @param ant
 void AntBase::addAnt(Ant ant) {
     ownAnts.push_back(ant);
     antCount++;
 }
 
 
+// increasing the number of Ants in Conrol of this Base
+void AntBase::addAnt() {
+    Ant ant();
+}
 
-void AntBase::drawAll(sf::RenderWindow *renderWindow) {
+
+// drawing all Ants included to this Base
+void AntBase::drawAnts(sf::RenderWindow *renderWindow) {
     for (int i = 0; i < ownAnts.size(); i++) {
         ownAnts[i].draw(renderWindow);
     }
 }
 
+
+// drawing the Tile itself
+void AntBase::drawTile(sf::RenderWindow *window) {
+    Tile::drawTile(window);
+    window->draw(sprite);
+}
 
 
 void AntBase::doTick() {
@@ -278,9 +307,14 @@ void AntBase::doTick() {
 }
 
 
-
+// getting the Ant with the @param AntID or NULL instead
 Ant* AntBase::getAnt(int AntID) {
-    // getting the Ant with the ID
+
+    for (int i = 0; i < ownAnts.size(); i++) {
+        if (ownAnts[i].getID() == AntID)
+            return &ownAnts[i];
+    }
+
     return NULL;
 }
 

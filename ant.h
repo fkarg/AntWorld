@@ -87,16 +87,21 @@ public:
 
 
 
-class AntBase : tickInterface {
+class AntBase : Tile {
 
 protected:
     std::vector<Ant> ownAnts;
-    int antCount = 0;
+    int antCount = 0, special = 2;
 
+    sf::Texture texture;
+    sf::Sprite sprite;
 
 public:
-    void drawAll(sf::RenderWindow *renderWindow);
+    AntBase();
     void addAnt(Ant ant);
+    void addAnt();
+    void drawAnts(sf::RenderWindow *renderWindow);
+    void drawTile(sf::RenderWindow *window);
     void doTick();
     Ant* getAnt(int AntID);
 };

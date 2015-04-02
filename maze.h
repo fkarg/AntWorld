@@ -10,10 +10,9 @@
 
 
 
-
 class Tile : public tickInterface {
 protected:
-    int locX, locY, height, width, index = -1;
+    int locX, locY, height, width, index = -1, special = 0;
 
     unsigned int food = 0;
 
@@ -46,7 +45,7 @@ public:
     void setColor(sf::Color color); // setting the color of the Tile
     sf::Color getTileColor();
     void draw(sf::RenderWindow *renderWindow); // drawing the Tile completely (obsolete)
-    void drawTile(sf::RenderWindow *renderwindow); // drawing only the body of the Tile
+    virtual void drawTile(sf::RenderWindow *renderwindow); // drawing only the body of the Tile
     void drawWalls(sf::RenderWindow *renderWindow); // drawing only the Walls of the Tile
     void doTick();              // doing a Tick
     virtual void setWall(int dir, bool setWall); // setting the wall in @param dir to @param setWall
@@ -56,13 +55,16 @@ public:
     virtual bool isSurrounding(int dir); // returning if there even is sth in @param dir
     virtual int isFood(); // returning all the food on the Tile
     int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
-
+    int getSpecial() { return special; } // returns if the tile is somewhat special
 };
+
+
+class AntBase;
 
 
 class showTile : public Tile {
 protected:
-    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1;
+    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1, special = 1;
     unsigned int pubFood = 0;
     Tile *tileToShow = NULL;    // the tile that is being 'copied'
 
@@ -110,6 +112,7 @@ public:
     void drawMaze(sf::RenderWindow *renderWindow); // drawing the maze a whole
     void move(int x, int y); // moving for @param x and @param y pixels - the whole maze
     void doTick();  // whatever happens at a tick is updated in the maze
+    void setHome(int x, int y, AntBase home); //setting the @param x and y tile to the @param homeTile
     Tile *getTileClicked(int x, int y);    // returns the tile that got clicked on
     Tile *getTile(int index);      // getting the Tile at @param index
     Tile *getTile(int x, int y);   // getting the Tile at @param x and @param y
@@ -118,7 +121,7 @@ public:
     int getX();                     // returns the xPos of the maze
     int getY();                     // returns the yPos of the maze
     int INDEX_MAX();                // returns the MAX Index of the maze
-    ~Maze(){};
+    ~Maze(){};                      // destructor of the Maze
 };
 
 

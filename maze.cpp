@@ -427,6 +427,12 @@ void Maze::doTick() {
 }
 
 
+// sets the tile at @param x and @param y to the @param home of some Ants
+void Maze::setHome(int x, int y, AntBase home) {
+    MAP[x][y] =  home;
+}
+
+
 // returns the tile that got clicked on (if there is one)
 Tile* Maze::getTileClicked(int x, int y) {
     for (int i = 0; i < sizeX; i++) {
