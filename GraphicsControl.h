@@ -67,7 +67,7 @@ public:
     bool isAdvancedMode();
     void changeWalls(int dir, bool move = false);
     void TicksControlChangeState();
-    void drawAnts();                             // TODO: Refactoring!
+    void drawAnts();
     void doTick();
 };
 

@@ -11,6 +11,8 @@ GraphicsControl::GraphicsControl(sf::RenderWindow* renderWindow) {
     antToShowPtr->setPosition(tileToShowPtr);
     antToShowPtr->setAnt(&selectedAnt);
 
+    antToShowPtr->setVisible(false);
+
 }
 
 
@@ -144,8 +146,6 @@ void GraphicsControl::setMaze(Maze *maze) {
 // changing the InfoLabel to the @param tile
 void GraphicsControl::changeTextInfoLabel(Tile *tile) {
     tileToShowTile = tile;
-
-    // TODO: Ant-foo
 
     antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
 

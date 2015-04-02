@@ -182,7 +182,7 @@ void showAnt::setPosition(showTile *showTile1) {
 }
 
 
-// setting the Dir of the showAnt to @param dir TODO: relational position
+// setting the Dir of the showAnt to @param dir
 void showAnt::setDir(int dir) {
     showAnt::dir = dir;
 }
@@ -202,7 +202,7 @@ bool showAnt::getVisible() {
 }
 
 
-// when moving the selected Ant ... TODO: focus
+// moving the selected Ant in @param dir or at least turning in this direction
 void showAnt::move(int dir) {
 
     if (isVisible) {
@@ -239,7 +239,7 @@ void showAnt::draw(sf::RenderWindow *window) {
 }
 
 
-// returns the selected Ant TODO: focus
+// returns the selected Ant
 Ant* showAnt::getAntShown() {
     if (isVisible)
         return AntToShow;
