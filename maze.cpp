@@ -104,6 +104,12 @@ void Tile::setColor(sf::Color color) {
 }
 
 
+// returns the current color lf the tile
+sf::Color Tile::getTileColor() {
+    return rect.getFillColor();
+}
+
+
 // drawing the Tile completely
 void Tile::draw(sf::RenderWindow *renderWindow) {
     drawTile(renderWindow);
@@ -272,6 +278,7 @@ void showTile::doTick() {
         pubWidth = tileToShow->getWidth();
         pubIndex = tileToShow->getIndex();
         pubFood = (unsigned) tileToShow->isFood();
+        rect.setFillColor(tileToShow->getTileColor() );
 
         wall[0] = tileToShow->isWall(0);
         wall[1] = tileToShow->isWall(1);

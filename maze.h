@@ -44,6 +44,7 @@ public:
     virtual void setIndex(int index); // setting the @param index
     virtual int getIndex() const; // the set index
     void setColor(sf::Color color); // setting the color of the Tile
+    sf::Color getTileColor();
     void draw(sf::RenderWindow *renderWindow); // drawing the Tile completely (obsolete)
     void drawTile(sf::RenderWindow *renderwindow); // drawing only the body of the Tile
     void drawWalls(sf::RenderWindow *renderWindow); // drawing only the Walls of the Tile
