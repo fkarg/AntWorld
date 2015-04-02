@@ -13,7 +13,7 @@
 
 class Tile : public tickInterface {
 protected:
-    int locX, locY, height, width, index = -1;
+    int locX, locY, height, width, index = -1, special = 0;
 
     unsigned int food = 0;
 
@@ -55,8 +55,10 @@ public:
     virtual bool isSurrounding(int dir); // returning if there even is sth in @param dir
     virtual int isFood(); // returning all the food on the Tile
     int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
-
+    int getSpecial() { return special; } // returning if the tile is special
 };
+
+
 
 
 class showTile : public Tile {
@@ -117,6 +119,10 @@ public:
     int INDEX_MAX();                // returns the MAX Index of the maze
     ~Maze(){};
 };
+
+
+
+
 
 
 #endif

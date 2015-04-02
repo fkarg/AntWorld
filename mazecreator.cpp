@@ -53,7 +53,7 @@ void RandomCreator::doTick() {
 }
 
 
-
+// doing all in one run
 void RandomCreator::complete() {
     while (tick < runs) {
         doTicks();

@@ -20,7 +20,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button for closing the Window (for test purposes)
     tgui::Button::Ptr button(*gui);
     button->load(THEME_CONFIG_FILE);
-    button->setPosition(20, 460);
+    button->setPosition(20, 460 + 40);
     button->setSize(60, 20);
     button->setText("Close");
     button->bindCallback(tgui::Button::LeftMouseClicked);
@@ -41,7 +41,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the wall in upper direction to tho tile selected
     tgui::Button::Ptr buttonChangeWallUp(*gui);
     buttonChangeWallUp->load(THEME_CONFIG_FILE);
-    buttonChangeWallUp->setPosition(15, 270);
+    buttonChangeWallUp->setPosition(15, 270 + 40);
     buttonChangeWallUp->setSize(90, 20);
     buttonChangeWallUp->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallUp->setCallbackId(0);
@@ -51,9 +51,8 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the wall right to the tile selected
     tgui::Button::Ptr buttonChangeWallRight(*gui);
     buttonChangeWallRight->load(THEME_CONFIG_FILE);
-    buttonChangeWallRight->setPosition(15, 270);
     buttonChangeWallRight->setSize(90, 20);
-    buttonChangeWallRight->setPosition(15, 300);
+    buttonChangeWallRight->setPosition(15, 300 + 40);
     buttonChangeWallRight->setCallbackId(1);
     buttonChangeWallRight->setText("ChangeWallRight");
 
@@ -61,9 +60,8 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the wall in lower direction to the tile selected
     tgui::Button::Ptr buttonChangeWallDown(*gui);
     buttonChangeWallDown->load(THEME_CONFIG_FILE);
-    buttonChangeWallDown->setPosition(15, 270);
     buttonChangeWallDown->setSize(90, 20);
-    buttonChangeWallDown->setPosition(15, 330);
+    buttonChangeWallDown->setPosition(15, 330 + 40);
     buttonChangeWallDown->setCallbackId(2);
     buttonChangeWallDown->setText("ChangeWallDown");
 
@@ -71,9 +69,8 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the wall left to the tile selected
     tgui::Button::Ptr buttonChangeWallLeft(*gui);
     buttonChangeWallLeft->load(THEME_CONFIG_FILE);
-    buttonChangeWallLeft->setPosition(15, 270);
     buttonChangeWallLeft->setSize(90, 20);
-    buttonChangeWallLeft->setPosition(15, 360);
+    buttonChangeWallLeft->setPosition(15, 360 + 40);
     buttonChangeWallLeft->setCallbackId(3);
     buttonChangeWallLeft->setText("ChangeWallLeft");
 
@@ -81,7 +78,6 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the ticks - started, paused, stopped
     tgui::Button::Ptr startTicksButton(*gui);
     startTicksButton->load(THEME_CONFIG_FILE);
-    startTicksButton->setPosition(15, 270);
     startTicksButton->setSize(90, 20);
     startTicksButton->setPosition(500, 50);
     startTicksButton->setCallbackId(4);
@@ -91,7 +87,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // checkbox if 'Jumping' is allowed
     tgui::Checkbox::Ptr checkBox(*gui);
     checkBox->load(THEME_CONFIG_FILE);
-    checkBox->setPosition(15, 240);
+    checkBox->setPosition(15, 240 + 40);
     checkBox->setText("Moving");
     checkBox->setSize(20, 20);
     checkBox->check();
@@ -102,11 +98,14 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // testConnectedButton, for searching if two tiles are connected
     tgui::Button::Ptr TestConnectedButton(*gui);
     TestConnectedButton->load(THEME_CONFIG_FILE);
-    TestConnectedButton->setPosition(15, 420);
+    TestConnectedButton->setPosition(15, 420 + 40);
     TestConnectedButton->setText("TestConnected");
     TestConnectedButton->setCallbackId(5);
     TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
     TestConnectedButton->setSize(90, 20);
+
+
+    // TODO: add bar to set the production of ... whatever (Food, Res, etc)
 
 
     // creating the menu
@@ -126,7 +125,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
 
     menu->bindCallback(tgui::MenuBar::MenuItemClicked);
     menu->setCallbackId(11);
-    
+
 
 }
 
