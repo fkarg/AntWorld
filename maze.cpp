@@ -202,13 +202,13 @@ void showTile::operator=(Tile *tile) {
 
 // returns the height of the current tileToShow
 int showTile::getHeight() {
-    return pubHeight;
+    return height;
 }
 
 
 // returns the width of the current tileToShow
 int showTile::getWidth() {
-    return pubWidth;
+    return width;
 }
 
 

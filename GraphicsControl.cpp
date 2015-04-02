@@ -163,7 +163,12 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
 
 // moving the currently selected Ant
 void GraphicsControl::AntMove(int dir) {
-    selectedAnt.move(dir);
+    if (antToShowPtr->getVisible() ) {
+        antToShowAnt.move(dir);
+        if (!tileToShowPtr->isWall(dir) )
+            changeTextInfoLabel(tileToShowPtr->getSurrounding(dir));
+    }
+
 }
 
 

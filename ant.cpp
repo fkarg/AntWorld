@@ -167,6 +167,7 @@ void showAnt::setAnt(Ant *newAnt) {
     setDir(newAnt->getDir());
     ownFood = newAnt->getFood();
     current = newAnt->getCurrent();
+    setVisible(true);
 }
 
 
@@ -203,20 +204,46 @@ bool showAnt::getVisible() {
 
 // when moving the selected Ant ... TODO: focus
 void showAnt::move(int dir) {
-    setVisible(false);
+
+    if (isVisible) {
+        AntToShow->move(dir);
+
+        switch (dir) {
+            case 0:
+                sprite.setPosition(sf::Vector2f(locX, locY));
+                break;
+            case 1:
+                sprite.setPosition(sf::Vector2f(locX + showingTile->getWidth() - 4,
+                                                locY));
+                break;
+            case 2:
+                sprite.setPosition(sf::Vector2f(locX + showingTile->getWidth() - 4,
+                                                locY + showingTile->getHeight() - 4));
+                break;
+            case 3:
+                sprite.setPosition(sf::Vector2f(locX,
+                                                locY + showingTile->getHeight() - 4));
+                break;
+            default:
+                break;
+        }
+        sprite.setRotation(dir * 90);
+    }
 }
 
 
 // drawing the showAnt on the @param window when visible
 void showAnt::draw(sf::RenderWindow *window) {
-    sprite.setRotation(dir * 90);
-    if (isVisible) window->draw(sprite);
+    if (isVisible)
+        window->draw(sprite);
 }
 
 
 // returns the selected Ant TODO: focus
 Ant* showAnt::getAntShown() {
-    return AntToShow;
+    if (isVisible)
+        return AntToShow;
+    return NULL;
 }
 
 
