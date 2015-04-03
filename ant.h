@@ -9,7 +9,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include "ticksystem.h"
-#include "maze.h"
+#include "tile.h"
 
 #include <iostream>
 #include <string>
@@ -87,7 +87,7 @@ public:
 
 
 
-class AntBase : Tile {
+class AntBase : public Tile {
 
 protected:
     std::vector<Ant> ownAnts;
