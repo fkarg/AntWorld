@@ -107,6 +107,15 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
 
     // TODO: add bar to set the production of ... whatever (Food, Res, etc)
 
+    tgui::Slider::Ptr slider(*gui);
+    slider->load(THEME_CONFIG_FILE);
+    slider->setVerticalScroll(false);
+    slider->setPosition(20, 240);
+    slider->setSize(80, 15);
+    slider->setMinimum(0);
+    slider->setMaximum(5);
+    slider->setValue(2);
+
 
     // creating the menu
     tgui::MenuBar::Ptr menu(*gui);
