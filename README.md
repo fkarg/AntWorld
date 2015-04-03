@@ -56,24 +56,44 @@ well - at least that's the idea.
 checklist:
 
 GUI: (parts missing)
+
 Maze - Check
+
 changing wall states - Check
+
 creation algorithms: Random and Perfect, as well as a reset - Check
+
 searchAlgorithm A* - Check
+
 showTile - Check
+
 Ant - Check
+
 showAnt - Check
+
 tickSystem - in Progress (need someone else who knows more about it)
+
 AntBase - in Progress (need to redefine it)
+
 Resources - in Progress
+
 Scent - yet to start
 
+
+
 KI: (all missing)
+
 Reactive Ant-behaviour
+
 half-cognitive Ant-behaviour (map)
+
 (map might be chaning)
+
 selectable Ant-behaviour
+
+
 AntBase that signs tasks
+
 
 
 
