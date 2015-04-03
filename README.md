@@ -3,13 +3,13 @@ An Environment for several AI's, searching for food and other resources.
 Nearly all the variables can be changed by the user.
 
 
-Project done with Clion, Code::Blocks and Sublime Text, written in C++
+Project done with Clion and Sublime Text, written in C++
 
 Used librarys: SFML, TinyXML2, TGUI (GUI for SFML)
 
 currently really needed:
 master: SFML, TGUI
-old_graphics: SFML
+all other current branches: same as master
 
 
 
@@ -51,6 +51,29 @@ they are right now, etc. )
 you can save and load your created and edited mazes, but first the state of everything else will not be supported.
 
 well - at least that's the idea.
+
+
+checklist:
+
+GUI: (parts missing)
+Maze - Check
+changing wall states - Check
+creation algorithms: Random and Perfect, as well as a reset - Check
+searchAlgorithm A* - Check
+showTile - Check
+Ant - Check
+showAnt - Check
+tickSystem - in Progress (need someone else who knows more about it)
+AntBase - in Progress (need to redefine it)
+Resources - in Progress
+Scent - yet to start
+
+KI: (all missing)
+Reactive Ant-behaviour
+half-cognitive Ant-behaviour (map)
+(map might be chaning)
+selectable Ant-behaviour
+AntBase that signs tasks
 
 
 
