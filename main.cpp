@@ -149,6 +149,7 @@ int main()
                 case 2:
                 case 3:
                     control.changeWalls(callback.id, control.isAdvancedMode() );
+                    std::cout << "changeWallDir: " << std::to_string(callback.id) << std::endl;
                     break;
                 case 4:
                     control.TicksControlChangeState();

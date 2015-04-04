@@ -53,6 +53,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     buttonChangeWallRight->load(THEME_CONFIG_FILE);
     buttonChangeWallRight->setSize(90, 20);
     buttonChangeWallRight->setPosition(15, 300 + 40);
+    buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallRight->setCallbackId(1);
     buttonChangeWallRight->setText("ChangeWallRight");
 
@@ -62,6 +63,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     buttonChangeWallDown->load(THEME_CONFIG_FILE);
     buttonChangeWallDown->setSize(90, 20);
     buttonChangeWallDown->setPosition(15, 330 + 40);
+    buttonChangeWallDown->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallDown->setCallbackId(2);
     buttonChangeWallDown->setText("ChangeWallDown");
 
@@ -71,6 +73,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     buttonChangeWallLeft->load(THEME_CONFIG_FILE);
     buttonChangeWallLeft->setSize(90, 20);
     buttonChangeWallLeft->setPosition(15, 360 + 40);
+    buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallLeft->setCallbackId(3);
     buttonChangeWallLeft->setText("ChangeWallLeft");
 
