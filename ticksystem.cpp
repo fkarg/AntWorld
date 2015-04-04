@@ -10,11 +10,12 @@ void TickControl::sleep(unsigned int milliseconds) {
 void TickControl::Timer() {
     time_t startTime;
 
+
     while (running) {
         startTime = time(0);
         for (int tickInd = 0; tickInd < toTick.size(); tickInd++) {
 
-            std::thread tickThread(toTick[tickInd]->doTick);
+            std::thread tickThread(toTick[tickInd]->doTick, 8);
             tickThread.detach();
 
 
@@ -36,7 +37,7 @@ void TickControl::Timer() {
 
 
 
-void TickControl::doTick() {
+void TickControl::doTick(int foo) {
     // TODO: what to do at a tick
     std::cout << "TickControl: doing tick!" << std::endl;
 }

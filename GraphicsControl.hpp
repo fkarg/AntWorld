@@ -159,7 +159,7 @@ public:
 
 
     // doing a tick - TODO: NOT WORKING YET
-    void doTick () {
+    void doTick (int foo) {
 
         std::cout << "Tick: " << std::to_string(tick) << std::endl;
         tick++;

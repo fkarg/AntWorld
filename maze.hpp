@@ -221,7 +221,7 @@ public:
     // operator overloading, needed not to override the wrong values
     void operator=(Tile *tile){
         tileToShow = tile;
-        doTick();
+        doTick(5);
     }
 
     // returning the public height of the tile
@@ -285,7 +285,7 @@ public:
     }
 
     // Whatever happens at a tick is sure to get updated
-    void doTick(){
+    void doTick(int foo){
         if (tileToShow != NULL) {
             pubX = tileToShow->getX();
             pubY = tileToShow->getY();
@@ -433,7 +433,7 @@ public:
     };
 
     // Doing a tick for every tile in the map
-    void doTick() {
+    void doTick(int foo) {
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
                 MAP[i][j].doTick();

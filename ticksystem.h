@@ -13,7 +13,7 @@
 // defines the tickInterface - It's only one method so it's not that big a deal
 class tickInterface {
 public:
-    virtual void doTick() = 0;
+    virtual void doTick(int foo){};
 };
 
 
@@ -32,7 +32,7 @@ private:
 
 
 public:
-    void doTick();
+    void doTick(int foo);
     void addTicker(tickInterface* ticker);
     void setRunning(bool run);
     void start();
