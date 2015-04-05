@@ -124,7 +124,7 @@ void Maze::doTick() {
 }
 
 
-
+// setting a tile to a Home-tile
 void Maze::setHome(int x, int y) {
     antBase home1;
     home1.setPosition(getTile(x, y) );

@@ -28,7 +28,7 @@ protected:
     sf::RectangleShape rect;
     sf::RectangleShape Walls[4];
 
-    antBase *base;
+    antBase *base = NULL;
 
     // adding or actualizing the Walls position
     void addWalls();
@@ -59,9 +59,9 @@ public:
     virtual int isFood(); // returning all the food on the Tile
     int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
     int getSpecial() { return special; } // returns if the tile is somewhat special
-    void setSpecial(int special) { Tile::special = special; }
-    antBase *getBase() { return base; }
-    void setBase(antBase *base) { Tile::base = base; }
+    void setSpecial(int special) { Tile::special = special; } // setting the 'special' value
+    antBase *getBase() { return base; } // returns the antBase if one is set
+    void setBase(antBase *base) { Tile::base = base; } // setting the antBase
 };
 
 

@@ -16,6 +16,7 @@ GraphicsControl::GraphicsControl(sf::RenderWindow* renderWindow) {
 }
 
 
+// adding the GUI in the main window once
 void GraphicsControl::addGui(tgui::Gui *gui) {
 
     // button for closing the Window (for test purposes)

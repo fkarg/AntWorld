@@ -3,6 +3,11 @@
 
 // creating the ant, loading the image and setting it
 Ant::Ant() {
+
+    // FIXME: there will be a white tile (probably) when drawn
+    // this comes from: the texture is getting copied
+    // and (probably) loses the image in the process
+
     if (!texture.loadFromFile(SOURCES"Ant.png") )
         std::cout << "Error loading Ant_Image" << std::endl;
     else
@@ -252,7 +257,7 @@ Ant* showAnt::getAntShown() {
 
 
 
-
+// reloading the base-Image (needed when transferring 'ownership')
 void antBase::reloadBase() {
     if (!texture.loadFromFile(SOURCES"Home_2.png") )
         std::cout << "Error Loading Home_Image" << std::endl;
@@ -262,6 +267,8 @@ void antBase::reloadBase() {
     texture.setSmooth(true);
 }
 
+
+// setting the Position and the scale of the sprite and the texture
 void antBase::setPosition(int x, int y, float scale) {
     locX = x + 2;
     locY = y + 2;
@@ -270,12 +277,14 @@ void antBase::setPosition(int x, int y, float scale) {
 }
 
 
+// setting the position of the sprite to the position of the @param tile
 void antBase::setPosition(Tile *tile) {
     baseTile = tile;
     setPosition(tile->getX(), tile->getY(), 0.2);
 }
 
 
+// adding a new ant
 void antBase::addAnt() {
     Ant ant;
     ant.setPosition(baseTile);
@@ -284,42 +293,48 @@ void antBase::addAnt() {
 }
 
 
+// adding a specific @param ant to the ownAnts
 void antBase::addAnt(Ant ant) {
     ownAnts.push_back(ant);
     AntCount++;
 }
 
 
+// adding @param num new general ants
 void antBase::addAnts(int num) {
     for (int i = 0; i < num; i++)
         addAnt();
 }
 
 
+// drawing the ants from the antBase
 void antBase::drawAnts(sf::RenderWindow *window) {
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].draw(window);
 }
 
 
+// drawing the sprite of the antBase
 void antBase::drawBase(sf::RenderWindow *window) {
     window->draw(sprite);
-    std::cout << "drawing sprite" << std::endl;
 }
 
 
+// drawingn the antBase and the Ants of the antBase
 void antBase::draw(sf::RenderWindow *window) {
     drawBase(window);
     drawAnts(window);
 }
 
 
+// doing the tick for all ants too
 void antBase::doTick() {
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].doTick();
 }
 
 
+// returns the ant with the @param AntID or NULL if notexistent
 Ant* antBase::getAnt(unsigned int AntID) {
     for (int i = 0; i < AntCount; i++) {
         if (ownAnts[i].getID() == AntID)
