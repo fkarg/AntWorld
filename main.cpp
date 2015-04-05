@@ -144,13 +144,16 @@ int main()
                 case 1:
                 case 2:
                 case 3:
-                    control.changeWalls(callback.id, control.isAdvancedMode() );
+                    control.changeWalls(callback.id, control.isAdvancedMode());
                     break;
                 case 4:
                     control.TicksControlChangeState();
                     break;
                 case 5:
                     control.testConnectedButtonClicked();
+                    break;
+                case 6:
+                    maze.setHome(3, 3);
                     break;
                 case 10:
                     std::cout << "closing window" << std::endl;

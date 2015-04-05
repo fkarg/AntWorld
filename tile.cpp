@@ -116,23 +116,23 @@ sf::Color Tile::getTileColor() {
 
 
 // drawing the Tile completely
-void Tile::draw(sf::RenderWindow *renderWindow) {
-    drawTile(renderWindow);
-    drawWalls(renderWindow);
+void Tile::draw(sf::RenderWindow *window) {
+    drawTile(window);
+    drawWalls(window);
 }
 
 
 // only drawing the Tile
-void Tile::drawTile(sf::RenderWindow *renderwindow) {
-    renderwindow->draw(rect);
+void Tile::drawTile(sf::RenderWindow *window) {
+    window->draw(rect);
 }
 
 
 // drawing the walls -> dependent on wall[x]
-void Tile::drawWalls(sf::RenderWindow *renderWindow) {
+void Tile::drawWalls(sf::RenderWindow *window) {
     for (int x = 0; x < 4; x++) {
         if (wall[x])
-            renderWindow->draw(Walls[x]);
+            window->draw(Walls[x]);
     }
 }
 

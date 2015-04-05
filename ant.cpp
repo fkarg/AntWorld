@@ -253,75 +253,80 @@ Ant* showAnt::getAntShown() {
 
 
 
-
-
-
-// initializing texture and position, as well as Ants
-AntBase::AntBase() {
-
-    if (!texture.loadFromFile(SOURCES"Home_1.png") )
-        std::cout << "Error loading Home_Image" << std::endl;
+void antBase::reloadBase() {
+    if (!texture.loadFromFile(SOURCES"Home_2.png") )
+        std::cout << "Error Loading Home_Image" << std::endl;
     else
         sprite.setTexture(texture);
 
     texture.setSmooth(true);
+}
 
-    // sprite.setScale(sf::Vector2f(30, 30) );
-
-    // sprite.setColor(sf::Color(0, 255, 0, 255) );
-
-    sprite.scale(sf::Vector2f(0.2, 0.2) );
+void antBase::setPosition(int x, int y, float scale) {
+    locX = x + 2;
+    locY = y + 2;
+    sprite.setPosition(locX, locY);
+    sprite.scale(scale, scale);
 }
 
 
-// adding an @param ant
-void AntBase::addAnt(Ant ant) {
+void antBase::setPosition(Tile *tile) {
+    baseTile = tile;
+    setPosition(tile->getX(), tile->getY(), 0.2);
+}
+
+
+void antBase::addAnt() {
+    Ant ant;
+    ant.setPosition(baseTile);
     ownAnts.push_back(ant);
-    antCount++;
+    AntCount++;
 }
 
 
-// increasing the number of Ants in Conrol of this Base
-void AntBase::addAnt() {
-    Ant ant();
+void antBase::addAnt(Ant ant) {
+    ownAnts.push_back(ant);
+    AntCount++;
 }
 
 
-// drawing all Ants included to this Base
-void AntBase::drawAnts(sf::RenderWindow *renderWindow) {
-    for (int i = 0; i < ownAnts.size(); i++) {
-        ownAnts[i].draw(renderWindow);
-    }
+void antBase::addAnts(int num) {
+    for (int i = 0; i < num; i++)
+        addAnt();
 }
 
 
-// drawing the Tile itself
-void AntBase::drawTile(sf::RenderWindow *window) {
-    Tile::drawTile(window);
+void antBase::drawAnts(sf::RenderWindow *window) {
+    for (int i = 0; i < AntCount; i++)
+        ownAnts[i].draw(window);
+}
+
+
+void antBase::drawBase(sf::RenderWindow *window) {
     window->draw(sprite);
+    std::cout << "drawing sprite" << std::endl;
 }
 
 
-void AntBase::doTick() {
-    // TODO: doTick
+void antBase::draw(sf::RenderWindow *window) {
+    drawBase(window);
+    drawAnts(window);
 }
 
 
-// getting the Ant with the @param AntID or NULL instead
-Ant* AntBase::getAnt(int AntID) {
+void antBase::doTick() {
+    for (int i = 0; i < AntCount; i++)
+        ownAnts[i].doTick();
+}
 
-    for (int i = 0; i < ownAnts.size(); i++) {
+
+Ant* antBase::getAnt(unsigned int AntID) {
+    for (int i = 0; i < AntCount; i++) {
         if (ownAnts[i].getID() == AntID)
             return &ownAnts[i];
     }
-
     return NULL;
 }
-
-
-
-
-
 
 
 

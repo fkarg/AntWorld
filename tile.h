@@ -7,7 +7,11 @@
 #include "ticksystem.h"
 
 
-class Tile : tickInterface {
+
+class antBase;
+
+
+class Tile : public tickInterface {
 protected:
     int locX, locY, height, width, index = -1, special = 0;
 
@@ -20,9 +24,11 @@ protected:
 
     Tile *surrounding[4] = {}; // to direct to tiles next to it
 
-    // RectangleShapes to draw the tile ad the walls later on
+    // RectangleShapes to draw the tile and the walls later on
     sf::RectangleShape rect;
     sf::RectangleShape Walls[4];
+
+    antBase *base;
 
     // adding or actualizing the Walls position
     void addWalls();
@@ -30,7 +36,7 @@ protected:
 public:
     Tile(){};
     // setting the coordinates and the size of the tile
-    void setSize(int x, int y, int width, int height);
+    virtual void setSize(int x, int y, int width, int height);
     virtual int getX();         // returning x
     virtual int getY();         // returning y
     void move(int x, int y);    // moving it @param x and @param y pixels
@@ -40,10 +46,10 @@ public:
     virtual void setIndex(int index); // setting the @param index
     virtual int getIndex() const; // the set index
     void setColor(sf::Color color); // setting the color of the Tile
-    sf::Color getTileColor();
-    void draw(sf::RenderWindow *renderWindow); // drawing the Tile completely (obsolete)
-    virtual void drawTile(sf::RenderWindow *renderwindow); // drawing only the body of the Tile
-    void drawWalls(sf::RenderWindow *renderWindow); // drawing only the Walls of the Tile
+    sf::Color getTileColor();       // returns the current color of the tile
+    void draw(sf::RenderWindow *window); // drawing the Tile completely (obsolete)
+    virtual void drawTile(sf::RenderWindow *window); // drawing only the body of the Tile
+    void drawWalls(sf::RenderWindow *window); // drawing only the Walls of the Tile
     void doTick();              // doing a Tick
     virtual void setWall(int dir, bool setWall); // setting the wall in @param dir to @param setWall
     bool isWall(int dir);       // returning if there is a wall in this @param dir
@@ -53,6 +59,9 @@ public:
     virtual int isFood(); // returning all the food on the Tile
     int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
     int getSpecial() { return special; } // returns if the tile is somewhat special
+    void setSpecial(int special) { Tile::special = special; }
+    antBase *getBase() { return base; }
+    void setBase(antBase *base) { Tile::base = base; }
 };
 
 
@@ -60,6 +69,7 @@ public:
 
 
 class showTile : public Tile {
+
 protected:
     int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1, special = 1;
     unsigned int pubFood = 0;
@@ -71,9 +81,9 @@ public:
     int getHeight();    // returning the height
     int getWidth();     // returning the width
     int getX();         // returning x
-    int getOwnX();
+    int getOwnX();      // returning the own X value
     int getY();         // returning y
-    int getOwnY();
+    int getOwnY();      // returning the own Y value
     void setIndex(int index); // setting the @param index
     int getIndex();     // returning the index
     int isFood();       // returning how much food there is on the Tile
@@ -88,4 +98,12 @@ public:
 
 
 
-#endif //ANTWORLD_TILE_H
+
+
+
+
+
+
+
+#endif
+

@@ -82,18 +82,22 @@ void Maze::setNeighbourTiles() {
 
 
 // drawing the whole maze (first tiles, then walls, then OuterWalls)
-void Maze::drawMaze(sf::RenderWindow *renderWindow) {
+void Maze::drawMaze(sf::RenderWindow *window) {
     for (int i = 0; i < sizeX; i++) {
         for (int j = 0; j < sizeY; j++) {
-            MAP[i][j].drawTile(renderWindow);
+            MAP[i][j].drawTile(window);
         }
     }
     for (int i = 0; i < sizeX; i++) {
         for (int j = 0; j < sizeY; j++) {
-            MAP[i][j].drawWalls(renderWindow);
+            MAP[i][j].drawWalls(window);
         }
     }
-    drawOuterWalls(renderWindow);
+
+    for (int k = 0; k < bases.size(); k++)
+        bases[k].draw(window);
+
+    drawOuterWalls(window);
 }
 
 
@@ -120,9 +124,16 @@ void Maze::doTick() {
 }
 
 
-// sets the tile at @param x and @param y to the @param home of some Ants
-void Maze::setHome(int x, int y, AntBase home) {
-    MAP[x][y] = home;
+
+void Maze::setHome(int x, int y) {
+    antBase home1;
+    home1.setPosition(getTile(x, y) );
+    bases.push_back(home1);
+    bases[bases.size() - 1].reloadBase();
+    base = home1;
+    base.reloadBase();
+    getTile(x, y)->setSpecial(1);
+    getTile(x, y)->setBase(&bases[bases.size() - 1] );
 }
 
 

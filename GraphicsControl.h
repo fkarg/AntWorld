@@ -22,7 +22,7 @@
 #include "ant.h"
 
 
-class GraphicsControl : tickInterface {
+class GraphicsControl : public tickInterface {
 protected:
     // pointer to the InfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
@@ -41,8 +41,6 @@ protected:
     showAnt antToShowAnt;
 
     Ant selectedAnt;
-
-    AntBase base;
 
     Maze* maze;
 

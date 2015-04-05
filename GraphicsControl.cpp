@@ -100,6 +100,16 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     advancedMode = checkBox;
 
 
+    // setHomeButton
+    tgui::Button::Ptr setHomeButton(*gui);
+    setHomeButton->load(THEME_CONFIG_FILE);
+    setHomeButton->setPosition(15, 390);
+    setHomeButton->setText("set Home");
+    setHomeButton->setCallbackId(6);
+    setHomeButton->bindCallback(tgui::Button::LeftMouseClicked);
+    setHomeButton->setSize(90, 20);
+
+
     // testConnectedButton, for searching if two tiles are connected
     tgui::Button::Ptr TestConnectedButton(*gui);
     TestConnectedButton->load(THEME_CONFIG_FILE);
