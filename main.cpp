@@ -1,6 +1,5 @@
 #include <TGUI/TGUI.hpp>
 #include "GraphicsControl.h"
-#include "ant.h"
 
 
 #define SOURCES "/usr/resources_coding/"

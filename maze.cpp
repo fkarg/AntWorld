@@ -1,4 +1,3 @@
-#include <langinfo.h>
 #include "maze.h"
 
 
