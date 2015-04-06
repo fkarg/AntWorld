@@ -38,8 +38,6 @@ int main()
 
     control.setMaze(&maze);
 
-    ant.setPosition(maze.getTile(rand() % maze.INDEX_MAX() ) );
-
     // Frame-counter
     int Frame = 0;
 

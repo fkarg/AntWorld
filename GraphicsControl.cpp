@@ -76,7 +76,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallLeft(*gui);
     buttonChangeWallLeft->load(THEME_CONFIG_FILE);
     buttonChangeWallLeft->setSize(90, 20);
-    buttonChangeWallLeft->setPosition(15, 360 + 40);
+    buttonChangeWallLeft->setPosition(15, 400);
     buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallLeft->setCallbackId(3);
     buttonChangeWallLeft->setText("ChangeWallLeft");
@@ -94,7 +94,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // checkbox if 'Jumping' is allowed
     tgui::Checkbox::Ptr checkBox(*gui);
     checkBox->load(THEME_CONFIG_FILE);
-    checkBox->setPosition(15, 240 + 40);
+    checkBox->setPosition(15, 280);
     checkBox->setText("Moving");
     checkBox->setSize(20, 20);
     checkBox->check();
@@ -102,10 +102,10 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     advancedMode = checkBox;
 
 
-    // setHomeButton
+    // setting the selected tile to a Home - tile
     tgui::Button::Ptr setHomeButton(*gui);
     setHomeButton->load(THEME_CONFIG_FILE);
-    setHomeButton->setPosition(15, 390);
+    setHomeButton->setPosition(15, 430);
     setHomeButton->setText("set Home");
     setHomeButton->setCallbackId(6);
     setHomeButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -115,7 +115,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // testConnectedButton, for searching if two tiles are connected
     tgui::Button::Ptr TestConnectedButton(*gui);
     TestConnectedButton->load(THEME_CONFIG_FILE);
-    TestConnectedButton->setPosition(15, 420 + 40);
+    TestConnectedButton->setPosition(15, 460);
     TestConnectedButton->setText("TestConnected");
     TestConnectedButton->setCallbackId(5);
     TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -128,7 +128,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     slider->load(THEME_CONFIG_FILE);
     slider->setVerticalScroll(false);
     slider->setPosition(20, 240);
-    slider->setSize(80, 15);
+    slider->setSize(80, 10);
     slider->setMinimum(0);
     slider->setMaximum(5);
     slider->setValue(2);
