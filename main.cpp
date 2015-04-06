@@ -38,6 +38,8 @@ int main()
 
     control.setMaze(&maze);
 
+    ant.setPosition(maze.getTile(rand() % maze.INDEX_MAX() ) );
+
     // Frame-counter
     int Frame = 0;
 
@@ -143,7 +145,8 @@ int main()
                 case 1:
                 case 2:
                 case 3:
-                    control.changeWalls(callback.id, control.isAdvancedMode());
+                    control.changeWalls(callback.id, control.isAdvancedMode() );
+                    std::cout << "changeWallDir: " << std::to_string(callback.id) << std::endl;
                     break;
                 case 4:
                     control.TicksControlChangeState();
