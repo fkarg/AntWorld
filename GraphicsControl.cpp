@@ -255,7 +255,7 @@ bool GraphicsControl::isAdvancedMode() {
 
 // changes the state of the wall in @param dir
 void GraphicsControl::changeWalls(int dir, bool move) {
-    if (dir % 4 == dir) {
+    if (dir % 4 == dir && tileToShowPtr->getTileToShow() != NULL) {
         if (tileToShowPtr->isSurrounding(dir) ) {
             tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir) );
             tileToShowPtr->getSurrounding(dir)->setWall( (dir + 2) % 4,
