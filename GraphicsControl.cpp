@@ -271,6 +271,12 @@ void GraphicsControl::drawAnts() {
 }
 
 
+// returns the currently in the showTile selected tile
+Tile* GraphicsControl::getTileSelected() {
+    return tileToShowPtr->getTileToShow();
+}
+
+
 void GraphicsControl::doTick() {
     // for the implementation
 }

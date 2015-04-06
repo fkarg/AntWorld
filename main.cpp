@@ -153,7 +153,8 @@ int main()
                     control.testConnectedButtonClicked();
                     break;
                 case 6:
-                    maze.setHome(3, 3);
+                    maze.setHome(control.getTileSelected() );
+                    // maze.setHome(3, 3);
                     break;
                 case 10:
                     std::cout << "closing window" << std::endl;

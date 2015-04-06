@@ -66,6 +66,7 @@ public:
     void changeWalls(int dir, bool move = false);
     void TicksControlChangeState();
     void drawAnts();
+    Tile *getTileSelected();
     void doTick();
 };
 

@@ -1,3 +1,4 @@
+#include <langinfo.h>
 #include "maze.h"
 
 
@@ -124,16 +125,23 @@ void Maze::doTick() {
 }
 
 
-// setting a tile to a Home-tile
+// setting the tile at @param x and y to a Home-tile
 void Maze::setHome(int x, int y) {
+    setHome(getTile(x, y) );
+}
+
+
+// setting the @param tile to an Home
+void Maze::setHome(Tile *tile) {
+    std::cout << "setting home to " + std::to_string(tile->getIndex() ) << std::endl;
     antBase home1;
-    home1.setPosition(getTile(x, y) );
+    home1.setPosition(tile);
     bases.push_back(home1);
-    bases[bases.size() - 1].reloadBase();
-    base = home1;
-    base.reloadBase();
-    getTile(x, y)->setSpecial(1);
-    getTile(x, y)->setBase(&bases[bases.size() - 1] );
+    for (int i = 0; i < bases.size(); i++)
+        bases[i].reloadBase();
+
+    tile->setSpecial(1);
+    tile->setBase(&bases[bases.size() - 1] );
 }
 
 
