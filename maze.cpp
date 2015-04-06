@@ -132,15 +132,17 @@ void Maze::setHome(int x, int y) {
 
 // setting the @param tile to an Home
 void Maze::setHome(Tile *tile) {
-    std::cout << "setting home to " + std::to_string(tile->getIndex() ) << std::endl;
-    antBase home1;
-    home1.setPosition(tile);
-    bases.push_back(home1);
-    for (int i = 0; i < bases.size(); i++)
-        bases[i].reloadBase();
+    if (tile != NULL) {
+        std::cout << "setting home to " + std::to_string(tile->getIndex()) << std::endl;
+        antBase home1;
+        home1.setPosition(tile);
+        bases.push_back(home1);
+        for (int i = 0; i < bases.size(); i++)
+            bases[i].reloadBase();
 
-    tile->setSpecial(1);
-    tile->setBase(&bases[bases.size() - 1] );
+        tile->setSpecial(1);
+        tile->setBase(&bases[bases.size() - 1]);
+    }
 }
 
 
