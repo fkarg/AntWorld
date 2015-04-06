@@ -51,23 +51,23 @@ protected:
     RandomCreator randomCreator;
 
 public:
-    GraphicsControl(sf::RenderWindow *renderWindow);
-    void addGui(tgui::Gui *gui);
-    void setMaze(Maze *maze);
-    void changeTextInfoLabel(Tile *tile);
-    void AntMove(int dir);
-    void updateInfo();
-    void testConnectedButtonClicked();
-    void handleCallback(tgui::Callback callback);
-    void createPerfect();
-    void createRandom();
-    void ResetMaze();
-    bool isAdvancedMode();
-    void changeWalls(int dir, bool move = false);
-    void TicksControlChangeState();
-    void drawAnts();
-    Tile *getTileSelected();
-    void doTick();
+    GraphicsControl(sf::RenderWindow *window); // setting the pointers
+    void addGui(tgui::Gui *gui);        // adding the gui and adding the @param tgui
+    void setMaze(Maze *maze);           // setting the @param maze in which everything happanes
+    void changeTextInfoLabel(Tile *tile); // changing the InfoLabel to @param tile
+    void AntMove(int dir);              // moving the ant in @param dir
+    void updateInfo();                  // updating the infoLabel
+    void testConnectedButtonClicked();  // if the testConnectedButton is clicked
+    void handleCallback(tgui::Callback callback); // handles the callback of the tgui
+    void createPerfect();               // creates a perfect maze
+    void createRandom();                // creates a random maze
+    void ResetMaze();                   // resets the maze completely
+    bool isAdvancedMode();              // returns if the advancedMode checkboox is cheked
+    void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
+    void TicksControlChangeState();     // changes the state of the tickscontrol
+    void drawAnts();                    // draws the Ants (showAnt & selectedAnt)
+    Tile *getTileSelected();            // returns the currently selected tile
+    void doTick();                      // for the implementation
 };
 
 

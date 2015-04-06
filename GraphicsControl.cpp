@@ -1,8 +1,8 @@
 #include "GraphicsControl.h"
 
 
-GraphicsControl::GraphicsControl(sf::RenderWindow* renderWindow) {
-    window = renderWindow;
+GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
+    GraphicsControl::window = window;
     tileToShowPtr = &tileToShowTile;
     antToShowPtr = &antToShowAnt;
 
@@ -12,6 +12,8 @@ GraphicsControl::GraphicsControl(sf::RenderWindow* renderWindow) {
     antToShowPtr->setAnt(&selectedAnt);
 
     antToShowPtr->setVisible(false);
+
+
 
 }
 
@@ -179,7 +181,6 @@ void GraphicsControl::AntMove(int dir) {
         if (!tileToShowPtr->isWall(dir) )
             changeTextInfoLabel(tileToShowPtr->getSurrounding(dir));
     }
-
 }
 
 

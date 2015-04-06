@@ -259,7 +259,7 @@ Ant* showAnt::getAntShown() {
 
 // reloading the base-Image (needed when transferring 'ownership')
 void antBase::reloadBase() {
-    if (!texture.loadFromFile(SOURCES"Home_2.png") )
+    if (!texture.loadFromFile(SOURCES"Home_1.png") )
         std::cout << "Error Loading Home_Image" << std::endl;
     else
         sprite.setTexture(texture);
