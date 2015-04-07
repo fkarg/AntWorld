@@ -197,6 +197,30 @@ int Tile::getFood() {
 
 
 
+// returns the info about the tile (TODO: changes with the state!)
+std::string Tile::getTileInfo() {
+    std::string additional;
+
+    switch (special) {
+        case 0:
+            additional = "Normal Tile";
+            break;
+        case 1:
+            additional = "Home Tile";
+            break;
+        default:
+            break;
+    }
+
+    return "Info:\n"
+        "\nIndex: " + std::to_string(getIndex() + 1) +
+        "\nX: " + std::to_string(getX() ) +
+        "\nY: " + std::to_string(getY() ) +
+        "\n\nFood:\n" + std::to_string(isFood() ) +
+        "\n\n" + additional;
+}
+
+
 
 
 
@@ -313,5 +337,12 @@ Tile* showTile::getTileToShow() {
 }
 
 
+
+// returns the infe about the selected tile
+std::string showTile::getTileInfo() {
+    if (tileToShow != NULL)
+        return tileToShow->getTileInfo();
+    return Tile::getTileInfo();
+}
 
 

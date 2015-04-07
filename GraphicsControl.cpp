@@ -37,7 +37,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     infoLabel->setPosition(20, 115);
     infoLabel->setTextSize(12);
     infoLabel->setTextColor(sf::Color(200, 200, 20) );
-    infoLabel->setText("Info: ...");
+    infoLabel->setText("Info:\n\nIndex:\nX:\nY:\n\nFood:");
 
     InfoLabel = infoLabel;
 
@@ -127,7 +127,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Slider::Ptr slider(*gui);
     slider->load(THEME_CONFIG_FILE);
     slider->setVerticalScroll(false);
-    slider->setPosition(20, 240);
+    slider->setPosition(20, 260);
     slider->setSize(80, 10);
     slider->setMinimum(0);
     slider->setMaximum(5);
@@ -199,11 +199,8 @@ void GraphicsControl::AntMove(int dir) {
 void GraphicsControl::updateInfo() {
     tileToShowPtr->doTick();
 
-    InfoLabel->setText("Info: \n"
-            "\nIndex: " + std::to_string(tileToShowPtr->getIndex() + 1) +
-            "\nX: " + std::to_string(tileToShowPtr->getX() ) +
-            "\nY: " + std::to_string(tileToShowPtr->getY() ) +
-            "\n\nFood: \n " + std::to_string(tileToShowPtr->isFood() ) );
+    InfoLabel->setText(tileToShowPtr->getTileInfo() );
+
     tileToShowPtr->draw(window);
 }
 

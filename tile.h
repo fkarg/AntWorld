@@ -60,6 +60,7 @@ public:
     int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
     int getSpecial() { return special; } // returns if the tile is somewhat special
     void setSpecial(int special) { Tile::special = special; } // setting the 'special' value
+    std::string getTileInfo();          // returns the InfoLabel of the tile
     antBase *getBase() { return base; } // returns the antBase if one is set
     void setBase(antBase *base) { Tile::base = base; } // setting the antBase
 };
@@ -92,7 +93,7 @@ public:
     bool isSurrounding(int dir); // returns if there virtually is a tile next to it in @param dir
     Tile* getSurrounding(int dir); // getting the virtually surrounding tile
     Tile* getTileToShow(); // returns the tile it 'copies' or at least shows
-
+    std::string getTileInfo(); // returns the info of the currently selected tile (when)
 };
 
 
