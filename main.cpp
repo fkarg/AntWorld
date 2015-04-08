@@ -43,6 +43,8 @@ int main()
 
     sf::Vector2i mousePosition;
 
+    bool drawBase = false;
+
     std::cout << "starting main loop ... " << std::endl;
 
 
@@ -174,11 +176,11 @@ int main()
         // Clear screen
         window.clear();
 
-        // drawing the Maze
-        maze.drawMaze(&window);
-
         // updating the InfoPanel
         control.updateInfo();
+
+        // drawing the Maze
+        maze.drawMaze(&window);
 
         control.drawAnts();
 

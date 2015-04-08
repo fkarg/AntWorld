@@ -36,6 +36,8 @@ public:
     void doTick();  // whatever happens at a tick is updated in the maze
     void setHome(int x, int y); // setting the @param x and y tile to an homeTile
     void setHome(Tile *tile);   // setting the @param tile to an homeTile
+    void setHome(antBase base, Tile *tile); // setting a specific @param base to @param tile
+    void removeHome(Tile *tile); // removing the 'Home' status from a tile
     Tile *getTileClicked(int x, int y);    // returns the tile that got clicked on
     Tile *getTile(int index);      // getting the Tile at @param index
     Tile *getTile(int x, int y);   // getting the Tile at @param x and @param y

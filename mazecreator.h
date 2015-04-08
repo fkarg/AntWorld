@@ -52,7 +52,7 @@ public:
 
     void colorPath(sf::Color color); // coloring the found path
 
-    void doTick(); // what happenes at a tick ? nothing actually
+    void doTick(); // what happens at a tick ? nothing actually
 
     bool searchAStar(); // starting the A* search, returns if it was successful
 
@@ -105,13 +105,18 @@ public:
     // connecting the tile at @param x and y in @param dir if not connected already
     void connect(int X, int Y, int dir);
 
-    void mazeChanged(); // reiniiializes the connections in the maze
+    void mazeChanged(); // reinitialises the connections in the maze
 
     void doTick(); // a Tick ... but ... nothing happens
 
     void ResetMaze(); // resetting the maze to the original state
 
 };
+
+
+
+
+
 
 
 

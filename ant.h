@@ -62,16 +62,16 @@ protected:
 
 public:
     showAnt();
-    void operator=(Ant* newAnt); // overriding the operator= for a normal ant
-    void setAnt(Ant* newAnt); // setting the ant explicitly
-    void setDir(int dir); // setting the dir of the ant
+    void operator=(Ant* newAnt);    // overriding the operator= for a normal ant
+    void setAnt(Ant* newAnt);       // setting the ant explicitly
+    void setDir(int dir);           // setting the dir of the ant
     // setting the position of the showAnt on the showTile
     void setPosition(showTile *showTile1);
-    void setVisible(bool visible); // setting the visibility (the focus) of the ant
-    bool getVisible(); // returns if the ant is visible right now or not
-    void move(int dir); // 'moving' the showAnt and the antToShow
+    void setVisible(bool visible);  // setting the visibility (the focus) of the ant
+    bool getVisible();              // returns if the ant is visible right now or not
+    void move(int dir);             // 'moving' the showAnt and the antToShow
     void draw(sf::RenderWindow *window); // drawing the ant if it is visible right now
-    Ant* getAntShown(); // returns the ant currently shown, if visible
+    Ant* getAntShown();             // returns the ant currently shown, if visible
 };
 
 
@@ -85,23 +85,28 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
     std::vector<Ant> ownAnts;
-    Tile *baseTile;
+    Tile *baseTile = NULL;
     int locX, locY, AntCount = 0;
+    bool isVisible = true;
 
 public:
-    antBase() { reloadBase(); }
-    void reloadBase();
-    void setPosition(int x, int y, float scale = 0.2);
-    void setPosition(Tile *tile);
-    void addAnt();
-    void addAnt(Ant ant);
-    void addAnts(int num);
-    void drawAnts(sf::RenderWindow *window);
-    void drawBase(sf::RenderWindow *window);
-    void draw(sf::RenderWindow *window);
-    void doTick();
-    Ant *getAnt(unsigned int AntID);
-
+    antBase() { reloadBase(); }     // loads the baseImage
+    void reloadBase();              // reloads the baseImage
+    void setPosition(int x, int y, float scale = 0.2); // sets the Position of the Base
+    void setPosition(Tile *tile, float scale = 0.2);   // sets the Position of the BaseImage
+    // setting the BaseTile unspecific to the Position (...)
+    void setBase(Tile *tile) { baseTile = tile; }
+    void addAnt();                  // adds a new ant to the AntBase
+    void addAnt(Ant ant);           // adds a specific @param ant to the antBase
+    void addAnts(int num);          // adding @param num new ants to the antBase
+    void drawAnts(sf::RenderWindow *window); // draws the Ants of the antBase
+    void drawBase(sf::RenderWindow *window); // draws the antBase itself
+    void draw(sf::RenderWindow *window);     // draws tha antBase and the ants
+    void doTick();                  // does the tick for all the ants
+    void setVisible(bool visible) { isVisible = visible; } // setting if the icon is getting drawn
+    bool getVisible() { return isVisible; } // returns if the tile is currently visible
+    Ant *getAnt(unsigned int AntID); // returns the ant with the @param AntID
+    Tile *getTile() { return baseTile; } //returns the baseTile
 };
 
 
@@ -109,4 +114,9 @@ public:
 
 
 
+
+
+
+
 #endif
+

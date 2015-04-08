@@ -1,6 +1,6 @@
-
 #ifndef ANTWORLD_TILE_H
 #define ANTWORLD_TILE_H
+
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -60,7 +60,7 @@ public:
     int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
     int getSpecial() { return special; } // returns if the tile is somewhat special
     void setSpecial(int special) { Tile::special = special; } // setting the 'special' value
-    std::string getTileInfo();          // returns the InfoLabel of the tile
+    virtual std::string getTileInfo();          // returns the InfoLabel of the tile
     antBase *getBase() { return base; } // returns the antBase if one is set
     void setBase(antBase *base) { Tile::base = base; } // setting the antBase
 };

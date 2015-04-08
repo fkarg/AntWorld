@@ -14,6 +14,7 @@ GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
     antToShowPtr->setVisible(false);
 
 
+    base.setPosition(tileToShowPtr->getOwnX(), tileToShowPtr->getOwnY(), 0.24);
 
 }
 
@@ -24,7 +25,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button for closing the Window (for test purposes)
     tgui::Button::Ptr button(*gui);
     button->load(THEME_CONFIG_FILE);
-    button->setPosition(20, 460 + 40);
+    button->setPosition(20, 460 + 40 + 50);
     button->setSize(60, 20);
     button->setText("Close");
     button->bindCallback(tgui::Button::LeftMouseClicked);
@@ -45,7 +46,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the wall in upper direction to tho tile selected
     tgui::Button::Ptr buttonChangeWallUp(*gui);
     buttonChangeWallUp->load(THEME_CONFIG_FILE);
-    buttonChangeWallUp->setPosition(15, 270 + 40);
+    buttonChangeWallUp->setPosition(15, 270 + 40 + 50);
     buttonChangeWallUp->setSize(90, 20);
     buttonChangeWallUp->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallUp->setCallbackId(0);
@@ -56,7 +57,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallRight(*gui);
     buttonChangeWallRight->load(THEME_CONFIG_FILE);
     buttonChangeWallRight->setSize(90, 20);
-    buttonChangeWallRight->setPosition(15, 300 + 40);
+    buttonChangeWallRight->setPosition(15, 300 + 40 + 50);
     buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallRight->setCallbackId(1);
     buttonChangeWallRight->setText("ChangeWallRight");
@@ -66,7 +67,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallDown(*gui);
     buttonChangeWallDown->load(THEME_CONFIG_FILE);
     buttonChangeWallDown->setSize(90, 20);
-    buttonChangeWallDown->setPosition(15, 330 + 40);
+    buttonChangeWallDown->setPosition(15, 330 + 40 + 50);
     buttonChangeWallDown->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallDown->setCallbackId(2);
     buttonChangeWallDown->setText("ChangeWallDown");
@@ -76,7 +77,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallLeft(*gui);
     buttonChangeWallLeft->load(THEME_CONFIG_FILE);
     buttonChangeWallLeft->setSize(90, 20);
-    buttonChangeWallLeft->setPosition(15, 400);
+    buttonChangeWallLeft->setPosition(15, 400 + 50);
     buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallLeft->setCallbackId(3);
     buttonChangeWallLeft->setText("ChangeWallLeft");
@@ -94,7 +95,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // checkbox if 'Jumping' is allowed
     tgui::Checkbox::Ptr checkBox(*gui);
     checkBox->load(THEME_CONFIG_FILE);
-    checkBox->setPosition(15, 280);
+    checkBox->setPosition(15, 280 + 50);
     checkBox->setText("Moving");
     checkBox->setSize(20, 20);
     checkBox->check();
@@ -105,33 +106,37 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // setting the selected tile to a Home - tile
     tgui::Button::Ptr setHomeButton(*gui);
     setHomeButton->load(THEME_CONFIG_FILE);
-    setHomeButton->setPosition(15, 430);
+    setHomeButton->setPosition(15, 430 + 50);
     setHomeButton->setText("set Home");
     setHomeButton->setCallbackId(6);
     setHomeButton->bindCallback(tgui::Button::LeftMouseClicked);
     setHomeButton->setSize(90, 20);
 
+    GraphicsControl::setHomeButton = setHomeButton;
+
 
     // testConnectedButton, for searching if two tiles are connected
     tgui::Button::Ptr TestConnectedButton(*gui);
     TestConnectedButton->load(THEME_CONFIG_FILE);
-    TestConnectedButton->setPosition(15, 460);
+    TestConnectedButton->setPosition(15, 460 + 50);
     TestConnectedButton->setText("TestConnected");
     TestConnectedButton->setCallbackId(5);
     TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
     TestConnectedButton->setSize(90, 20);
 
 
-    // TODO: add bar to set the production of ... whatever (Food, Res, etc)
+    // TODO: implement bar to set the production of ... whatever (Food, Res, etc)
 
     tgui::Slider::Ptr slider(*gui);
     slider->load(THEME_CONFIG_FILE);
-    slider->setVerticalScroll(false);
-    slider->setPosition(20, 260);
-    slider->setSize(80, 10);
+    slider->setVerticalScroll(false);           
+    slider->setPosition(20, 260 + 50);
+    slider->setSize(80, 11);
     slider->setMinimum(0);
     slider->setMaximum(5);
     slider->setValue(2);
+
+    GraphicsControl::slider = slider;
 
 
     // creating the menu
@@ -173,10 +178,10 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
 
     antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
 
-    if (antToShowPtr->getVisible() ) antToShowPtr->setDir( selectedAnt.getDir() );
+    if (antToShowPtr->getVisible()) antToShowPtr->setDir(selectedAnt.getDir());
 
     if (connect) {
-        craver.setAim(tileToShowPtr->getTileToShow() );
+        craver.setAim(tileToShowPtr->getTileToShow());
         craver.colorPath(sf::Color::Cyan);
         craver.searchAStar();
 
@@ -202,6 +207,9 @@ void GraphicsControl::updateInfo() {
     InfoLabel->setText(tileToShowPtr->getTileInfo() );
 
     tileToShowPtr->draw(window);
+
+    if (tileToShowPtr->getTileToShow() != NULL)
+        drawBase = tileToShowPtr->getTileToShow()->getSpecial() == 1;
 }
 
 
@@ -275,6 +283,14 @@ void GraphicsControl::TicksControlChangeState() {
 
 // drawing the Ants from the base and the showAnt
 void GraphicsControl::drawAnts() {
+    if (drawBase) {
+        base.draw(window);
+        slider->hide();
+        setHomeButton->setText("Remove Home");
+    } else {
+        slider->show();
+        setHomeButton->setText("set Home");
+    }
     selectedAnt.draw(window);
     antToShowPtr->draw(window);
 }

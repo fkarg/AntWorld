@@ -27,11 +27,12 @@ protected:
     // pointer to the InfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
     tgui::Label::Ptr InfoLabel;
-    tgui::Button::Ptr ticksControl;
+    tgui::Button::Ptr ticksControl, setHomeButton;
     tgui::Checkbox::Ptr advancedMode;
+    tgui::Slider::Ptr slider;
 
     int tick = 0;
-    bool connect = false;
+    bool connect = false, drawBase = false;
 
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;
@@ -43,6 +44,7 @@ protected:
     Ant selectedAnt;
 
     Maze* maze;
+    antBase base;
 
     sf::RenderWindow* window;
 
@@ -53,7 +55,7 @@ protected:
 public:
     GraphicsControl(sf::RenderWindow *window); // setting the pointers
     void addGui(tgui::Gui *gui);        // adding the gui and adding the @param tgui
-    void setMaze(Maze *maze);           // setting the @param maze in which everything happanes
+    void setMaze(Maze *maze);           // setting the @param maze in which everything happens
     void changeTextInfoLabel(Tile *tile); // changing the InfoLabel to @param tile
     void AntMove(int dir);              // moving the ant in @param dir
     void updateInfo();                  // updating the infoLabel
@@ -62,9 +64,9 @@ public:
     void createPerfect();               // creates a perfect maze
     void createRandom();                // creates a random maze
     void ResetMaze();                   // resets the maze completely
-    bool isAdvancedMode();              // returns if the advancedMode checkboox is cheked
+    bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
-    void TicksControlChangeState();     // changes the state of the tickscontrol
+    void TicksControlChangeState();     // changes the state of the ticksControl
     void drawAnts();                    // draws the Ants (showAnt & selectedAnt)
     Tile *getTileSelected();            // returns the currently selected tile
     void doTick();                      // for the implementation

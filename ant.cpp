@@ -20,6 +20,7 @@ Ant::Ant() {
     // sprite.setColor(sf::Color(0, 255, 0, 255) );
 
     sprite.scale(sf::Vector2f(0.2, 0.2) );
+    sprite.setColor(sf::Color(255, 255, 255, 200) );
 }
 
 
@@ -278,9 +279,9 @@ void antBase::setPosition(int x, int y, float scale) {
 
 
 // setting the position of the sprite to the position of the @param tile
-void antBase::setPosition(Tile *tile) {
+void antBase::setPosition(Tile *tile, float scale) {
     baseTile = tile;
-    setPosition(tile->getX(), tile->getY(), 0.2);
+    setPosition(tile->getX(), tile->getY(), scale);
 }
 
 

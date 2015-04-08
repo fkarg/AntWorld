@@ -133,15 +133,40 @@ void Maze::setHome(int x, int y) {
 // setting the @param tile to an Home
 void Maze::setHome(Tile *tile) {
     if (tile != NULL) {
-        std::cout << "setting home to " + std::to_string(tile->getIndex()) << std::endl;
-        antBase home1;
-        home1.setPosition(tile);
-        bases.push_back(home1);
-        for (int i = 0; i < bases.size(); i++)
-            bases[i].reloadBase();
+        std::cout << "changing Home status of: " + std::to_string(tile->getIndex()) << std::endl;
+        if (tile->getSpecial() == 1) {
+            removeHome(tile);
+            tile->setSpecial(0);
+        } else {
+            antBase home1;
+            home1.setPosition(tile);
+            bases.push_back(home1);
+            for (int i = 0; i < bases.size(); i++)
+                bases[i].reloadBase();
 
-        tile->setSpecial(1);
-        tile->setBase(&bases[bases.size() - 1]);
+            tile->setSpecial(1);
+            tile->setBase(&bases[bases.size() - 1]);
+        }
+    }
+}
+
+
+// setting the specific @param base to the @param tile
+void Maze::setHome(antBase base, Tile *tile) {
+    bases.push_back(base);
+    for (int i = 0; i < bases.size(); i++)
+        bases[i].reloadBase();
+
+    tile->setSpecial(1);
+    tile->setBase(&bases[bases.size() - 1]);
+}
+
+
+// removing the @param tile from the antBases
+void Maze::removeHome(Tile *tile) {
+    for (int i = 0; i < bases.size(); i++){
+        if (tile == bases[i].getTile() )
+            bases.erase(bases.begin() + i);
     }
 }
 
