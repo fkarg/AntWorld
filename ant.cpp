@@ -7,6 +7,15 @@ Ant::Ant() {
     // FIXME: there will be a white tile (probably) when drawn
     // this comes from: the texture is getting copied
     // and (probably) loses the image in the process
+    reloadImage();
+
+    sprite.scale(sf::Vector2f(0.2, 0.2) );
+
+}
+
+
+// reloads the maybe corrupted Image of the Ant
+void Ant::reloadImage() {
 
     if (!texture.loadFromFile(SOURCES"Ant.png") )
         std::cout << "Error loading Ant_Image" << std::endl;
@@ -19,7 +28,6 @@ Ant::Ant() {
 
     // sprite.setColor(sf::Color(0, 255, 0, 255) );
 
-    sprite.scale(sf::Vector2f(0.2, 0.2) );
     sprite.setColor(sf::Color(255, 255, 255, 200) );
 }
 
@@ -291,6 +299,8 @@ void antBase::addAnt() {
     ant.setPosition(baseTile);
     ownAnts.push_back(ant);
     AntCount++;
+    for (int i = 0; i < AntCount; i++)
+        ownAnts[i].reloadImage();
 }
 
 
@@ -298,6 +308,8 @@ void antBase::addAnt() {
 void antBase::addAnt(Ant ant) {
     ownAnts.push_back(ant);
     AntCount++;
+    for (int i = 0; i < AntCount; i++)
+        ownAnts[i].reloadImage();
 }
 
 
@@ -321,7 +333,7 @@ void antBase::drawBase(sf::RenderWindow *window) {
 }
 
 
-// drawingn the antBase and the Ants of the antBase
+// drawing the antBase and the Ants of the antBase
 void antBase::draw(sf::RenderWindow *window) {
     drawBase(window);
     drawAnts(window);

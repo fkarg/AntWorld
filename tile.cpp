@@ -3,6 +3,7 @@
 //
 
 #include "tile.h"
+#include "ant.h"
 
 
 
@@ -197,7 +198,7 @@ int Tile::getFood() {
 
 
 
-// returns the info about the tile (TODO: changes with the state!)
+// returns the info about the tile, depending on the own state
 std::string Tile::getTileInfo() {
     std::string additional;
 
@@ -206,7 +207,7 @@ std::string Tile::getTileInfo() {
             additional = "Normal Tile";
             break;
         case 1:
-            additional = "Home Tile";
+            additional = "Home Tile\nAntCount: " + std::to_string(base->getAntCount() );
             break;
         default:
             break;
@@ -216,7 +217,7 @@ std::string Tile::getTileInfo() {
         "\nIndex: " + std::to_string(getIndex() + 1) +
         "\nX: " + std::to_string(getX() ) +
         "\nY: " + std::to_string(getY() ) +
-        "\n\nFood:\n" + std::to_string(isFood() ) +
+        "\n\nFood: " + std::to_string(isFood() ) +
         "\n\n" + additional;
 }
 

@@ -44,24 +44,24 @@ public:
     virtual int getHeight();    // getting the height of the Tile
     virtual int getWidth();     // getting the width of the Tile
     virtual void setIndex(int index); // setting the @param index
-    virtual int getIndex() const; // the set index
-    void setColor(sf::Color color); // setting the color of the Tile
-    sf::Color getTileColor();       // returns the current color of the tile
+    virtual int getIndex() const;     // the set index
+    void setColor(sf::Color color);   // setting the color of the Tile
+    sf::Color getTileColor();         // returns the current color of the tile
     void draw(sf::RenderWindow *window); // drawing the Tile completely (obsolete)
     virtual void drawTile(sf::RenderWindow *window); // drawing only the body of the Tile
-    void drawWalls(sf::RenderWindow *window); // drawing only the Walls of the Tile
-    void doTick();              // doing a Tick
+    void drawWalls(sf::RenderWindow *window);    // drawing only the Walls of the Tile
+    void doTick();                               // doing a Tick
     virtual void setWall(int dir, bool setWall); // setting the wall in @param dir to @param setWall
     bool isWall(int dir);       // returning if there is a wall in this @param dir
     void setSurrounding(int dir, Tile* tile); // setting in @param dir the @param tile
-    virtual Tile* getSurrounding(int dir); // returning the tile in @param dir
+    virtual Tile* getSurrounding(int dir);    // returning the tile in @param dir
     virtual bool isSurrounding(int dir); // returning if there even is sth in @param dir
-    virtual int isFood(); // returning all the food on the Tile
-    int getFood(); // returning 0 up to 10 max food and decreasing it on the Tile
+    virtual int isFood();       // returning all the food on the Tile
+    int getFood();              // returning 0 up to 10 max food and decreasing it on the Tile
     int getSpecial() { return special; } // returns if the tile is somewhat special
     void setSpecial(int special) { Tile::special = special; } // setting the 'special' value
-    virtual std::string getTileInfo();          // returns the InfoLabel of the tile
-    antBase *getBase() { return base; } // returns the antBase if one is set
+    virtual std::string getTileInfo();   // returns the InfoLabel of the tile
+    antBase *getBase() { return base; }  // returns the antBase if one is set
     void setBase(antBase *base) { Tile::base = base; } // setting the antBase
 };
 

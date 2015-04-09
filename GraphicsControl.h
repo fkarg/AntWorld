@@ -64,6 +64,7 @@ public:
     void createPerfect();               // creates a perfect maze
     void createRandom();                // creates a random maze
     void ResetMaze();                   // resets the maze completely
+    void sliderValueChanged();          // gets called whenever the value of the slider changes
     bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
     void TicksControlChangeState();     // changes the state of the ticksControl

@@ -157,6 +157,9 @@ int main()
                 case 6:
                     maze.setHome(control.getTileSelected() );
                     break;
+                case 7:
+                    control.sliderValueChanged();
+                    break;
                 case 10:
                     std::cout << "closing window" << std::endl;
                     window.close();

@@ -30,7 +30,7 @@ protected:
 
 public:
     Ant();
-
+    void reloadImage();     // reloads the maybe corrupted image of the ant
     int getX();             // returns the x-val of the ant
     int getY();             // returns the y-val of the ant
     int getDir();           // returns the current dir of the ant
@@ -105,6 +105,7 @@ public:
     void doTick();                  // does the tick for all the ants
     void setVisible(bool visible) { isVisible = visible; } // setting if the icon is getting drawn
     bool getVisible() { return isVisible; } // returns if the tile is currently visible
+    int getAntCount() { return AntCount; }  // returns the number of ants from this base
     Ant *getAnt(unsigned int AntID); // returns the ant with the @param AntID
     Tile *getTile() { return baseTile; } //returns the baseTile
 };

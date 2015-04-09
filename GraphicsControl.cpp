@@ -125,7 +125,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     TestConnectedButton->setSize(90, 20);
 
 
-    // TODO: implement bar to set the production of ... whatever (Food, Res, etc)
+    // TODO: implement bar to set the production of ... whatever (Food, Res, etc) or the number of ants
 
     tgui::Slider::Ptr slider(*gui);
     slider->load(THEME_CONFIG_FILE);
@@ -134,7 +134,9 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     slider->setSize(80, 11);
     slider->setMinimum(0);
     slider->setMaximum(5);
-    slider->setValue(2);
+    slider->setValue(0);
+    slider->bindCallback(tgui::Slider::ValueChanged);
+    slider->setCallbackId(7);
 
     GraphicsControl::slider = slider;
 
@@ -177,6 +179,7 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
     tileToShowTile = tile;
 
     antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
+
 
     if (antToShowPtr->getVisible()) antToShowPtr->setDir(selectedAnt.getDir());
 
@@ -252,6 +255,12 @@ void GraphicsControl::ResetMaze() {
 }
 
 
+// updates things according to the changed slider values
+void GraphicsControl::sliderValueChanged() {
+    tileToShowPtr->getTileToShow()->getBase()->addAnt();
+}
+
+
 // returns if the Checkbox is checked or not
 bool GraphicsControl::isAdvancedMode() {
     return advancedMode->isChecked();
@@ -285,10 +294,10 @@ void GraphicsControl::TicksControlChangeState() {
 void GraphicsControl::drawAnts() {
     if (drawBase) {
         base.draw(window);
-        slider->hide();
+        slider->show();
         setHomeButton->setText("Remove Home");
     } else {
-        slider->show();
+        slider->hide();
         setHomeButton->setText("set Home");
     }
     selectedAnt.draw(window);
