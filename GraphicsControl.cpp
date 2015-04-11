@@ -37,10 +37,21 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     infoLabel->load(THEME_CONFIG_FILE);
     infoLabel->setPosition(20, 115);
     infoLabel->setTextSize(12);
-    infoLabel->setTextColor(sf::Color(200, 200, 20) );
+    infoLabel->setTextColor(sf::Color(20, 200, 200) );
     infoLabel->setText("Info:\n\nIndex:\nX:\nY:\n\nFood:");
 
-    InfoLabel = infoLabel;
+    TileInfoLabel = infoLabel;
+
+
+    // label to show information about the maybe visible Ant
+    tgui::Label::Ptr antLabel(*gui);
+    antLabel->load(THEME_CONFIG_FILE);
+    antLabel->setPosition(100, 35);
+    antLabel->setTextSize(12);
+    antLabel->setTextColor(sf::Color(20, 200, 200) );
+    antLabel->setText("AntInfo: ...");
+
+    AntInfoLabel = antLabel;
 
 
     // button to change the state of the wall in upper direction to tho tile selected
@@ -170,18 +181,39 @@ void GraphicsControl::setMaze(Maze *maze) {
     perf.setMaze(maze);
     randomCreator.setMaze(maze);
 
+    maze->getNewAntID(antToShowPtr);
+
     selectedAnt.setPosition(maze->getTile(rand() % maze->INDEX_MAX() ) );
+    maze->getNewAntID(&selectedAnt);
 }
 
 
-// changing the InfoLabel to the @param tile
+// changing the TileInfoLabel to the @param tile
 void GraphicsControl::changeTextInfoLabel(Tile *tile) {
     tileToShowTile = tile;
 
-    antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
+    bool newState = false;
 
+    std::cout << "GC: changeTextInfoLabel" << std::endl;
 
-    if (antToShowPtr->getVisible()) antToShowPtr->setDir(selectedAnt.getDir());
+    // antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
+
+    //if (antToShowPtr->getVisible()) antToShowPtr->setDir(selectedAnt.getDir());
+
+    for (unsigned int id = 0; id < maze->getNextAntID(); id++) {
+        std::cout << "GC: searching for Ant current ID: " << id << std::endl;
+        if (!newState && tile == maze->getAnt(id)->getCurrent()) {
+            std::cout << "GC: setting Ant" << std::endl;
+            newState = true;
+            antToShowAnt = maze->getAnt(id);
+        }
+    }
+
+    std::cout << "GC: after for loop" << std::endl;
+
+    antToShowPtr->setVisible(newState);
+
+    std::cout << "GC: Ant is visible or not now" << std::endl;
 
     if (connect) {
         craver.setAim(tileToShowPtr->getTileToShow());
@@ -196,6 +228,8 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
 // moving the currently selected Ant
 void GraphicsControl::AntMove(int dir) {
     if (antToShowPtr->getVisible() ) {
+        std::cout << "Moving Ant " << antToShowPtr->getAntShown()->getID()
+                << " in dir: " << dir << " on Tile: " << tileToShowPtr->getIndex() << std::endl;
         antToShowAnt.move(dir);
         if (!tileToShowPtr->isWall(dir) )
             changeTextInfoLabel(tileToShowPtr->getSurrounding(dir));
@@ -203,16 +237,20 @@ void GraphicsControl::AntMove(int dir) {
 }
 
 
-// updating the InfoLabel and the separately displayed Tile
+// updating the TileInfoLabel and the separately displayed Tile
 void GraphicsControl::updateInfo() {
     tileToShowPtr->doTick();
 
-    InfoLabel->setText(tileToShowPtr->getTileInfo() );
-
+    TileInfoLabel->setText(tileToShowPtr->getTileInfo() );
     tileToShowPtr->draw(window);
 
     if (tileToShowPtr->getTileToShow() != NULL)
         drawBase = tileToShowPtr->getTileToShow()->getSpecial() == 1;
+
+    if (antToShowPtr->getVisible() ) {
+        AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
+                "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) );
+    } else AntInfoLabel->setText("Please select an Ant to show Info about it");
 }
 
 
@@ -226,6 +264,8 @@ void GraphicsControl::testConnectedButtonClicked() {
 // handling the callbacks from the menu
 void GraphicsControl::handleCallback(tgui::Callback callback) {
     if (callback.id == 11) {
+        std::cout << "Clicked at Menu" << std::endl;
+
         if (callback.text == "Reset")
             ResetMaze();
         if (callback.text == "Create Random")
@@ -257,7 +297,9 @@ void GraphicsControl::ResetMaze() {
 
 // updates things according to the changed slider values
 void GraphicsControl::sliderValueChanged() {
+    std::cout << "changing slider value" << std::endl;
     tileToShowPtr->getTileToShow()->getBase()->addAnt();
+    changeTextInfoLabel(tileToShowPtr->getTileToShow() );
 }
 
 
@@ -271,7 +313,8 @@ bool GraphicsControl::isAdvancedMode() {
 void GraphicsControl::changeWalls(int dir, bool move) {
     if (dir % 4 == dir && tileToShowPtr->getTileToShow() != NULL) {
         if (tileToShowPtr->isSurrounding(dir) ) {
-            tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir) );
+            std::cout << "Changing wall in dir " << dir << " from " << tileToShowPtr->getTileToShow() << std::endl;
+                        tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir) );
             tileToShowPtr->getSurrounding(dir)->setWall( (dir + 2) % 4,
                     !tileToShowPtr->getSurrounding(dir)->isWall( (dir + 2) % 4) );
             if (move)

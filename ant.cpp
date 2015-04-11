@@ -1,4 +1,6 @@
 #include "ant.h"
+#include "maze.h"
+
 
 
 // creating the ant, loading the image and setting it
@@ -41,9 +43,6 @@ void Ant::setCurrent(Tile *current) {
     locY = current->getY() + 2;
 
     sprite.setPosition(sf::Vector2f(locX, locY) );
-
-    std::cout << "Ant: current Tile: " + std::to_string(current->getIndex() + 1) << std::endl;
-
 }
 
 
@@ -74,7 +73,7 @@ void Ant::move(int dir) {
         default:break;
     }
 
-    std::cout << "Ant: current Tile: " + std::to_string(current->getIndex() + 1) << std::endl;
+    std::cout << "Ant: " << AntID << " current Tile: " + std::to_string(current->getIndex() + 1) << std::endl;
 }
 
 
@@ -142,6 +141,12 @@ unsigned int Ant::getFood() {
 }
 
 
+// setting the @param unique AntID
+void Ant::setAntID(unsigned int newID) {
+    AntID = newID;
+}
+
+
 // returns the ID of the Ant
 unsigned int Ant::getID() {
     return AntID;
@@ -199,6 +204,7 @@ void showAnt::setPosition(showTile *showTile1) {
 // setting the Dir of the showAnt to @param dir
 void showAnt::setDir(int dir) {
     showAnt::dir = dir;
+    setPosition(dir);
 }
 
 
@@ -222,27 +228,33 @@ void showAnt::move(int dir) {
     if (isVisible) {
         AntToShow->move(dir);
 
-        switch (dir) {
-            case 0:
-                sprite.setPosition(sf::Vector2f(locX, locY));
-                break;
-            case 1:
-                sprite.setPosition(sf::Vector2f(locX + showingTile->getWidth() - 4,
-                                                locY));
-                break;
-            case 2:
-                sprite.setPosition(sf::Vector2f(locX + showingTile->getWidth() - 4,
-                                                locY + showingTile->getHeight() - 4));
-                break;
-            case 3:
-                sprite.setPosition(sf::Vector2f(locX,
-                                                locY + showingTile->getHeight() - 4));
-                break;
-            default:
-                break;
-        }
-        sprite.setRotation(dir * 90);
+        setPosition(dir);
     }
+}
+
+
+// setting the Position relational to the @param dir
+void showAnt::setPosition(int dir) {
+    switch (dir) {
+    case 0:
+        sprite.setPosition(sf::Vector2f(locX, locY));
+        break;
+    case 1:
+        sprite.setPosition(sf::Vector2f(locX + showingTile->getWidth() - 4,
+                                        locY));
+        break;
+    case 2:
+        sprite.setPosition(sf::Vector2f(locX + showingTile->getWidth() - 4,
+                                        locY + showingTile->getHeight() - 4));
+        break;
+    case 3:
+        sprite.setPosition(sf::Vector2f(locX,
+                                        locY + showingTile->getHeight() - 4));
+        break;
+    default:
+        break;
+    }
+    sprite.setRotation(dir * 90);
 }
 
 
@@ -277,6 +289,12 @@ void antBase::reloadBase() {
 }
 
 
+// setting the @param maze
+void antBase::setMaze(Maze *maze) {
+    antBase::maze = maze;
+}
+
+
 // setting the Position and the scale of the sprite and the texture
 void antBase::setPosition(int x, int y, float scale) {
     locX = x + 2;
@@ -301,6 +319,7 @@ void antBase::addAnt() {
     AntCount++;
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].reloadImage();
+    maze->getNewAntID(&ownAnts[AntCount - 1]);
 }
 
 
@@ -310,6 +329,7 @@ void antBase::addAnt(Ant ant) {
     AntCount++;
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].reloadImage();
+    maze->getNewAntID(&ownAnts[AntCount - 1]);
 }
 
 

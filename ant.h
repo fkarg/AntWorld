@@ -16,6 +16,10 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+
+class Maze;
+
+
 class Ant : public tickInterface {
 
 protected:
@@ -26,7 +30,7 @@ protected:
     sf::Texture texture;
     sf::Sprite sprite;
 
-    Tile *current;
+    Tile *current = NULL;   // FIXME: when trying to compare Indexes ...
 
 public:
     Ant();
@@ -37,6 +41,7 @@ public:
     unsigned int getFood(); // returns the current food of the ant
     Tile* getCurrent();     // returns the tile the ant is currently on
     void setCurrent(Tile *current); // setting the tile the ant is currently on
+    void setAntID(unsigned int newID); // setting the unique antID
     unsigned int getID();   // getting the AntID
     void setPosition(Tile *tileToGoOn) { setCurrent(tileToGoOn); } // see getCurrent
     virtual void move(int dir); // moving the ant if it is possible in @param dir
@@ -70,6 +75,7 @@ public:
     void setVisible(bool visible);  // setting the visibility (the focus) of the ant
     bool getVisible();              // returns if the ant is visible right now or not
     void move(int dir);             // 'moving' the showAnt and the antToShow
+    void setPosition(int dir);      // setting the Position relational to the @param dir
     void draw(sf::RenderWindow *window); // drawing the ant if it is visible right now
     Ant* getAntShown();             // returns the ant currently shown, if visible
 };
@@ -88,10 +94,12 @@ private:
     Tile *baseTile = NULL;
     int locX, locY, AntCount = 0;
     bool isVisible = true;
+    Maze *maze;
 
 public:
     antBase() { reloadBase(); }     // loads the baseImage
     void reloadBase();              // reloads the baseImage
+    void setMaze(Maze *maze);       // sets the @param maze
     void setPosition(int x, int y, float scale = 0.2); // sets the Position of the Base
     void setPosition(Tile *tile, float scale = 0.2);   // sets the Position of the BaseImage
     // setting the BaseTile unspecific to the Position (...)

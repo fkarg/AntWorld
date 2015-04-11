@@ -139,6 +139,7 @@ void Maze::setHome(Tile *tile) {
             tile->setSpecial(0);
         } else {
             antBase home1;
+            home1.setMaze(this);
             home1.setPosition(tile);
             bases.push_back(home1);
             for (int i = 0; i < bases.size(); i++)
@@ -171,14 +172,42 @@ void Maze::removeHome(Tile *tile) {
 }
 
 
+// returns the AntID that is being given to the @param ant
+unsigned int Maze::getNewAntID(Ant *ant) {
+    ant->setAntID(currentMaxAntID);
+    ants.push_back(ant);
+    currentMaxAntID++;
+    return currentMaxAntID - 1;
+}
+
+
+// returns the Ant with the @param AntID
+Ant* Maze::getAnt(unsigned int AntID) {
+    for (int ind = 0; ind < ants.size(); ind++) {
+        if (ants[ind]->getID() == AntID)
+            return ants[ind];
+    }
+    return NULL;
+}
+
+
+// returns the base at @param
+antBase* Maze::getBase(int index) {
+    return &bases[index];
+}
+
+
 // returns the tile that got clicked on (if there is one)
 Tile* Maze::getTileClicked(int x, int y) {
     for (int i = 0; i < sizeX; i++) {
         for (int j = 0; j < sizeY; j++) {
-            if (MAP[i][j].isInside(x, y) )
+            if (MAP[i][j].isInside(x, y) ) {
+                std::cout << "Tile Clicked: " << MAP[i][j].getIndex() << std::endl;
                 return &MAP[i][j];
+            }
         }
     }
+    std::cout << "No Tile Clicked" << std::endl;
     return NULL;
 }
 

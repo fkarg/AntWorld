@@ -30,7 +30,7 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(10, 10);
+    Maze maze(20, 20);
 
     std::cout << "moving maze ... " << std::endl;
 
@@ -42,8 +42,6 @@ int main()
     int Frame = 0;
 
     sf::Vector2i mousePosition;
-
-    bool drawBase = false;
 
     std::cout << "starting main loop ... " << std::endl;
 

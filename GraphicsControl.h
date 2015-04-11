@@ -24,9 +24,9 @@
 
 class GraphicsControl : public tickInterface {
 protected:
-    // pointer to the InfoLabel, the tickControl Button and
+    // pointer to the TileInfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
-    tgui::Label::Ptr InfoLabel;
+    tgui::Label::Ptr TileInfoLabel, AntInfoLabel;
     tgui::Button::Ptr ticksControl, setHomeButton;
     tgui::Checkbox::Ptr advancedMode;
     tgui::Slider::Ptr slider;
@@ -56,9 +56,9 @@ public:
     GraphicsControl(sf::RenderWindow *window); // setting the pointers
     void addGui(tgui::Gui *gui);        // adding the gui and adding the @param tgui
     void setMaze(Maze *maze);           // setting the @param maze in which everything happens
-    void changeTextInfoLabel(Tile *tile); // changing the InfoLabel to @param tile
+    void changeTextInfoLabel(Tile *tile); // changing the TileInfoLabel to @param tile
     void AntMove(int dir);              // moving the ant in @param dir
-    void updateInfo();                  // updating the infoLabel
+    void updateInfo();                  // updating the infoLabels
     void testConnectedButtonClicked();  // if the testConnectedButton is clicked
     void handleCallback(tgui::Callback callback); // handles the callback of the tgui
     void createPerfect();               // creates a perfect maze
