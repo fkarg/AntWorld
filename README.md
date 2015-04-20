@@ -105,4 +105,23 @@ AntBase that signs tasks
 
 
 
+.
+
+.
+
+.
+
+.
+
+.
+
+Sources:
+Ant.png: https://www.iconfinder.com/icons/289355/animal_ant_bug_insect_icon#size=128
+Home_1.png: https://www.iconfinder.com/icons/51304/black_house_home_house_icon#size=128
+Home_2.png: https://www.iconfinder.com/icons/175315/home_icon#size=128
+Black.png: from TGUI
+DejaVuSans.ttf: from TGUI
+Black.conf: from TGUI
+
+TGUI: https://tgui.eu/
 
