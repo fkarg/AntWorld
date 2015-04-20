@@ -6,10 +6,7 @@ Nearly all the variables can be changed by the user.
 Project done with Clion and Sublime Text, written in C++
 
 Used librarys: SFML, TinyXML2, TGUI (GUI for SFML)
-
-currently really needed:
-master: SFML, TGUI
-all other current branches: same as master
+(TinyXML not implemented yet)
 
 
 
@@ -18,9 +15,16 @@ works with CLion and any other IDE working with CMake to build it's projects.
 
 
 
+If you want to build it for yourself, you either need to redefine the SOURCES macro in GraphicsControl.h, main.cpp and ant.h (Please remind me if I have forgotten one) or copy the /resources/ folder to the given path.
 
 
-Further details are added soon
+
+Other Branches are probably more up-to-date, since I only merge if a new 'feature' or sth is finally working
+
+
+
+
+(Further details are added soon)
 
 
 
@@ -39,7 +43,11 @@ but not only where it is available, but how much at what rate is available too (
 
 if there's an AI to send out (everything higher than reactive bots) for special tasks or how to contribute the resources etc.
 
-several kinds of mazes (several maze generators and an edit mode is certain)
+how many of them should be there and from which Base
+
+if bases are allowed to make teams, etc.
+
+several kinds of mazes (several maze generators and an edit mode is certain - two generators and the Edit mode already exist)
 
 several kinds of AI's - from basic ants up to autonomic ones and maybe even more.
 
