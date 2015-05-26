@@ -181,10 +181,7 @@ void GraphicsControl::setMaze(Maze *maze) {
     perf.setMaze(maze);
     randomCreator.setMaze(maze);
 
-    maze->getNewAntID(antToShowPtr);
-
     selectedAnt.setPosition(maze->getTile(rand() % maze->INDEX_MAX() ) );
-    maze->getNewAntID(&selectedAnt);
 }
 
 
@@ -200,7 +197,7 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
 
     //if (antToShowPtr->getVisible()) antToShowPtr->setDir(selectedAnt.getDir());
 
-    for (unsigned int id = 0; id < maze->getNextAntID(); id++) {
+    for (unsigned int id = 0; id < currentMaxAntID; id++) {
         std::cout << "GC: searching for Ant current ID: " << id << std::endl;
         if (!newState && tile == maze->getAnt(id)->getCurrent()) {
             std::cout << "GC: setting Ant" << std::endl;
@@ -245,7 +242,7 @@ void GraphicsControl::updateInfo() {
     tileToShowPtr->draw(window);
 
     if (tileToShowPtr->getTileToShow() != NULL)
-        drawBase = tileToShowPtr->getTileToShow()->getSpecial() == 1;
+        drawBase = tileToShowPtr->getTileToShow()->isBASE();
 
     if (antToShowPtr->getVisible() ) {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +

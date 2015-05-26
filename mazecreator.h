@@ -86,7 +86,7 @@ private:
     void replaceEvery(int oldNum, int newNum);
 
     void out(std::string msg) {
-        std::cout << "perfCreator: " + msg << std::endl;
+        // std::cout << "perfCreator: " + msg << std::endl;
     }
 
     // returns if all tiles era connected already

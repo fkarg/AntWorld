@@ -32,6 +32,8 @@ Maze::Maze(int xSize, int ySize) {
     }
     setNeighbourTiles();
     setOuterWalls();
+
+    Ant::initAntCount();
 }
 
 
@@ -134,9 +136,9 @@ void Maze::setHome(int x, int y) {
 void Maze::setHome(Tile *tile) {
     if (tile != NULL) {
         std::cout << "changing Home status of: " + std::to_string(tile->getIndex()) << std::endl;
-        if (tile->getSpecial() == 1) {
+        if (tile->isBASE()) {
             removeHome(tile);
-            tile->setSpecial(0);
+            tile->removeBase();
         } else {
             antBase home1;
             home1.setMaze(this);
@@ -145,7 +147,6 @@ void Maze::setHome(Tile *tile) {
             for (int i = 0; i < bases.size(); i++)
                 bases[i].reloadBase();
 
-            tile->setSpecial(1);
             tile->setBase(&bases[bases.size() - 1]);
         }
     }
@@ -158,7 +159,6 @@ void Maze::setHome(antBase base, Tile *tile) {
     for (int i = 0; i < bases.size(); i++)
         bases[i].reloadBase();
 
-    tile->setSpecial(1);
     tile->setBase(&bases[bases.size() - 1]);
 }
 
@@ -169,15 +169,6 @@ void Maze::removeHome(Tile *tile) {
         if (tile == bases[i].getTile() )
             bases.erase(bases.begin() + i);
     }
-}
-
-
-// returns the AntID that is being given to the @param ant
-unsigned int Maze::getNewAntID(Ant *ant) {
-    ant->setAntID(currentMaxAntID);
-    ants.push_back(ant);
-    currentMaxAntID++;
-    return currentMaxAntID - 1;
 }
 
 

@@ -1,12 +1,6 @@
 #ifndef ANT_H
 #define ANT_H
 
-
-#ifndef SOURCES
-#define SOURCES "/usr/resources_coding/"
-#endif
-
-
 #include <SFML/Graphics/Texture.hpp>
 #include "ticksystem.h"
 #include "tile.h"
@@ -17,7 +11,15 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
+#ifndef SOURCES
+#define SOURCES "/usr/resources_coding/"
+#endif
+
+
 class Maze;
+
+
+static unsigned int currentMaxAntID; // keeps track of the AntID's
 
 
 class Ant : public tickInterface {
@@ -50,6 +52,7 @@ public:
     void doTick();          // doing a tick
     bool isInside(int x, int y); // returns if the ant got clicked
 
+    static void initAntCount() { currentMaxAntID = 0; }
 };
 
 

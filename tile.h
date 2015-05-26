@@ -1,5 +1,5 @@
-#ifndef ANTWORLD_TILE_H
-#define ANTWORLD_TILE_H
+#ifndef TILE_H
+#define TILE_H
 
 
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -7,13 +7,25 @@
 #include "ticksystem.h"
 
 
+enum STATE {
+    // 0     1    2
+    NORMAL, ANT, RES,
+    //  3      4      5
+    RES_ANT, BASE, BASE_ANT,
+    //  6           7
+    BASE_RES, BASE_RES_ANT
+};
 
+
+class Ant;
 class antBase;
 
 
 class Tile : public tickInterface {
 protected:
-    int locX, locY, height, width, index = -1, special = 0;
+    int locX, locY, height, width, index = -1;
+
+    STATE current = NORMAL; // the state the tile currently has
 
     unsigned int food = 0;
 
@@ -28,10 +40,14 @@ protected:
     sf::RectangleShape rect;
     sf::RectangleShape Walls[4];
 
-    antBase *base = NULL;
+    antBase *base = NULL;       // the AntBase, for later referring to it
 
-    // adding or actualizing the Walls position
-    void addWalls();
+    std::vector<Ant*> ownAnts;      // the vector of all Ants currently on this Tile
+
+
+    void addWalls();                // adding or actualizing the Walls position
+    void addState(STATE state);     // adding the @param state if needed
+    bool removeState(STATE state);  // removing the @param state if necessary
 
 public:
     Tile(){};
@@ -58,11 +74,17 @@ public:
     virtual bool isSurrounding(int dir); // returning if there even is sth in @param dir
     virtual int isFood();       // returning all the food on the Tile
     int getFood();              // returning 0 up to 10 max food and decreasing it on the Tile
-    int getSpecial() { return special; } // returns if the tile is somewhat special
-    void setSpecial(int special) { Tile::special = special; } // setting the 'special' value
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
     antBase *getBase() { return base; }  // returns the antBase if one is set
-    void setBase(antBase *base) { Tile::base = base; } // setting the antBase
+    void setBase(antBase *base);         // setting the antBase
+    void removeBase();                   // removing the base, needed when destroyed or sth
+
+    void addAnt(Ant* ant);              // adding the @param ant to tile
+    bool removeAnt(unsigned int AntID); // @return if the AntID's ant was on the tile before, is not from now on anyways
+
+    bool isBASE();      // returns if the Tile has the special case 'BASE'
+    bool hasAnt();      // returns if the Tile has the special case 'Ant'
+    bool isRES();       // returns if the Tile has the special case 'RES'
 };
 
 

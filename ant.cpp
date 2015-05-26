@@ -11,6 +11,9 @@ Ant::Ant() {
     // and (probably) loses the image in the process
     reloadImage();
 
+    setAntID(currentMaxAntID);
+    currentMaxAntID++;
+
     sprite.scale(sf::Vector2f(0.2, 0.2) );
 
 }
@@ -208,7 +211,7 @@ void showAnt::setDir(int dir) {
 }
 
 
-// setting the showAnt to @param visible or not
+// setting the showAnt to @param visible or not FIXME: not visible when needed
 void showAnt::setVisible(bool visible) {
     setDir(AntToShow->getDir() );
     isVisible = visible;
@@ -315,11 +318,7 @@ void antBase::setPosition(Tile *tile, float scale) {
 void antBase::addAnt() {
     Ant ant;
     ant.setPosition(baseTile);
-    ownAnts.push_back(ant);
-    AntCount++;
-    for (int i = 0; i < AntCount; i++)
-        ownAnts[i].reloadImage();
-    maze->getNewAntID(&ownAnts[AntCount - 1]);
+    addAnt(ant);
 }
 
 
@@ -329,7 +328,6 @@ void antBase::addAnt(Ant ant) {
     AntCount++;
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].reloadImage();
-    maze->getNewAntID(&ownAnts[AntCount - 1]);
 }
 
 

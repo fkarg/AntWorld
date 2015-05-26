@@ -34,6 +34,26 @@ void Tile::addWalls() {
 }
 
 
+// adding the @param state to the current state
+void Tile::addState(STATE state) {
+    if ( (state == RES && !isRES() ) || (state == BASE && !isBASE() ) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
+        int intNewState = (int) state + (int) current;
+        current = (STATE) intNewState;
+    }
+}
+
+
+// removing the @param state from the current (only ANT, RES or BASE)
+bool Tile::removeState(STATE state) {
+    if ( (state == RES && isRES() ) || (state == BASE && isBASE() || (state == ANT && hasAnt() && ownAnts.size() == 0) ) ) {
+        int intNewState = (int) current - (int) state;
+        current = (STATE) intNewState;
+        return true;
+    }
+    return false;
+}
+
+
 // creating the tile at @param x and @param y with @param width and @param height
 void Tile::setSize(int x, int y, int width, int height) {
     locX = x;
@@ -200,18 +220,19 @@ int Tile::getFood() {
 
 // returns the info about the tile, depending on the own state
 std::string Tile::getTileInfo() {
-    std::string additional;
+    std::string additional = "";
 
-    switch (special) {
-        case 0:
-            additional = "Normal Tile";
-            break;
-        case 1:
-            additional = "Home Tile\nAntCount: " + std::to_string(base->getAntCount() );
-            break;
-        default:
-            break;
-    }
+    if (current == ANT || current == NORMAL)
+        additional += "Normal Tile";
+
+    if (isBASE())
+        additional += "BaseTile";
+
+    if (isRES())
+        additional += "ResTile";
+
+    if (hasAnt())
+        additional += "\n with Ant on it";
 
     return "Info:\n"
         "\nIndex: " + std::to_string(getIndex() + 1) +
@@ -221,6 +242,57 @@ std::string Tile::getTileInfo() {
         "\n\n" + additional;
 }
 
+
+// setting the base and adding the new state 'Base' to current
+void Tile::setBase(antBase *base) {
+    addState(BASE);
+    Tile::base = base;
+}
+
+
+// removing a base that was set up until now
+void Tile::removeBase() {
+    Tile::base = NULL;
+    removeState(BASE);
+}
+
+
+// adding the @param ant to the 'current on tile' vector
+void Tile::addAnt(Ant *ant) {
+    ownAnts.push_back(ant);
+    addState(ANT);
+}
+
+
+// removing the Ant with the @param AntID from 'on the tile' if it is there
+// @return: if the operation was succesful
+bool Tile::removeAnt(unsigned int AntID) {
+    for (int i = 0; i < ownAnts.size(); i++)
+        if (ownAnts[i]->getID() == AntID) {
+            ownAnts.erase(ownAnts.begin() + i);
+            removeState(ANT);
+            return true;
+        }
+    return false;
+}
+
+
+// returns if there is a Base on this Tile
+bool Tile::isBASE() {
+    return (int) current >= 4;
+}
+
+
+// returns if this is a Resource - Tile
+bool Tile::isRES() {
+    return current == RES || current == RES_ANT || current == BASE_RES || current == BASE_RES_ANT;
+}
+
+
+// returns if there is at least one ant on this tile
+bool Tile::hasAnt() {
+    return ownAnts.size() > 0;
+}
 
 
 

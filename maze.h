@@ -19,7 +19,6 @@ class Maze : public tickInterface {
 
 private:
     int sizeX = -1, sizeY = -1, tileHeight = 30, tileWidth = 30, x = 0, y = 0;
-    unsigned int currentMaxAntID = 0;
     std::vector<std::vector<Tile> > MAP;
     std::vector<antBase> bases;
     std::vector<Ant*> ants;
@@ -40,8 +39,6 @@ public:
     void setHome(Tile *tile);       // setting the @param tile to an homeTile
     void setHome(antBase base, Tile *tile); // setting a specific @param base to @param tile
     void removeHome(Tile *tile);    // removing the 'Home' status from a tile
-    int getNextAntID() { return currentMaxAntID; } // returns the max antID given
-    unsigned int getNewAntID(Ant *ant); // gives the @param ant a AntID and returns it
     Ant *getAnt(unsigned int AntID); // returns the Ant with the @param AntID if it still exists
     int getBasesNum() { return (int) bases.size(); } // returns how many bases have been registered
     antBase *getBase(int index);    // returns the base at the @param index
