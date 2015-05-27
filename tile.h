@@ -75,12 +75,13 @@ public:
     virtual int isFood();       // returning all the food on the Tile
     int getFood();              // returning 0 up to 10 max food and decreasing it on the Tile
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
-    antBase *getBase() { return base; }  // returns the antBase if one is set
+    antBase* getBase() { return base; }  // returns the antBase if one is set
     void setBase(antBase *base);         // setting the antBase
     void removeBase();                   // removing the base, needed when destroyed or sth
 
     void addAnt(Ant* ant);              // adding the @param ant to tile
     bool removeAnt(unsigned int AntID); // @return if the AntID's ant was on the tile before, is not from now on anyways
+    Ant* getAnt();                      // @returns the ant that got first on this tile
 
     bool isBASE();      // returns if the Tile has the special case 'BASE'
     bool hasAnt();      // returns if the Tile has the special case 'Ant'

@@ -277,6 +277,12 @@ bool Tile::removeAnt(unsigned int AntID) {
 }
 
 
+// @returns the ant that got on this tile first
+Ant* Tile::getAnt() {
+    return ownAnts[0];
+}
+
+
 // returns if there is a Base on this Tile
 bool Tile::isBASE() {
     return (int) current >= 4;

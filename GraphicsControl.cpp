@@ -189,26 +189,11 @@ void GraphicsControl::setMaze(Maze *maze) {
 void GraphicsControl::changeTextInfoLabel(Tile *tile) {
     tileToShowTile = tile;
 
-    bool newState = false;
-
     std::cout << "GC: changeTextInfoLabel" << std::endl;
 
-    // antToShowPtr->setVisible(tile->getIndex() == selectedAnt.getCurrent()->getIndex());
-
-    //if (antToShowPtr->getVisible()) antToShowPtr->setDir(selectedAnt.getDir());
-
-    for (unsigned int id = 0; id < currentMaxAntID; id++) {
-        std::cout << "GC: searching for Ant current ID: " << id << std::endl;
-        if (!newState && tile == maze->getAnt(id)->getCurrent()) {
-            std::cout << "GC: setting Ant" << std::endl;
-            newState = true;
-            antToShowAnt = maze->getAnt(id);
-        }
-    }
-
-    std::cout << "GC: after for loop" << std::endl;
-
-    antToShowPtr->setVisible(newState);
+    if (tile->hasAnt() )
+        antToShowPtr->setAnt(tile->getAnt() );
+    else antToShowPtr->setVisible(false);
 
     std::cout << "GC: Ant is visible or not now" << std::endl;
 
