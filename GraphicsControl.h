@@ -10,7 +10,6 @@
 #ifndef SOURCES
 #define SOURCES "/usr/resources_coding/"
 #endif
-
 #define THEME_CONFIG_FILE "/usr/resources_coding/Black.conf"                                    
 
 

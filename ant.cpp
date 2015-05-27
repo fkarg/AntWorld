@@ -34,6 +34,11 @@ void Ant::reloadImage() {
     // sprite.setColor(sf::Color(0, 255, 0, 255) );
 
     sprite.setColor(sf::Color(255, 255, 255, 200) );
+
+    if (current != NULL) {
+        current->removeAnt(AntID);
+        current->addAnt(this);
+    }
 }
 
 
@@ -46,6 +51,8 @@ void Ant::setCurrent(Tile *current) {
     locY = current->getY() + 2;
 
     sprite.setPosition(sf::Vector2f(locX, locY) );
+
+    current->addAnt(this);
 }
 
 
