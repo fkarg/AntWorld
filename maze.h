@@ -20,9 +20,11 @@ class Maze : public tickInterface {
 private:
     int sizeX = -1, sizeY = -1, tileHeight = 30, tileWidth = 30, x = 0, y = 0;
     std::vector<std::vector<Tile> > MAP;
-    std::vector<antBase> bases;
+    antBase bases[5] = {};
     std::vector<Ant*> ants;
     sf::RectangleShape OuterWalls[4];
+
+    unsigned int basesNum = 0;
 
     // drawing the outer walls of the Maze
     void drawOuterWalls(sf::RenderWindow *renderWindow);
@@ -40,7 +42,7 @@ public:
     void setHome(antBase base, Tile *tile); // setting a specific @param base to @param tile
     void removeHome(Tile *tile);    // removing the 'Home' status from a tile
     Ant *getAnt(unsigned int AntID); // returns the Ant with the @param AntID if it still exists
-    int getBasesNum() { return (int) bases.size(); } // returns how many bases have been registered
+    int getBasesNum() { return basesNum; } // returns how many bases have been registered
     antBase *getBase(int index);    // returns the base at the @param index
     Tile *getTileClicked(int x, int y); // returns the tile that got clicked on
     Tile *getTile(int index);       // getting the Tile at @param index

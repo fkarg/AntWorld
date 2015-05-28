@@ -19,7 +19,8 @@
 class Maze;
 
 
-static unsigned int currentMaxAntID; // keeps track of the AntID's
+static unsigned int MAXANTID; // keeps track of the AntID's
+static unsigned int MAXTEAMNUM; // keeps track of the number of teams
 
 
 class Ant : public tickInterface {
@@ -27,16 +28,20 @@ class Ant : public tickInterface {
 protected:
     int locX = -1, locY = -1, dir = 0, height = 26, width = 26;
 
-    unsigned int ownFood = 0, AntID;
+    unsigned int ownFood = 0, AntID, TeamNum = 0;
 
     sf::Texture texture;
     sf::Sprite sprite;
 
-    Tile *current = NULL;   // FIXME: when trying to compare Indexes ...
+    Tile* current = NULL;   // FIXME: when trying to compare Indexes ...
+
+    antBase* home = NULL;
 
 public:
     Ant();
     void reloadImage();     // reloads the maybe corrupted image of the ant
+    void setHome(antBase* home); // setting the Home of the Ant
+    unsigned int getTeamNum() { return TeamNum; }
     int getX();             // returns the x-val of the ant
     int getY();             // returns the y-val of the ant
     int getDir();           // returns the current dir of the ant
@@ -52,7 +57,7 @@ public:
     void doTick();          // doing a tick
     bool isInside(int x, int y); // returns if the ant got clicked
 
-    static void initAntCount() { currentMaxAntID = 0; }
+    static void initAntCount() { MAXANTID = 0; }
 };
 
 
@@ -93,14 +98,15 @@ class antBase : public tickInterface {
 private:
     sf::Texture texture;
     sf::Sprite sprite;
-    std::vector<Ant> ownAnts;
+    Ant ownAnts[20] = {};
     Tile *baseTile = NULL;
     int locX, locY, AntCount = 0;
     bool isVisible = true;
     Maze *maze;
+    unsigned int TeamNum;
 
 public:
-    antBase() { reloadBase(); }     // loads the baseImage
+    antBase() { reloadBase(); TeamNum = MAXTEAMNUM++; }     // loads the baseImage
     void reloadBase();              // reloads the baseImage
     void setMaze(Maze *maze);       // sets the @param maze
     void setPosition(int x, int y, float scale = 0.2); // sets the Position of the Base
@@ -119,6 +125,9 @@ public:
     int getAntCount() { return AntCount; }  // returns the number of ants from this base
     Ant *getAnt(unsigned int AntID); // returns the ant with the @param AntID
     Tile *getTile() { return baseTile; } //returns the baseTile
+    unsigned int getTeamNum() { return TeamNum; }
+
+    static void initTEAMS() { MAXTEAMNUM = 0; } // initializing the number of teams
 };
 
 

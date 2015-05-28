@@ -34,6 +34,7 @@ Maze::Maze(int xSize, int ySize) {
     setOuterWalls();
 
     Ant::initAntCount();
+    antBase::initTEAMS();
 }
 
 
@@ -96,7 +97,7 @@ void Maze::drawMaze(sf::RenderWindow *window) {
         }
     }
 
-    for (int k = 0; k < bases.size(); k++)
+    for (int k = 0; k < basesNum; k++)
         bases[k].draw(window);
 
     drawOuterWalls(window);
@@ -140,14 +141,10 @@ void Maze::setHome(Tile *tile) {
             removeHome(tile);
             tile->removeBase();
         } else {
-            antBase home1;
+            antBase home1 = bases[basesNum];
             home1.setMaze(this);
             home1.setPosition(tile);
-            bases.push_back(home1);
-            for (int i = 0; i < bases.size(); i++)
-                bases[i].reloadBase();
-
-            tile->setBase(&bases[bases.size() - 1]);
+            setHome(home1, tile);
         }
     }
 }
@@ -155,19 +152,20 @@ void Maze::setHome(Tile *tile) {
 
 // setting the specific @param base to the @param tile
 void Maze::setHome(antBase base, Tile *tile) {
-    bases.push_back(base);
-    for (int i = 0; i < bases.size(); i++)
+    bases[basesNum] = base;
+    basesNum++;
+    for (int i = 0; i < basesNum; i++)
         bases[i].reloadBase();
 
-    tile->setBase(&bases[bases.size() - 1]);
+    tile->setBase(&bases[basesNum - 1]);
 }
 
 
 // removing the @param tile from the antBases
 void Maze::removeHome(Tile *tile) {
-    for (int i = 0; i < bases.size(); i++){
+    for (int i = 0; i < basesNum; i++){
         if (tile == bases[i].getTile() )
-            bases.erase(bases.begin() + i);
+            bases[i].setVisible(false);
     }
 }
 

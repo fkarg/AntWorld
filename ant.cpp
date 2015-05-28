@@ -11,8 +11,8 @@ Ant::Ant() {
     // and (probably) loses the image in the process
     reloadImage();
 
-    setAntID(currentMaxAntID);
-    currentMaxAntID++;
+    setAntID(MAXANTID);
+    MAXANTID++;
 
     sprite.scale(sf::Vector2f(0.2, 0.2) );
 
@@ -42,9 +42,19 @@ void Ant::reloadImage() {
 }
 
 
+// setting the Home of the Ant and the TeamNum
+void Ant::setHome(antBase* home) {
+    Ant::home = home;
+    TeamNum = home->getTeamNum();
+}
+
+
 // setting the @param current: tile the ant is currently on
 // necessary for getting the location and setting the position
 void Ant::setCurrent(Tile *current) {
+    if (Ant::current != NULL)
+        Ant::current->removeAnt(AntID);
+
     Ant::current = current;
 
     locX = current->getX() + 2;
@@ -238,7 +248,7 @@ void showAnt::move(int dir) {
     if (isVisible) {
         AntToShow->move(dir);
 
-        setPosition(dir);
+        setDir(dir);
     }
 }
 
@@ -296,6 +306,9 @@ void antBase::reloadBase() {
         sprite.setTexture(texture);
 
     texture.setSmooth(true);
+
+    for (Ant ant : ownAnts)
+        ant.reloadImage();
 }
 
 
@@ -323,15 +336,16 @@ void antBase::setPosition(Tile *tile, float scale) {
 
 // adding a new ant
 void antBase::addAnt() {
-    Ant ant;
+    Ant ant = ownAnts[AntCount];
     ant.setPosition(baseTile);
+    ant.setHome(this);
     addAnt(ant);
 }
 
 
 // adding a specific @param ant to the ownAnts
 void antBase::addAnt(Ant ant) {
-    ownAnts.push_back(ant);
+    ownAnts[AntCount] = ant;
     AntCount++;
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].reloadImage();
@@ -354,7 +368,8 @@ void antBase::drawAnts(sf::RenderWindow *window) {
 
 // drawing the sprite of the antBase
 void antBase::drawBase(sf::RenderWindow *window) {
-    window->draw(sprite);
+    if (isVisible)
+        window->draw(sprite);
 }
 
 
