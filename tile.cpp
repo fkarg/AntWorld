@@ -226,13 +226,15 @@ std::string Tile::getTileInfo() {
         additional += "Normal Tile";
 
     if (isBASE())
-        additional += "BaseTile";
+        additional += "BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
+                        "\n In Team: " + std::to_string(base->getAntCount() ) +
+                        "/20";
 
     if (isRES())
         additional += "ResTile";
 
     if (hasAnt())
-        additional += "\n with Ant on it";
+        additional += "\nwith Ant on it";
 
     return "Info:\n"
         "\nIndex: " + std::to_string(getIndex() + 1) +
@@ -417,11 +419,18 @@ Tile* showTile::getTileToShow() {
 
 
 
-// returns the infe about the selected tile
+// returns the info about the selected tile
 std::string showTile::getTileInfo() {
     if (tileToShow != NULL)
         return tileToShow->getTileInfo();
     return Tile::getTileInfo();
+}
+
+
+// removing the base from the selected Tile
+void showTile::removeBase() {
+    tileToShow->removeBase();
+    removeState(BASE);
 }
 
 

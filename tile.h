@@ -77,7 +77,7 @@ public:
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
     antBase* getBase() { return base; }  // returns the antBase if one is set
     void setBase(antBase *base);         // setting the antBase
-    void removeBase();                   // removing the base, needed when destroyed or sth
+    virtual void removeBase();                   // removing the base, needed when destroyed or sth
 
     void addAnt(Ant* ant);              // adding the @param ant to tile
     bool removeAnt(unsigned int AntID); // @return if the AntID's ant was on the tile before, is not from now on anyways
@@ -117,6 +117,8 @@ public:
     Tile* getSurrounding(int dir); // getting the virtually surrounding tile
     Tile* getTileToShow(); // returns the tile it 'copies' or at least shows
     std::string getTileInfo(); // returns the info of the currently selected tile (when)
+
+    void removeBase();
 };
 
 
