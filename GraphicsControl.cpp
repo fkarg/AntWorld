@@ -231,7 +231,8 @@ void GraphicsControl::updateInfo() {
 
     if (antToShowPtr->getVisible() ) {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
-                "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) );
+                "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) +
+                "\nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) );
     } else AntInfoLabel->setText("Please select an Ant to show Info about it");
 }
 
