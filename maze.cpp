@@ -154,8 +154,7 @@ void Maze::setHome(Tile *tile) {
 void Maze::setHome(antBase base, Tile *tile) {
     bases[basesNum] = base;
     basesNum++;
-    for (int i = 0; i < basesNum; i++)
-        bases[i].reloadBase();
+    reloadgfx();
 
     tile->setBase(&bases[basesNum - 1]);
 }
@@ -240,6 +239,13 @@ int Maze::getY() {
 // returning the max index of the maze
 int Maze::INDEX_MAX() {
     return sizeX * sizeY;
+}
+
+
+// reloads all the images and pointers that might have gotten corrupted
+void Maze::reloadgfx(){
+    for (antBase base : bases)
+        base.reloadBase();
 }
 
 

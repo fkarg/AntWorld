@@ -52,6 +52,9 @@ public:
     int getX();                     // returns the xPos of the maze
     int getY();                     // returns the yPos of the maze
     int INDEX_MAX();                // returns the MAX Index of the maze
+
+    void reloadgfx();               // reloads all possibly corrupted images
+
     ~Maze(){};                      // destructor of the Maze
 };
 

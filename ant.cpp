@@ -310,8 +310,8 @@ void antBase::reloadBase() {
 
     texture.setSmooth(true);
 
-    for (Ant ant : ownAnts)
-        ant.reloadImage();
+    // for (int i = 0; i < AntCount; i++)
+        // ownAnts[i].reloadImage();
 }
 
 
