@@ -144,7 +144,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     slider->setPosition(20, 260 + 50);
     slider->setSize(80, 11);
     slider->setMinimum(0);
-    slider->setMaximum(5);
+    slider->setMaximum(20);
     slider->setValue(0);
     slider->bindCallback(tgui::Slider::ValueChanged);
     slider->setCallbackId(7);
@@ -231,7 +231,7 @@ void GraphicsControl::updateInfo() {
 
     if (antToShowPtr->getVisible() ) {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
-                "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) +
+                "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() - 21) +
                 "\nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) );
     } else AntInfoLabel->setText("Please select an Ant to show Info about it");
 }
@@ -280,8 +280,12 @@ void GraphicsControl::ResetMaze() {
 
 // updates things according to the changed slider values
 void GraphicsControl::sliderValueChanged() {
-    std::cout << "changing slider value" << std::endl;
-    tileToShowPtr->getTileToShow()->getBase()->addAnt();
+    std::cout << "changed slider value" << std::endl;
+    int AntCount = tileToShowTile.getTileToShow()->getBase()->getAntCount();
+    int sliderVal = slider->getValue();
+
+    if (sliderVal != AntCount && AntCount < 20)
+        tileToShowPtr->getTileToShow()->getBase()->addAnts(sliderVal - AntCount);
     changeTextInfoLabel(tileToShowPtr->getTileToShow() );
 }
 
@@ -321,6 +325,7 @@ void GraphicsControl::drawAnts() {
     if (drawBase) {
         base.draw(window);
         slider->show();
+        slider->setValue(tileToShowTile.getTileToShow()->getBase()->getAntCount() );
         setHomeButton->setText("Remove Home");
     } else {
         slider->hide();

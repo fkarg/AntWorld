@@ -298,6 +298,9 @@ Ant* showAnt::getAntShown() {
 
 
 
+
+
+
 // reloading the base-Image (needed when transferring 'ownership')
 void antBase::reloadBase() {
     if (!texture.loadFromFile(SOURCES"Home_1.png") )

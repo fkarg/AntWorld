@@ -227,7 +227,7 @@ std::string Tile::getTileInfo() {
 
     if (isBASE())
         additional += "BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
-                        "\n In Team: " + std::to_string(base->getAntCount() ) +
+                        "\nIn Team: " + std::to_string(base->getAntCount() ) +
                         "/20";
 
     if (isRES())
