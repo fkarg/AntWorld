@@ -10,7 +10,7 @@
 #ifndef SOURCES
 #define SOURCES "/usr/resources_coding/"
 #endif
-#define THEME_CONFIG_FILE "/usr/resources_coding/Black.conf"                                    
+#define THEME_CONFIG_FILE "/usr/resources_coding/Black.conf"
 
 
 
@@ -26,12 +26,12 @@ protected:
     // pointer to the TileInfoLabel, the tickControl Button and
     // the advancedMode checkbox for accessing it later
     tgui::Label::Ptr TileInfoLabel, AntInfoLabel;
-    tgui::Button::Ptr ticksControl, setHomeButton;
+    tgui::Button::Ptr ticksControl, setHomeButton, setResButton;
     tgui::Checkbox::Ptr advancedMode;
     tgui::Slider::Ptr slider;
 
     int tick = 0;
-    bool connect = false, drawBase = false;
+    bool connect = false, drawBase = false, drawLeaf = false;
 
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;
@@ -44,6 +44,7 @@ protected:
 
     Maze* maze;
     antBase base;
+    producing leaf;
 
     sf::RenderWindow* window;
 

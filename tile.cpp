@@ -36,7 +36,7 @@ void Tile::addWalls() {
 
 // adding the @param state to the current state
 void Tile::addState(STATE state) {
-    if ( (state == RES && !isRES() ) || (state == BASE && !isBASE() ) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
+    if ( (state == RES && !isRES() && res != NULL) || (state == BASE && !isBASE() && base != NULL) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
         int intNewState = (int) state + (int) current;
         current = (STATE) intNewState;
     }
@@ -45,7 +45,7 @@ void Tile::addState(STATE state) {
 
 // removing the @param state from the current (only ANT, RES or BASE)
 bool Tile::removeState(STATE state) {
-    if ( (state == RES && isRES() ) || (state == BASE && isBASE() || (state == ANT && hasAnt() && ownAnts.size() == 0) ) ) {
+    if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() ) || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
         int intNewState = (int) current - (int) state;
         current = (STATE) intNewState;
         return true;
@@ -161,6 +161,9 @@ void Tile::drawWalls(sf::RenderWindow *window) {
 // updating things at a tick
 void Tile::doTick() {
     // for implementation purposes
+    if (isRES() ) {
+        res->doTick();
+    }
 }
 
 
@@ -199,21 +202,17 @@ bool Tile::isSurrounding(int dir) {
 
 // returns if there is food on the tile and how much
 int Tile::isFood() {
-    return food;
+    if (isRES() )
+        return (int) res->getProduced();
+    else return 0;
 }
 
 
-// returns the current food on the tile but max. 10 at once
-// decreases the food on the tile at the same time
+// @returns max 10 or how much food there's on res, else 0
 int Tile::getFood() {
-    if (food >= 10) {
-        food -= 10;
-        return 10;
-    } else {
-        int tmp = food;
-        food = 0;
-        return tmp;
-    }
+    if (isRES() )
+       return res->getFood();
+    else return 0;
 }
 
 
@@ -259,6 +258,20 @@ void Tile::removeBase() {
 }
 
 
+// setting the @param res on this tile
+void Tile::setRes(producing* res) {
+    Tile::res = res;
+    addState(RES);
+}
+
+
+// removing the producing part
+void Tile::removeRes() {
+    res = NULL;
+    removeState(RES);
+}
+
+
 // adding the @param ant to the 'current on tile' vector
 void Tile::addAnt(Ant *ant) {
     ownAnts.push_back(ant);
@@ -300,6 +313,91 @@ bool Tile::isRES() {
 // returns if there is at least one ant on this tile
 bool Tile::hasAnt() {
     return ownAnts.size() > 0;
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////
+////                        producing
+///////////////////////////////////////////////////////////////////
+
+
+
+// @param loc: the tile it is on FIXME: State doesn't actualize yet for some reason
+void producing::setPosition(Tile* loc) {
+    if (!texture.loadFromFile(SOURCES"leaf.png") )
+        std::cout << "Error: couldn't load RES_Image";
+    else
+        sprite.setTexture(texture);
+
+    texture.setSmooth(true);
+
+    sprite.setPosition(loc->getX() +2, loc->getY() +2);
+    sprite.setScale(0.2, 0.2);
+
+    tile = loc;
+}
+
+
+// setting the @param prod production rate of the tile
+void producing::setProductionRate(float prod) {
+    production = prod;
+}
+
+
+// setting if there's production to begin with
+void producing::setProducing(bool nowprod) {
+    isProducing = nowprod;
+}
+
+
+// @return if there's production on this tile at all to begin with
+bool producing::getProducingState() {
+    return isProducing;
+}
+
+
+// @return the productionrate of this tile if there's production at all to begin with
+float producing::getProductionRate() {
+    return production;
+}
+
+// @return the current food on this tile with 'parts'
+float producing::getProduced() {
+    return produced;
+}
+
+
+// @return up to 10, or else rounded what there got produced on this tile already
+int producing::getFood() {
+    if (produced > 10) {
+        produced -= 10;
+        return 10;
+    } else {
+        int tmp = (int) produced;
+        produced -= tmp;
+        return tmp;
+    }
+}
+
+
+// drawing the leaf-image on the @param window
+void producing::draw(sf::RenderWindow* window) {
+    if (isProducing)
+        window->draw(sprite);
+}
+
+
+// adding the production rate to the food currently on this tile
+void producing::doTick() {
+    if (isProducing)
+        produced += production;
+}
+
+// destructor of producing - necessary?
+producing::~producing() {
+    // ...
 }
 
 

@@ -25,7 +25,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button for closing the Window (for test purposes)
     tgui::Button::Ptr button(*gui);
     button->load(THEME_CONFIG_FILE);
-    button->setPosition(20, 460 + 40 + 50);
+    button->setPosition(20, 570);
     button->setSize(60, 20);
     button->setText("Close");
     button->bindCallback(tgui::Button::LeftMouseClicked);
@@ -57,7 +57,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // button to change the state of the wall in upper direction to tho tile selected
     tgui::Button::Ptr buttonChangeWallUp(*gui);
     buttonChangeWallUp->load(THEME_CONFIG_FILE);
-    buttonChangeWallUp->setPosition(15, 270 + 40 + 50);
+    buttonChangeWallUp->setPosition(15, 360);
     buttonChangeWallUp->setSize(90, 20);
     buttonChangeWallUp->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallUp->setCallbackId(0);
@@ -68,7 +68,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallRight(*gui);
     buttonChangeWallRight->load(THEME_CONFIG_FILE);
     buttonChangeWallRight->setSize(90, 20);
-    buttonChangeWallRight->setPosition(15, 300 + 40 + 50);
+    buttonChangeWallRight->setPosition(15, 390);
     buttonChangeWallRight->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallRight->setCallbackId(1);
     buttonChangeWallRight->setText("ChangeWallRight");
@@ -78,7 +78,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallDown(*gui);
     buttonChangeWallDown->load(THEME_CONFIG_FILE);
     buttonChangeWallDown->setSize(90, 20);
-    buttonChangeWallDown->setPosition(15, 330 + 40 + 50);
+    buttonChangeWallDown->setPosition(15, 420);
     buttonChangeWallDown->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallDown->setCallbackId(2);
     buttonChangeWallDown->setText("ChangeWallDown");
@@ -88,7 +88,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr buttonChangeWallLeft(*gui);
     buttonChangeWallLeft->load(THEME_CONFIG_FILE);
     buttonChangeWallLeft->setSize(90, 20);
-    buttonChangeWallLeft->setPosition(15, 400 + 50);
+    buttonChangeWallLeft->setPosition(15, 450);
     buttonChangeWallLeft->bindCallback(tgui::Button::LeftMouseClicked);
     buttonChangeWallLeft->setCallbackId(3);
     buttonChangeWallLeft->setText("ChangeWallLeft");
@@ -106,7 +106,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // checkbox if 'Jumping' is allowed
     tgui::Checkbox::Ptr checkBox(*gui);
     checkBox->load(THEME_CONFIG_FILE);
-    checkBox->setPosition(15, 280 + 50);
+    checkBox->setPosition(15, 320);
     checkBox->setText("Moving");
     checkBox->setSize(20, 20);
     checkBox->check();
@@ -117,7 +117,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // setting the selected tile to a Home - tile
     tgui::Button::Ptr setHomeButton(*gui);
     setHomeButton->load(THEME_CONFIG_FILE);
-    setHomeButton->setPosition(15, 430 + 50);
+    setHomeButton->setPosition(15, 480);
     setHomeButton->setText("set Home");
     setHomeButton->setCallbackId(6);
     setHomeButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -126,10 +126,21 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     GraphicsControl::setHomeButton = setHomeButton;
 
 
+    // the setResButton, for making any normal tile to a Resource-Tile
+    tgui::Button::Ptr setResButton(*gui);
+    setResButton->load(THEME_CONFIG_FILE);
+    setResButton->setPosition(15, 510);
+    setResButton->setSize(90, 20);
+    setResButton->setText("set Resource");
+    setResButton->setCallbackId(12);
+    setResButton->bindCallback(tgui::Button::LeftMouseClicked);
+
+    GraphicsControl::setResButton = setResButton;
+
     // testConnectedButton, for searching if two tiles are connected
     tgui::Button::Ptr TestConnectedButton(*gui);
     TestConnectedButton->load(THEME_CONFIG_FILE);
-    TestConnectedButton->setPosition(15, 460 + 50);
+    TestConnectedButton->setPosition(15, 540);
     TestConnectedButton->setText("TestConnected");
     TestConnectedButton->setCallbackId(5);
     TestConnectedButton->bindCallback(tgui::Button::LeftMouseClicked);
@@ -140,8 +151,8 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
 
     tgui::Slider::Ptr slider(*gui);
     slider->load(THEME_CONFIG_FILE);
-    slider->setVerticalScroll(false);           
-    slider->setPosition(20, 260 + 50);
+    slider->setVerticalScroll(false);
+    slider->setPosition(20, 310);
     slider->setSize(80, 11);
     slider->setMinimum(0);
     slider->setMaximum(20);
@@ -325,12 +336,20 @@ void GraphicsControl::drawAnts() {
     if (drawBase) {
         base.draw(window);
         slider->show();
-        slider->setValue(tileToShowTile.getTileToShow()->getBase()->getAntCount() );
+        slider->setValue( (unsigned int) tileToShowTile.getTileToShow()->getBase()->getAntCount() );
         setHomeButton->setText("Remove Home");
     } else {
         slider->hide();
         setHomeButton->setText("set Home");
     }
+    // if (tileToShowTile.getTileToShow()->isRES() ) {
+    //     leaf.setProducing(true);
+    //     slider->show();
+    //     setResButton->setText("Remove Resource");
+    // } else {
+    //     slider->hide();
+    //     setResButton->setText("set Resource");
+    // }
     selectedAnt.draw(window);
     antToShowPtr->draw(window);
 }

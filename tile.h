@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include "ticksystem.h"
 
 
@@ -19,6 +21,7 @@ enum STATE {
 
 class Ant;
 class antBase;
+class producing;
 
 
 class Tile : public tickInterface {
@@ -26,8 +29,6 @@ protected:
     int locX, locY, height, width, index = -1;
 
     STATE current = NORMAL; // the state the tile currently has
-
-    unsigned int food = 0;
 
     // bool wall[4] = { false, false, false, false };
     bool wall[4] = { true, true, true, true };
@@ -40,7 +41,8 @@ protected:
     sf::RectangleShape rect;
     sf::RectangleShape Walls[4];
 
-    antBase *base = NULL;       // the AntBase, for later referring to it
+    antBase* base = NULL;       // the AntBase, for later referring to it
+    producing* res = NULL;
 
     std::vector<Ant*> ownAnts;      // the vector of all Ants currently on this Tile
 
@@ -75,9 +77,14 @@ public:
     virtual int isFood();       // returning all the food on the Tile
     int getFood();              // returning 0 up to 10 max food and decreasing it on the Tile
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
+
     antBase* getBase() { return base; }  // returns the antBase if one is set
     void setBase(antBase *base);         // setting the antBase
-    virtual void removeBase();                   // removing the base, needed when destroyed or sth
+    virtual void removeBase();           // removing the base, needed when destroyed or sth
+
+    void setRes(producing* res);        // setting the @param res on this tile
+    producing* getRes() { return res; } // @return the producing part of the tile
+    void removeRes();                   // removing the resource-producing part from the tile
 
     void addAnt(Ant* ant);              // adding the @param ant to tile
     bool removeAnt(unsigned int AntID); // @return if the AntID's ant was on the tile before, is not from now on anyways
@@ -89,6 +96,39 @@ public:
 };
 
 
+
+
+class producing : public tickInterface {
+private:
+    float production = 0.0, produced = 0.0;
+    bool isProducing = true; // if there's production currently
+
+    sf::Texture texture;   // the texture of the tile
+    sf::Sprite sprite;     // the sprite to show the texture
+
+    Tile* tile;
+
+public:
+    producing(){}
+
+    void setPosition(Tile* loc);      // setting the position of the RES to @param loc
+
+    void setProductionRate(float prod);   // setting the production of the tile to @param prod
+    void setProducing(bool nowprod);  // setting the production to @param nowprod
+    bool getProducingState();         // @return if currently is produced or not
+    float getProductionRate();        // @return the rate of the production, if there's production to begin with
+    float getProduced();              // @return the produced food on this tile (possibly not everything produced)
+    int getFood();                    // an ant visited and took up to ten 'food'
+
+    Tile* getLoc() { return tile; }   // @returns the tile this res is located on
+
+    void draw(sf::RenderWindow* window); // drawing the image on the @param window
+
+    void doTick();                    // adds the productionRate to the currently produced
+
+    ~producing();                     // destructor - necessary?
+
+};
 
 
 

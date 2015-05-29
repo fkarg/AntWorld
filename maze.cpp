@@ -100,6 +100,9 @@ void Maze::drawMaze(sf::RenderWindow *window) {
     for (int k = 0; k < basesNum; k++)
         bases[k].draw(window);
 
+    for (int l = 0; l < prodsNum; l++)
+        prods[l].draw(window);
+
     drawOuterWalls(window);
 }
 
@@ -166,6 +169,29 @@ void Maze::removeHome(Tile *tile) {
         if (tile == bases[i].getTile() )
             bases[i].setVisible(false);
     }
+}
+
+
+// setting the @param tile a Resource-tile
+void Maze::setRes(Tile* tile) {
+    if (prodsNum < 5 && !tile->isRES() ) {
+        producing prod;
+        prods[prodsNum] = prod;
+        prods[prodsNum].setPosition(tile);
+        tile->setRes(&prods[prodsNum]);
+        prodsNum++;
+    }
+    if (tile->isRES() )
+        removeRes(tile);
+}
+
+
+// removing the Resource-state from the @param tile if it existet beforehead
+void Maze::removeRes(Tile* tile) {
+    tile->removeRes();
+    for (producing prod : prods)
+        if (prod.getLoc() == tile)
+            prod.setProducing(false);
 }
 
 

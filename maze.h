@@ -21,10 +21,11 @@ private:
     int sizeX = -1, sizeY = -1, tileHeight = 30, tileWidth = 30, x = 0, y = 0;
     std::vector<std::vector<Tile> > MAP;
     antBase bases[5] = {};
+    producing prods[5] = {};
     std::vector<Ant*> ants;
     sf::RectangleShape OuterWalls[4];
 
-    unsigned int basesNum = 0;
+    unsigned int basesNum = 0, prodsNum = 0;
 
     // drawing the outer walls of the Maze
     void drawOuterWalls(sf::RenderWindow *renderWindow);
@@ -38,14 +39,16 @@ public:
     void move(int x, int y);        // moving for @param x and @param y pixels - the whole maze
     void doTick();                  // whatever happens at a tick is updated in the maze
     void setHome(int x, int y);     // setting the @param x and y tile to an homeTile
-    void setHome(Tile *tile);       // setting the @param tile to an homeTile
+    void setHome(Tile* tile);       // setting the @param tile to an homeTile
     void setHome(antBase base, Tile *tile); // setting a specific @param base to @param tile
-    void removeHome(Tile *tile);    // removing the 'Home' status from a tile
-    Ant *getAnt(unsigned int AntID); // returns the Ant with the @param AntID if it still exists
+    void removeHome(Tile* tile);    // removing the 'Home' status from a tile
+    void setRes(Tile* tile);        // setting the @param tile a ResourceTile
+    void removeRes(Tile* tile);     // removing the Resource-part of the @param tile
+    Ant* getAnt(unsigned int AntID); // returns the Ant with the @param AntID if it still exists
     int getBasesNum() { return basesNum; } // returns how many bases have been registered
-    antBase *getBase(int index);    // returns the base at the @param index
-    Tile *getTileClicked(int x, int y); // returns the tile that got clicked on
-    Tile *getTile(int index);       // getting the Tile at @param index
+    antBase* getBase(int index);    // returns the base at the @param index
+    Tile* getTileClicked(int x, int y); // returns the tile that got clicked on
+    Tile* getTile(int index);       // getting the Tile at @param index
     Tile *getTile(int x, int y);    // getting the Tile at @param x and @param y
     int getSizeX();                 // returns the sizeX of the maze
     int getSizeY();                 // returns the sizeY of the maze

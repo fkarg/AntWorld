@@ -168,6 +168,9 @@ int main()
                     else
                         control.handleCallback(callback);
                     break;
+                case 12:
+                    maze.setRes(control.getTileSelected() );
+                    break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;
                     break;
