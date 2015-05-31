@@ -108,12 +108,14 @@ private:
     sf::Texture texture;   // the texture of the tile
     sf::Sprite sprite;     // the sprite to show the texture
 
-    Tile* tile;
+    Tile* tile = NULL;
 
 public:
     producing(){}
 
     void setPosition(Tile* loc);      // setting the position of the RES to @param loc
+
+    void reloadImage();               // reloading the at some point maybe corrupted image
 
     void setProductionRate(float prod);   // setting the production of the tile to @param prod
     void setProducing(bool nowprod);  // setting the production to @param nowprod

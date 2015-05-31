@@ -335,10 +335,7 @@ bool Tile::hasAnt() {
 
 // @param loc: the tile it is on FIXME: State doesn't actualize yet for some reason
 void producing::setPosition(Tile* loc) {
-    if (!texture.loadFromFile(SOURCES"leaf.png") )
-        std::cout << "Error: couldn't load RES_Image";
-    else
-        sprite.setTexture(texture);
+    reloadImage();
 
     texture.setSmooth(true);
 
@@ -346,6 +343,16 @@ void producing::setPosition(Tile* loc) {
     sprite.setScale(0.2, 0.2);
 
     tile = loc;
+}
+
+
+// reloading the at some point maybe corrupted image
+void producing::reloadImage() {
+
+    if (!texture.loadFromFile(SOURCES"leaf.png") )
+        std::cout << "Error: couldn't load RES_Image";
+    else
+        sprite.setTexture(texture);
 }
 
 

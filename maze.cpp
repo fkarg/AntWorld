@@ -191,6 +191,19 @@ void Maze::removeRes(Tile* tile) {
     for (producing& prod : prods)
         if (prod.getLoc() == tile)
             prod.setProducing(false);
+
+    for (int i = 0; i < prodsNum; i++)
+        if (prods[i].getLoc() == tile) {
+            prods[i].setProducing(false);
+            producing tmp = prods[i];
+            for (int j = i; j < 5; j++) {
+                prods[j] = prods[j + 1];
+                if (prods[j].getLoc() != NULL)
+                    prods[j].getLoc()->setRes(&prods[j]);
+            }
+            prodsNum--;
+        }
+    reloadgfx();
 }
 
 
@@ -269,8 +282,11 @@ int Maze::INDEX_MAX() {
 
 // reloads all the images and pointers that might have gotten corrupted
 void Maze::reloadgfx(){
-    for (antBase base : bases)
+    for (antBase& base : bases)
         base.reloadBase();
+
+    for (producing& prod : prods)
+        prod.reloadImage();
 }
 
 
