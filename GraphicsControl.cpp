@@ -152,7 +152,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Slider::Ptr slider(*gui);
     slider->load(THEME_CONFIG_FILE);
     slider->setVerticalScroll(false);
-    slider->setPosition(20, 310);
+    slider->setPosition(20, 300);
     slider->setSize(80, 11);
     slider->setMinimum(0);
     slider->setMaximum(20);
@@ -237,8 +237,10 @@ void GraphicsControl::updateInfo() {
     TileInfoLabel->setText(tileToShowPtr->getTileInfo() );
     tileToShowPtr->draw(window);
 
-    if (tileToShowPtr->getTileToShow() != NULL)
+    if (tileToShowPtr->getTileToShow() != NULL) {
         drawBase = tileToShowPtr->getTileToShow()->isBASE();
+        drawLeaf = tileToShowPtr->getTileToShow()->isRES();
+    }
 
     if (antToShowPtr->getVisible() ) {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
@@ -342,14 +344,14 @@ void GraphicsControl::drawAnts() {
         slider->hide();
         setHomeButton->setText("set Home");
     }
-    // if (tileToShowTile.getTileToShow()->isRES() ) {
-    //     leaf.setProducing(true);
-    //     slider->show();
-    //     setResButton->setText("Remove Resource");
-    // } else {
-    //     slider->hide();
-    //     setResButton->setText("set Resource");
-    // }
+    if (drawLeaf) {
+        leaf.setProducing(true);
+        slider->show();
+        setResButton->setText("Remove Resource");
+    } else {
+        slider->hide();
+        setResButton->setText("set Resource");
+    }
     selectedAnt.draw(window);
     antToShowPtr->draw(window);
 }

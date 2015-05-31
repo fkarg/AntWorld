@@ -36,16 +36,23 @@ void Tile::addWalls() {
 
 // adding the @param state to the current state
 void Tile::addState(STATE state) {
+    std::cout << "adding state " << state << " to tile " << index << std::endl;
+    if (state == RES) std::cout << "state is RES" << std::endl;
+    if (!isRES() ) std::cout << "tile has no registered RES yet" << std::endl;
+    if (res != NULL) std::cout << "res of tile is set" << std::endl;
     if ( (state == RES && !isRES() && res != NULL) || (state == BASE && !isBASE() && base != NULL) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
         int intNewState = (int) state + (int) current;
+        std::cout << "previous state: " << (int) current;
         current = (STATE) intNewState;
+        std::cout << " new state: " << (int) current << std::endl;
     }
 }
 
 
 // removing the @param state from the current (only ANT, RES or BASE)
 bool Tile::removeState(STATE state) {
-    if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() ) || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
+    std::cout << "removing state " << state << " from tile " << index << std::endl;
+    if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL ) || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
         int intNewState = (int) current - (int) state;
         current = (STATE) intNewState;
         return true;
@@ -224,15 +231,15 @@ std::string Tile::getTileInfo() {
     if (current == ANT || current == NORMAL)
         additional += "Normal Tile";
 
-    if (isBASE())
+    if (isBASE() )
         additional += "BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
                         "\nIn Team: " + std::to_string(base->getAntCount() ) +
                         "/20";
 
-    if (isRES())
+    if (isRES() )
         additional += "ResTile";
 
-    if (hasAnt())
+    if (hasAnt() )
         additional += "\nwith Ant on it";
 
     return "Info:\n"
@@ -246,8 +253,8 @@ std::string Tile::getTileInfo() {
 
 // setting the base and adding the new state 'Base' to current
 void Tile::setBase(antBase *base) {
-    addState(BASE);
     Tile::base = base;
+    addState(BASE);
 }
 
 
@@ -259,8 +266,9 @@ void Tile::removeBase() {
 
 
 // setting the @param res on this tile
-void Tile::setRes(producing* res) {
-    Tile::res = res;
+void Tile::setRes(producing*produ) {
+    std::cout << "setting Tile " << index << " a RES" << std::endl;
+    res = produ;
     addState(RES);
 }
 
@@ -312,7 +320,7 @@ bool Tile::isRES() {
 
 // returns if there is at least one ant on this tile
 bool Tile::hasAnt() {
-    return ownAnts.size() > 0;
+    return (int) current % 2 == 1;
 }
 
 

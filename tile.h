@@ -9,6 +9,8 @@
 #include "ticksystem.h"
 
 
+
+// possible states for every tile
 enum STATE {
     // 0     1    2
     NORMAL, ANT, RES,
@@ -65,9 +67,9 @@ public:
     virtual int getIndex() const;     // the set index
     void setColor(sf::Color color);   // setting the color of the Tile
     sf::Color getTileColor();         // returns the current color of the tile
-    void draw(sf::RenderWindow *window); // drawing the Tile completely (obsolete)
-    virtual void drawTile(sf::RenderWindow *window); // drawing only the body of the Tile
-    void drawWalls(sf::RenderWindow *window);    // drawing only the Walls of the Tile
+    void draw(sf::RenderWindow* window); // drawing the Tile completely (obsolete)
+    virtual void drawTile(sf::RenderWindow* window); // drawing only the body of the Tile
+    void drawWalls(sf::RenderWindow* window);    // drawing only the Walls of the Tile
     void doTick();                               // doing a Tick
     virtual void setWall(int dir, bool setWall); // setting the wall in @param dir to @param setWall
     bool isWall(int dir);       // returning if there is a wall in this @param dir
@@ -79,10 +81,10 @@ public:
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
 
     antBase* getBase() { return base; }  // returns the antBase if one is set
-    void setBase(antBase *base);         // setting the antBase
+    void setBase(antBase* base);         // setting the antBase
     virtual void removeBase();           // removing the base, needed when destroyed or sth
 
-    void setRes(producing* res);        // setting the @param res on this tile
+    void setRes(producing* produ);        // setting the @param res on this tile
     producing* getRes() { return res; } // @return the producing part of the tile
     void removeRes();                   // removing the resource-producing part from the tile
 

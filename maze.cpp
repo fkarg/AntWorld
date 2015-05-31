@@ -181,8 +181,8 @@ void Maze::setRes(Tile* tile) {
         tile->setRes(&prods[prodsNum]);
         prodsNum++;
     }
-    if (tile->isRES() )
-        removeRes(tile);
+    // if (tile->isRES() )
+        // removeRes(tile);
 }
 
 
