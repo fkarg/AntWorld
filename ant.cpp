@@ -6,9 +6,6 @@
 // creating the ant, loading the image and setting it
 Ant::Ant() {
 
-    // FIXME: there will be a white tile (probably) when drawn
-    // this comes from: the texture is getting copied
-    // and (probably) loses the image in the process
     reloadImage();
 
     setAntID(MAXANTID);
@@ -228,7 +225,7 @@ void showAnt::setDir(int dir) {
 }
 
 
-// setting the showAnt to @param visible or not FIXME: not visible when needed
+// setting the showAnt to @param visible or not
 void showAnt::setVisible(bool visible) {
     setDir(AntToShow->getDir() );
     isVisible = visible;

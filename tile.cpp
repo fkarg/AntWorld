@@ -230,15 +230,15 @@ std::string Tile::getTileInfo() {
     std::string additional = "";
 
     if (current == ANT || current == NORMAL)
-        additional += "Normal Tile";
+        additional += "\nNormal Tile";
 
     if (isBASE() )
-        additional += "BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
+        additional += "\n- BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
                         "\nIn Team: " + std::to_string(base->getAntCount() ) +
                         "/20";
 
     if (isRES() )
-        additional += "ResTile\nProduction:\n" + std::to_string( (int) res->getProductionRate() ) + "." +
+        additional += "\n- ResTile\nProduction:\n" + std::to_string( (int) res->getProductionRate() ) + "." +
                 std::to_string( (int) (res->getProductionRate() * 10) % 10);
 
     if (hasAnt() )
@@ -249,7 +249,7 @@ std::string Tile::getTileInfo() {
         "\nX: " + std::to_string(getX() ) +
         "\nY: " + std::to_string(getY() ) +
         "\n\nFood: " + std::to_string(isFood() ) +
-        "\n\n" + additional;
+        "\n" + additional;
 }
 
 
@@ -334,7 +334,7 @@ bool Tile::hasAnt() {
 
 
 
-// @param loc: the tile it is on FIXME: State doesn't actualize yet for some reason
+// @param loc: the tile it is on
 void producing::setPosition(Tile* loc) {
     reloadImage();
 
@@ -342,6 +342,18 @@ void producing::setPosition(Tile* loc) {
 
     sprite.setPosition(loc->getX() +2, loc->getY() +2);
     sprite.setScale(0.2, 0.2);
+
+    tile = loc;
+}
+
+
+// setting the position to the showTile
+void producing::setPosition(showTile* loc) {
+    reloadImage();
+    texture.setSmooth(true);
+
+    sprite.setPosition(loc->getOwnX() +2, loc->getOwnY() +2);
+    sprite.setScale(0.24, 0.24);
 
     tile = loc;
 }
@@ -501,8 +513,6 @@ void showTile::doTick() {
     if (tileToShow != NULL) {
         pubX = tileToShow->getX();
         pubY = tileToShow->getY();
-        pubHeight = tileToShow->getHeight();
-        pubWidth = tileToShow->getWidth();
         pubIndex = tileToShow->getIndex();
         pubFood = (unsigned) tileToShow->isFood();
         rect.setFillColor(tileToShow->getTileColor() );

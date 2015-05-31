@@ -24,6 +24,7 @@ enum STATE {
 class Ant;
 class antBase;
 class producing;
+class showTile;
 
 
 class Tile : public tickInterface {
@@ -114,6 +115,7 @@ public:
     producing(){}
 
     void setPosition(Tile* loc);      // setting the position of the RES to @param loc
+    void setPosition(showTile* loc);  // setting the position to the showTile
 
     void reloadImage();               // reloading the at some point maybe corrupted image
 
@@ -139,7 +141,7 @@ public:
 class showTile : public Tile {
 
 protected:
-    int pubX = -1, pubY = -1, pubHeight, pubWidth, pubIndex = -1, special = 1;
+    int pubX = -1, pubY = -1, pubIndex = -1;
     unsigned int pubFood = 0;
     Tile *tileToShow = NULL;    // the tile that is being 'copied'
 

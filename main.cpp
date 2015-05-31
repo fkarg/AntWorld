@@ -186,7 +186,7 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
-        control.drawAnts();
+        control.drawSpecial();
 
         // drawing the gui
         gui.draw();

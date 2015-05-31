@@ -68,7 +68,7 @@ public:
     bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
     void TicksControlChangeState();     // changes the state of the ticksControl
-    void drawAnts();                    // draws the Ants (showAnt & selectedAnt)
+    void drawSpecial();                    // draws the Ants (showAnt & selectedAnt)
     Tile *getTileSelected();            // returns the currently selected tile
     void doTick();                      // for the implementation
 };

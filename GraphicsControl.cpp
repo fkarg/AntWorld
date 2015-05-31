@@ -15,6 +15,8 @@ GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
 
 
     base.setPosition(tileToShowPtr->getOwnX(), tileToShowPtr->getOwnY(), 0.24);
+    leaf.setPosition(tileToShowPtr);
+    leaf.setProducing(true);
 
 }
 
@@ -140,6 +142,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
 
     GraphicsControl::setResButton = setResButton;
 
+
     // testConnectedButton, for searching if two tiles are connected
     tgui::Button::Ptr TestConnectedButton(*gui);
     TestConnectedButton->load(THEME_CONFIG_FILE);
@@ -150,8 +153,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     TestConnectedButton->setSize(90, 20);
 
 
-    // TODO: implement bar to set the production of ... whatever (Food, Res, etc) or the number of ants
-
+    // slider for controlling the production rate of the RES or the ants from a base
     tgui::Slider::Ptr slider(*gui);
     slider->load(THEME_CONFIG_FILE);
     slider->setVerticalScroll(false);
@@ -308,7 +310,7 @@ void GraphicsControl::sliderValueChanged() {
         }
         if (tileToShowTile.getTileToShow()->isRES()) {
             producing *res = tileToShowTile.getTileToShow()->getRes();
-            res->setProductionRate((float) slider->getValue() / 10.0);
+            res->setProductionRate((float) (slider->getValue() / 10.0));
         }
     }
 }
@@ -348,26 +350,28 @@ void GraphicsControl::TicksControlChangeState() {
 
 
 // drawing the Ants from the base and the showAnt
-void GraphicsControl::drawAnts() {
+void GraphicsControl::drawSpecial() {
     initial = true;
-    if (drawBase) {
-        base.draw(window);
+
+    if (drawBase || drawLeaf) {
         slider->show();
-        slider->setValue( (unsigned int) tileToShowTile.getTileToShow()->getBase()->getAntCount() );
-        setHomeButton->setText("Remove Home");
-    } else {
-        slider->hide();
+
+        if (drawLeaf) {
+            setResButton->setText("Remove Res");
+            slider->setValue( (unsigned int) (tileToShowTile.getTileToShow()->getRes()->getProductionRate() * 10.0) );
+            leaf.draw(window);
+        }
+        if (drawBase) {
+            setHomeButton->setText("Remove Home");
+            slider->setValue( (unsigned int) tileToShowTile.getTileToShow()->getBase()->getAntCount() );
+            base.draw(window);
+        }
+    } else slider->hide();
+    if (!drawBase)
         setHomeButton->setText("set Home");
-    }
-    if (drawLeaf) {
-        leaf.setProducing(true);
-        slider->show();
-        slider->setValue( (unsigned int) (tileToShowTile.getTileToShow()->getRes()->getProductionRate() * 10.0) );
-        setResButton->setText("Remove Resource");
-    } else {
-        slider->hide();
+    if (!drawLeaf)
         setResButton->setText("set Resource");
-    }
+
     initial = false;
     selectedAnt.draw(window);
     antToShowPtr->draw(window);
