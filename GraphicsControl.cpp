@@ -100,7 +100,10 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     startTicksButton->setSize(90, 20);
     startTicksButton->setPosition(500, 50);
     startTicksButton->setCallbackId(4);
+    startTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
     startTicksButton->setText("Start");
+
+    ticksControl = startTicksButton;
 
 
     // checkbox if 'Jumping' is allowed
@@ -334,10 +337,13 @@ void GraphicsControl::changeWalls(int dir, bool move) {
 
 // changing the shown text on the ticksControl Button
 void GraphicsControl::TicksControlChangeState() {
+    std::cout << "starting ticks ..." << std::endl;
     if (ticksControl->getText() == "Start" || ticksControl->getText() == "Resume")
         ticksControl->setText("Pause");
     else
         ticksControl->setText("Resume");
+
+    maze->doTick();
 }
 
 

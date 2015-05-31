@@ -168,9 +168,10 @@ void Tile::drawWalls(sf::RenderWindow *window) {
 // updating things at a tick
 void Tile::doTick() {
     // for implementation purposes
-    if (isRES() ) {
+    if (isRES() )
         res->doTick();
-    }
+    if (isBASE() )
+        base->doTick();
 }
 
 
