@@ -37,9 +37,6 @@ void Tile::addWalls() {
 // adding the @param state to the current state
 void Tile::addState(STATE state) {
     std::cout << "adding state " << state << " to tile " << index << std::endl;
-    if (state == RES) std::cout << "state is RES" << std::endl;
-    if (!isRES() ) std::cout << "tile has no registered RES yet" << std::endl;
-    if (res != NULL) std::cout << "res of tile is set" << std::endl;
     if ( (state == RES && !isRES() && res != NULL) || (state == BASE && !isBASE() && base != NULL) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
         int intNewState = (int) state + (int) current;
         std::cout << "previous state: " << (int) current;
@@ -54,7 +51,9 @@ bool Tile::removeState(STATE state) {
     std::cout << "removing state " << state << " from tile " << index << std::endl;
     if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL ) || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
         int intNewState = (int) current - (int) state;
+        std::cout << "previous state: " << (int) current;
         current = (STATE) intNewState;
+        std::cout << " new state: " << (int) current << std::endl;
         return true;
     }
     return false;
