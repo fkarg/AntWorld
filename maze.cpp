@@ -180,16 +180,15 @@ void Maze::setRes(Tile* tile) {
         prods[prodsNum].setPosition(tile);
         tile->setRes(&prods[prodsNum]);
         prodsNum++;
-    }
-    // if (tile->isRES() )
-        // removeRes(tile);
+    } else if (tile->isRES() )
+        removeRes(tile);
 }
 
 
 // removing the Resource-state from the @param tile if it existet beforehead
 void Maze::removeRes(Tile* tile) {
     tile->removeRes();
-    for (producing prod : prods)
+    for (producing& prod : prods)
         if (prod.getLoc() == tile)
             prod.setProducing(false);
 }

@@ -237,7 +237,8 @@ std::string Tile::getTileInfo() {
                         "/20";
 
     if (isRES() )
-        additional += "ResTile";
+        additional += "ResTile\nProduction:\n" + std::to_string( (int) res->getProductionRate() ) + "." +
+                std::to_string( (int) (res->getProductionRate() * 10) % 10);
 
     if (hasAnt() )
         additional += "\nwith Ant on it";

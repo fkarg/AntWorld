@@ -31,7 +31,7 @@ protected:
     tgui::Slider::Ptr slider;
 
     int tick = 0;
-    bool connect = false, drawBase = false, drawLeaf = false;
+    bool connect = false, drawBase = false, drawLeaf = false, initial = true;
 
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;

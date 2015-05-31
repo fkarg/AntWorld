@@ -293,13 +293,21 @@ void GraphicsControl::ResetMaze() {
 
 // updates things according to the changed slider values
 void GraphicsControl::sliderValueChanged() {
-    std::cout << "changed slider value" << std::endl;
-    int AntCount = tileToShowTile.getTileToShow()->getBase()->getAntCount();
-    int sliderVal = slider->getValue();
+    if (!initial) {
+        std::cout << "changed slider value" << std::endl;
+        if (tileToShowTile.getTileToShow()->isBASE()) {
+            int AntCount = tileToShowTile.getTileToShow()->getBase()->getAntCount();
+            int sliderVal = slider->getValue();
 
-    if (sliderVal != AntCount && AntCount < 20)
-        tileToShowPtr->getTileToShow()->getBase()->addAnts(sliderVal - AntCount);
-    changeTextInfoLabel(tileToShowPtr->getTileToShow() );
+            if (sliderVal != AntCount && AntCount < 20)
+                tileToShowPtr->getTileToShow()->getBase()->addAnts(sliderVal - AntCount);
+            changeTextInfoLabel(tileToShowPtr->getTileToShow());
+        }
+        if (tileToShowTile.getTileToShow()->isRES()) {
+            producing *res = tileToShowTile.getTileToShow()->getRes();
+            res->setProductionRate((float) slider->getValue() / 10.0);
+        }
+    }
 }
 
 
@@ -335,6 +343,7 @@ void GraphicsControl::TicksControlChangeState() {
 
 // drawing the Ants from the base and the showAnt
 void GraphicsControl::drawAnts() {
+    initial = true;
     if (drawBase) {
         base.draw(window);
         slider->show();
@@ -347,11 +356,13 @@ void GraphicsControl::drawAnts() {
     if (drawLeaf) {
         leaf.setProducing(true);
         slider->show();
+        slider->setValue( (unsigned int) (tileToShowTile.getTileToShow()->getRes()->getProductionRate() * 10.0) );
         setResButton->setText("Remove Resource");
     } else {
         slider->hide();
         setResButton->setText("set Resource");
     }
+    initial = false;
     selectedAnt.draw(window);
     antToShowPtr->draw(window);
 }
