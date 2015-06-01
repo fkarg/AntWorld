@@ -23,14 +23,14 @@
 
 class GraphicsControl : public tickInterface {
 protected:
-    // pointer to the TileInfoLabel, the tickControl Button and
-    // the advancedMode checkbox for accessing it later
+    // pointer for several necessary gui objects for accessing them later
     tgui::Label::Ptr TileInfoLabel, AntInfoLabel;
     tgui::Button::Ptr ticksControl, setHomeButton, setResButton;
     tgui::Checkbox::Ptr advancedMode;
     tgui::Slider::Ptr slider;
 
     int tick = 0;       // TODO: ticksystem ...
+    const int lowest = 400, diff = 30;
     bool connect = false, drawBase = false, drawLeaf = false, initial = true;
 
     // pointer to the showTile and showTile
