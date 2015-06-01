@@ -87,7 +87,7 @@ int main()
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                         control.changeWalls(LEFT, control.isAdvancedMode() );
 
-                    // for the ASDW - Keys:
+                    // for the ASDW (-> neo: UIAV) - Keys:
                     // but not changing the selected tile
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::V))
@@ -103,7 +103,7 @@ int main()
                         control.changeWalls(LEFT);
 
 
-                    // for moving the ant
+                    // for moving the ant, keys: JKLI (-> neo: NRTG)
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::G) )
                         control.AntMove(UP);
