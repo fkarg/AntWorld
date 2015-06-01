@@ -387,7 +387,7 @@ void antBase::doTick() {
 }
 
 
-// returns the ant with the @param AntID or NULL if notexistent
+// returns the ant with the @param AntID or NULL if nonexistent
 Ant* antBase::getAnt(unsigned int AntID) {
     for (int i = 0; i < AntCount; i++) {
         if (ownAnts[i].getID() == AntID)
