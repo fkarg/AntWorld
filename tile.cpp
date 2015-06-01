@@ -307,6 +307,12 @@ Ant* Tile::getAnt() {
 }
 
 
+// @returns how many ants there are on this tile exactly
+int Tile::getAntCount() {
+    return (int) ownAnts.size();
+}
+
+
 // returns if there is a Base on this Tile
 bool Tile::isBASE() {
     return (int) current >= 4;

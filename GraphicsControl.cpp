@@ -251,7 +251,8 @@ void GraphicsControl::updateInfo() {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
                 "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() - 121) +
                 // TODO: using already existing ants for lower IDs
-                "\nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) );
+                "\nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
+                "\nAnts on Tile: " + std::to_string(tileToShowTile.getTileToShow()->getAntCount() ) );
     } else AntInfoLabel->setText("Please select an Ant to show Info about it");
 }
 

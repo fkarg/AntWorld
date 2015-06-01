@@ -41,7 +41,7 @@ protected:
 //    the directions: up, right, down, left
 //                     0 ,   1 ,   2 ,   3
 
-    Tile *surrounding[4] = {}; // to direct to tiles next to it
+    Tile* surrounding[4] = {}; // to direct to tiles next to it
 
     // RectangleShapes to draw the tile and the walls later on
     sf::RectangleShape rect;
@@ -95,6 +95,7 @@ public:
     void addAnt(Ant* ant);              // adding the @param ant to tile
     bool removeAnt(unsigned int AntID); // @return if the AntID's ant was on the tile before, is not from now on anyways
     Ant* getAnt();                      // @returns the ant that got first on this tile
+    int getAntCount();                  // @returns how many ants there are exactly on this tile
 
     bool isBASE();      // returns if the Tile has the special case 'BASE'
     bool hasAnt();      // returns if the Tile has the special case 'Ant'
@@ -146,7 +147,7 @@ class showTile : public Tile {
 protected:
     int pubX = -1, pubY = -1, pubIndex = -1;
     unsigned int pubFood = 0;
-    Tile *tileToShow = NULL;    // the tile that is being 'copied'
+    Tile* tileToShow = NULL;    // the tile that is being 'copied'
 
 public:
     showTile(){};
