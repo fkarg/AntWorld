@@ -19,7 +19,6 @@ enum STATE {
     //  6           7
     BASE_RES, BASE_RES_ANT
 };
-// FIXME: handling of a tile being RES and BASE ( -> the slider)
 
 
 
