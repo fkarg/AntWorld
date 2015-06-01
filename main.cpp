@@ -125,9 +125,8 @@ int main()
                     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) ) {
                         Tile *testPtr = NULL;
                         testPtr = maze.getTileClicked(mousePosition.x, mousePosition.y);
-                        if (testPtr != NULL) {
+                        if (testPtr != NULL)
                             control.changeTextInfoLabel(testPtr);
-                        }
                     }
                     break;
                 case sf::Event::MouseButtonReleased:break;
@@ -168,9 +167,10 @@ int main()
                     window.close();
                     break;
                 case 11:
-                    if (callback.text == "Exit")
+                    if (callback.text == "Exit") {
+                        std::cout << "Exiting window ..." << std::endl;
                         window.close();
-                    else
+                    } else
                         control.handleCallback(callback);
                     break;
                 case 12:

@@ -329,7 +329,7 @@ void antBase::setPosition(int x, int y, float scale) {
 
 // setting the position of the sprite to the position of the @param tile
 void antBase::setPosition(Tile *tile, float scale) {
-    baseTile = tile;
+    setBase(tile);
     setPosition(tile->getX(), tile->getY(), scale);
 }
 
