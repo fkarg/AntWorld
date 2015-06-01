@@ -30,7 +30,7 @@ protected:
     tgui::Checkbox::Ptr advancedMode;
     tgui::Slider::Ptr slider;
 
-    int tick = 0;
+    int tick = 0;       // TODO: ticksystem ...
     bool connect = false, drawBase = false, drawLeaf = false, initial = true;
 
     // pointer to the showTile and showTile

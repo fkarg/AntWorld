@@ -22,7 +22,6 @@ private:
     std::vector<std::vector<Tile> > MAP;
     antBase bases[5] = {};
     producing prods[5] = {};
-    std::vector<Ant*> ants;
     sf::RectangleShape OuterWalls[4];
 
     unsigned int basesNum = 0, prodsNum = 0;
@@ -44,7 +43,6 @@ public:
     void removeHome(Tile* tile);    // removing the 'Home' status from a tile
     void setRes(Tile* tile);        // setting the @param tile a ResourceTile
     void removeRes(Tile* tile);     // removing the Resource-part of the @param tile
-    Ant* getAnt(unsigned int AntID); // returns the Ant with the @param AntID if it still exists
     int getBasesNum() { return basesNum; } // returns how many bases have been registered
     antBase* getBase(int index);    // returns the base at the @param index
     Tile* getTileClicked(int x, int y); // returns the tile that got clicked on

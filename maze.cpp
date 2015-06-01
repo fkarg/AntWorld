@@ -137,18 +137,19 @@ void Maze::setHome(int x, int y) {
 
 // setting the @param tile to an Home
 void Maze::setHome(Tile *tile) {
-    if (tile != NULL) {
+    if (tile != NULL && basesNum < 5) {
         std::cout << "changing Home status of: " + std::to_string(tile->getIndex()) << std::endl;
         if (tile->isBASE()) {
             removeHome(tile);
             tile->removeBase();
         } else {
-            antBase home1 = bases[basesNum];
+            antBase home1;
             home1.setMaze(this);
             home1.setPosition(tile);
+            home1.setVisible(true);
             setHome(home1, tile);
         }
-    }
+    } else std::cout << "FAILED to add Home: Nullpointer or base-limit" << std::endl;
 }
 
 
@@ -163,11 +164,22 @@ void Maze::setHome(antBase base, Tile *tile) {
 
 
 // removing the @param tile from the antBases
-void Maze::removeHome(Tile *tile) {
-    for (int i = 0; i < basesNum; i++){
-        if (tile == bases[i].getTile() )
+void Maze::removeHome(Tile* tile) {
+
+    for (int i = 0; i < basesNum; i++)
+        if (tile == bases[i].getTile() ) {
             bases[i].setVisible(false);
-    }
+            // for (int j = i; j < basesNum + 1; j++) {
+                // bases[j] = bases[j + 1];
+                // if (bases[j].getTile() != NULL)
+                    // bases[j].getTile()->setBase(&bases[j]);
+            // }
+            // basesNum--;
+            // TODO: reordering the bases similar to the leafs
+            // FIXME: currently crashing
+        }
+    std::cout << "gotta reload gfx" << std::endl;
+    reloadgfx();
 }
 
 
@@ -187,31 +199,16 @@ void Maze::setRes(Tile* tile) {
 // removing the Resource-state from the @param tile if it existet beforehead
 void Maze::removeRes(Tile* tile) {
     tile->removeRes();
-    for (producing& prod : prods)
-        if (prod.getLoc() == tile)
-            prod.setProducing(false);
-
     for (int i = 0; i < prodsNum; i++)
         if (prods[i].getLoc() == tile) {
             prods[i].setProducing(false);
-            for (int j = i; j < 5; j++) {
+            for (int j = i; j < prodsNum - 1; j++) {
                 prods[j] = prods[j + 1];
-                if (prods[j].getLoc() != NULL)
-                    prods[j].getLoc()->setRes(&prods[j]);
+                prods[j].getLoc()->setRes(&prods[j]);
             }
             prodsNum--;
         }
     reloadgfx();
-}
-
-
-// returns the Ant with the @param AntID
-Ant* Maze::getAnt(unsigned int AntID) {
-    for (int ind = 0; ind < ants.size(); ind++) {
-        if (ants[ind]->getID() == AntID)
-            return ants[ind];
-    }
-    return NULL;
 }
 
 
