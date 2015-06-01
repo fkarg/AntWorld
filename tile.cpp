@@ -241,7 +241,7 @@ std::string Tile::getTileInfo() {
                 std::to_string( (int) (res->getProductionRate() * 10) % 10);
 
     if (hasAnt() )
-        additional += "\nwith Ant on it";
+        additional += "\n- with Ant";
 
     return "Info:\n"
         "\nIndex: " + std::to_string(getIndex() + 1) +
