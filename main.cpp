@@ -5,6 +5,11 @@
 #define SOURCES "/usr/resources_coding/"
 
 
+enum DIRECTIONS {
+//  0     1     2     3
+    UP, RIGHT, DOWN, LEFT
+};
+
 
 int main()
 {
@@ -58,6 +63,7 @@ int main()
         {
             switch(event.type) {
                 case sf::Event::Closed:
+                    std::cout << "NO from the upper right" << std::endl;
                     window.close();
                     break;
                 case sf::Event::KeyPressed:
@@ -71,46 +77,46 @@ int main()
                     // pressed
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-                        control.changeWalls(0, control.isAdvancedMode() );
+                        control.changeWalls(UP, control.isAdvancedMode() );
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                        control.changeWalls(1, control.isAdvancedMode() );
+                        control.changeWalls(RIGHT, control.isAdvancedMode() );
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-                        control.changeWalls(2, control.isAdvancedMode() );
+                        control.changeWalls(DOWN, control.isAdvancedMode() );
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-                        control.changeWalls(3, control.isAdvancedMode() );
+                        control.changeWalls(LEFT, control.isAdvancedMode() );
 
-                    // for the ASDW - Keys:
+                    // for the ASDW (-> neo: UIAV) - Keys:
                     // but not changing the selected tile
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::V))
-                        control.changeWalls(0);
+                        control.changeWalls(UP);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-                        control.changeWalls(1);
+                        control.changeWalls(RIGHT);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::I))
-                        control.changeWalls(2);
+                        control.changeWalls(DOWN);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::U))
-                        control.changeWalls(3);
+                        control.changeWalls(LEFT);
 
 
-                    // for moving the ant
+                    // for moving the ant, keys: JKLI (-> neo: NRTG)
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::G) )
-                        control.AntMove(0);
+                        control.AntMove(UP);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::T) )
-                        control.AntMove(1);
+                        control.AntMove(RIGHT);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::R) )
-                        control.AntMove(2);
+                        control.AntMove(DOWN);
 
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::N) )
-                        control.AntMove(3);
+                        control.AntMove(LEFT);
 
                     break;
                 case sf::Event::TextEntered:break;
@@ -120,9 +126,8 @@ int main()
                     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) ) {
                         Tile *testPtr = NULL;
                         testPtr = maze.getTileClicked(mousePosition.x, mousePosition.y);
-                        if (testPtr != NULL) {
+                        if (testPtr != NULL)
                             control.changeTextInfoLabel(testPtr);
-                        }
                     }
                     break;
                 case sf::Event::MouseButtonReleased:break;
@@ -139,10 +144,10 @@ int main()
         {
             // catches the callback of the buttons
             switch (callback.id) {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
+                case UP:
+                case RIGHT:
+                case DOWN:
+                case LEFT:
                     control.changeWalls(callback.id, control.isAdvancedMode() );
                     std::cout << "changeWallDir: " << std::to_string(callback.id) << std::endl;
                     break;
@@ -163,10 +168,14 @@ int main()
                     window.close();
                     break;
                 case 11:
-                    if (callback.text == "Exit")
+                    if (callback.text == "Exit") {
+                        std::cout << "Exiting window ..." << std::endl;
                         window.close();
-                    else
+                    } else
                         control.handleCallback(callback);
+                    break;
+                case 12:
+                    maze.setRes(control.getTileSelected() );
                     break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;
@@ -183,7 +192,7 @@ int main()
         // drawing the Maze
         maze.drawMaze(&window);
 
-        control.drawAnts();
+        control.drawSpecial();
 
         // drawing the gui
         gui.draw();

@@ -6,9 +6,6 @@
 // creating the ant, loading the image and setting it
 Ant::Ant() {
 
-    // FIXME: there will be a white tile (probably) when drawn
-    // this comes from: the texture is getting copied
-    // and (probably) loses the image in the process
     reloadImage();
 
     setAntID(MAXANTID);
@@ -228,7 +225,7 @@ void showAnt::setDir(int dir) {
 }
 
 
-// setting the showAnt to @param visible or not FIXME: not visible when needed
+// setting the showAnt to @param visible or not
 void showAnt::setVisible(bool visible) {
     setDir(AntToShow->getDir() );
     isVisible = visible;
@@ -332,7 +329,7 @@ void antBase::setPosition(int x, int y, float scale) {
 
 // setting the position of the sprite to the position of the @param tile
 void antBase::setPosition(Tile *tile, float scale) {
-    baseTile = tile;
+    setBase(tile);
     setPosition(tile->getX(), tile->getY(), scale);
 }
 
@@ -390,7 +387,7 @@ void antBase::doTick() {
 }
 
 
-// returns the ant with the @param AntID or NULL if notexistent
+// returns the ant with the @param AntID or NULL if nonexistent
 Ant* antBase::getAnt(unsigned int AntID) {
     for (int i = 0; i < AntCount; i++) {
         if (ownAnts[i].getID() == AntID)

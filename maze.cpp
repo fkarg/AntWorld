@@ -97,8 +97,12 @@ void Maze::drawMaze(sf::RenderWindow *window) {
         }
     }
 
+    for (int l = 0; l < prodsNum; l++)
+        prods[l].draw(window);
+
     for (int k = 0; k < basesNum; k++)
         bases[k].draw(window);
+
 
     drawOuterWalls(window);
 }
@@ -119,11 +123,9 @@ void Maze::move(int x, int y) {
 
 // doing the tick for every tile
 void Maze::doTick() {
-    for (int i = 0; i < sizeX; i++) {
-        for (int j = 0; j < sizeY; j++) {
+    for (int i = 0; i < sizeX; i++)
+        for (int j = 0; j < sizeY; j++)
             MAP[i][j].doTick();
-        }
-    }
 }
 
 
@@ -140,13 +142,14 @@ void Maze::setHome(Tile *tile) {
         if (tile->isBASE()) {
             removeHome(tile);
             tile->removeBase();
-        } else {
-            antBase home1 = bases[basesNum];
+        } else if (basesNum < 5) {
+            antBase home1;
             home1.setMaze(this);
             home1.setPosition(tile);
+            home1.setVisible(true);
             setHome(home1, tile);
         }
-    }
+    } else std::cout << "FAILED to add Home: Nullpointer or base-limit" << std::endl;
 }
 
 
@@ -161,21 +164,51 @@ void Maze::setHome(antBase base, Tile *tile) {
 
 
 // removing the @param tile from the antBases
-void Maze::removeHome(Tile *tile) {
-    for (int i = 0; i < basesNum; i++){
-        if (tile == bases[i].getTile() )
+void Maze::removeHome(Tile* tile) {
+
+    for (int i = 0; i < basesNum; i++)
+        if (tile == bases[i].getTile() ) {
             bases[i].setVisible(false);
+            for (int j = i; j < basesNum - 1; j++) {
+                bases[j] = bases[j + 1];
+                bases[j].getTile()->setBase(&bases[j]);
+            }
+            basesNum--;
+            break;
+        }
+    std::cout << "gotta reload gfx" << std::endl;
+    reloadgfx();
+}
+
+
+// setting the @param tile a Resource-tile
+void Maze::setRes(Tile* tile) {
+    if (tile != NULL) {
+        if (prodsNum < 5 && !tile->isRES() ) {
+            producing prod;
+            prods[prodsNum] = prod;
+            prods[prodsNum].setPosition(tile);
+            tile->setRes(&prods[prodsNum]);
+            prodsNum++;
+        } else if (tile->isRES() )
+            removeRes(tile);
     }
 }
 
 
-// returns the Ant with the @param AntID
-Ant* Maze::getAnt(unsigned int AntID) {
-    for (int ind = 0; ind < ants.size(); ind++) {
-        if (ants[ind]->getID() == AntID)
-            return ants[ind];
-    }
-    return NULL;
+// removing the Resource-state from the @param tile if it existed beforehand
+void Maze::removeRes(Tile* tile) {
+    tile->removeRes();
+    for (int i = 0; i < prodsNum; i++)
+        if (prods[i].getLoc() == tile) {
+            prods[i].setProducing(false);
+            for (int j = i; j < prodsNum - 1; j++) {
+                prods[j] = prods[j + 1];
+                prods[j].getLoc()->setRes(&prods[j]);
+            }
+            prodsNum--;
+        }
+    reloadgfx();
 }
 
 
@@ -244,8 +277,11 @@ int Maze::INDEX_MAX() {
 
 // reloads all the images and pointers that might have gotten corrupted
 void Maze::reloadgfx(){
-    for (antBase base : bases)
+    for (antBase& base : bases)
         base.reloadBase();
+
+    for (producing& prod : prods)
+        prod.reloadImage();
 }
 
 

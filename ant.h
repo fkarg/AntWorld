@@ -33,7 +33,7 @@ protected:
     sf::Texture texture;
     sf::Sprite sprite;
 
-    Tile* current = NULL;   // FIXME: when trying to compare Indexes ...
+    Tile* current = NULL;
 
     antBase* home = NULL;
 
@@ -125,7 +125,7 @@ public:
     int getAntCount() { return AntCount; }  // returns the number of ants from this base
     Ant *getAnt(unsigned int AntID); // returns the ant with the @param AntID
     Tile *getTile() { return baseTile; } //returns the baseTile
-    unsigned int getTeamNum() { return TeamNum; }
+    unsigned int getTeamNum() { return TeamNum; } // returns the unique teamNum
 
     static void initTEAMS() { MAXTEAMNUM = 0; } // initializing the number of teams
 };

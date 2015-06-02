@@ -10,7 +10,7 @@
 #ifndef SOURCES
 #define SOURCES "/usr/resources_coding/"
 #endif
-#define THEME_CONFIG_FILE "/usr/resources_coding/Black.conf"                                    
+#define THEME_CONFIG_FILE "/usr/resources_coding/Black.conf"
 
 
 
@@ -23,15 +23,15 @@
 
 class GraphicsControl : public tickInterface {
 protected:
-    // pointer to the TileInfoLabel, the tickControl Button and
-    // the advancedMode checkbox for accessing it later
+    // pointer for several necessary gui objects for accessing them later
     tgui::Label::Ptr TileInfoLabel, AntInfoLabel;
-    tgui::Button::Ptr ticksControl, setHomeButton;
+    tgui::Button::Ptr ticksControl, setHomeButton, setResButton;
     tgui::Checkbox::Ptr advancedMode;
     tgui::Slider::Ptr slider;
 
-    int tick = 0;
-    bool connect = false, drawBase = false;
+    int tick = 0;       // TODO: ticksystem ...
+    const int lowest = 400, diff = 30;
+    bool connect = false, drawBase = false, drawLeaf = false, initial = true;
 
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;
@@ -44,6 +44,7 @@ protected:
 
     Maze* maze;
     antBase base;
+    producing leaf;
 
     sf::RenderWindow* window;
 
@@ -67,7 +68,7 @@ public:
     bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
     void TicksControlChangeState();     // changes the state of the ticksControl
-    void drawAnts();                    // draws the Ants (showAnt & selectedAnt)
+    void drawSpecial();                    // draws the Ants (showAnt & selectedAnt)
     Tile *getTileSelected();            // returns the currently selected tile
     void doTick();                      // for the implementation
 };

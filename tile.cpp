@@ -36,18 +36,24 @@ void Tile::addWalls() {
 
 // adding the @param state to the current state
 void Tile::addState(STATE state) {
-    if ( (state == RES && !isRES() ) || (state == BASE && !isBASE() ) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
+    std::cout << "adding state " << state << " to tile " << index << std::endl;
+    if ( (state == RES && !isRES() && res != NULL) || (state == BASE && !isBASE() && base != NULL) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
         int intNewState = (int) state + (int) current;
+        std::cout << "previous state: " << (int) current;
         current = (STATE) intNewState;
+        std::cout << " new state: " << (int) current << std::endl;
     }
 }
 
 
 // removing the @param state from the current (only ANT, RES or BASE)
 bool Tile::removeState(STATE state) {
-    if ( (state == RES && isRES() ) || (state == BASE && isBASE() || (state == ANT && hasAnt() && ownAnts.size() == 0) ) ) {
+    std::cout << "removing state " << state << " from tile " << index << std::endl;
+    if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL ) || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
         int intNewState = (int) current - (int) state;
+        std::cout << "previous state: " << (int) current;
         current = (STATE) intNewState;
+        std::cout << " new state: " << (int) current << std::endl;
         return true;
     }
     return false;
@@ -161,6 +167,10 @@ void Tile::drawWalls(sf::RenderWindow *window) {
 // updating things at a tick
 void Tile::doTick() {
     // for implementation purposes
+    if (isRES() )
+        res->doTick();
+    if (isBASE() )
+        base->doTick();
 }
 
 
@@ -199,21 +209,17 @@ bool Tile::isSurrounding(int dir) {
 
 // returns if there is food on the tile and how much
 int Tile::isFood() {
-    return food;
+    if (isRES() )
+        return (int) res->getProduced();
+    else return 0;
 }
 
 
-// returns the current food on the tile but max. 10 at once
-// decreases the food on the tile at the same time
+// @returns max 10 or how much food there's on res, else 0
 int Tile::getFood() {
-    if (food >= 10) {
-        food -= 10;
-        return 10;
-    } else {
-        int tmp = food;
-        food = 0;
-        return tmp;
-    }
+    if (isRES() )
+       return res->getFood();
+    else return 0;
 }
 
 
@@ -223,32 +229,33 @@ std::string Tile::getTileInfo() {
     std::string additional = "";
 
     if (current == ANT || current == NORMAL)
-        additional += "Normal Tile";
+        additional += "\nNormal Tile";
 
-    if (isBASE())
-        additional += "BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
+    if (isBASE() )
+        additional += "\n- BaseTile\nTeamNum: " + std::to_string(base->getTeamNum() ) +
                         "\nIn Team: " + std::to_string(base->getAntCount() ) +
                         "/20";
 
-    if (isRES())
-        additional += "ResTile";
+    if (isRES() )
+        additional += "\n- ResTile\nProduction:\n" + std::to_string( (int) res->getProductionRate() ) + "." +
+                std::to_string( (int) (res->getProductionRate() * 10) % 10);
 
-    if (hasAnt())
-        additional += "\nwith Ant on it";
+    if (hasAnt() )
+        additional += "\n- with Ant";
 
     return "Info:\n"
         "\nIndex: " + std::to_string(getIndex() + 1) +
         "\nX: " + std::to_string(getX() ) +
         "\nY: " + std::to_string(getY() ) +
         "\n\nFood: " + std::to_string(isFood() ) +
-        "\n\n" + additional;
+        "\n" + additional;
 }
 
 
 // setting the base and adding the new state 'Base' to current
 void Tile::setBase(antBase *base) {
-    addState(BASE);
     Tile::base = base;
+    addState(BASE);
 }
 
 
@@ -256,6 +263,21 @@ void Tile::setBase(antBase *base) {
 void Tile::removeBase() {
     Tile::base = NULL;
     removeState(BASE);
+}
+
+
+// setting the @param res on this tile
+void Tile::setRes(producing*produ) {
+    std::cout << "setting Tile " << index << " a RES" << std::endl;
+    res = produ;
+    addState(RES);
+}
+
+
+// removing the producing part
+void Tile::removeRes() {
+    res = NULL;
+    removeState(RES);
 }
 
 
@@ -285,6 +307,12 @@ Ant* Tile::getAnt() {
 }
 
 
+// @returns how many ants there are on this tile exactly
+int Tile::getAntCount() {
+    return (int) ownAnts.size();
+}
+
+
 // returns if there is a Base on this Tile
 bool Tile::isBASE() {
     return (int) current >= 4;
@@ -299,7 +327,111 @@ bool Tile::isRES() {
 
 // returns if there is at least one ant on this tile
 bool Tile::hasAnt() {
-    return ownAnts.size() > 0;
+    return (int) current % 2 == 1;
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////
+////                        producing
+///////////////////////////////////////////////////////////////////
+
+
+
+// @param loc: the tile it is on
+void producing::setPosition(Tile* loc) {
+    reloadImage();
+
+    texture.setSmooth(true);
+
+    sprite.setPosition(loc->getX() +2, loc->getY() +2);
+    sprite.setScale(0.2, 0.2);
+
+    tile = loc;
+}
+
+
+// setting the position to the showTile
+void producing::setPosition(showTile* loc) {
+    reloadImage();
+    texture.setSmooth(true);
+
+    sprite.setPosition(loc->getOwnX() +2, loc->getOwnY() +2);
+    sprite.setScale(0.24, 0.24);
+
+    tile = loc;
+}
+
+
+// reloading the at some point maybe corrupted image
+void producing::reloadImage() {
+
+    if (!texture.loadFromFile(SOURCES"leaf.png") )
+        std::cout << "Error: couldn't load RES_Image";
+    else
+        sprite.setTexture(texture);
+}
+
+
+// setting the @param prod production rate of the tile
+void producing::setProductionRate(float prod) {
+    production = prod;
+}
+
+
+// setting if there's production to begin with
+void producing::setProducing(bool nowprod) {
+    isProducing = nowprod;
+}
+
+
+// @return if there's production on this tile at all to begin with
+bool producing::getProducingState() {
+    return isProducing;
+}
+
+
+// @return the productionrate of this tile if there's production at all to begin with
+float producing::getProductionRate() {
+    return production;
+}
+
+// @return the current food on this tile with 'parts'
+float producing::getProduced() {
+    return produced;
+}
+
+
+// @return up to 10, or else rounded what there got produced on this tile already
+int producing::getFood() {
+    if (produced > 10) {
+        produced -= 10;
+        return 10;
+    } else {
+        int tmp = (int) produced;
+        produced -= tmp;
+        return tmp;
+    }
+}
+
+
+// drawing the leaf-image on the @param window
+void producing::draw(sf::RenderWindow* window) {
+    if (isProducing)
+        window->draw(sprite);
+}
+
+
+// adding the production rate to the food currently on this tile
+void producing::doTick() {
+    if (isProducing)
+        produced += production;
+}
+
+// destructor of producing - necessary?
+producing::~producing() {
+    // ...
 }
 
 
@@ -386,8 +518,6 @@ void showTile::doTick() {
     if (tileToShow != NULL) {
         pubX = tileToShow->getX();
         pubY = tileToShow->getY();
-        pubHeight = tileToShow->getHeight();
-        pubWidth = tileToShow->getWidth();
         pubIndex = tileToShow->getIndex();
         pubFood = (unsigned) tileToShow->isFood();
         rect.setFillColor(tileToShow->getTileColor() );
