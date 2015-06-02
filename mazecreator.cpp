@@ -53,7 +53,7 @@ void RandomCreator::doTick() {
 }
 
 
-
+// completing the Random Maze in one run
 void RandomCreator::complete() {
     while (tick < runs) {
         doTicks();
