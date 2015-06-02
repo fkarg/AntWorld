@@ -185,14 +185,16 @@ void Maze::removeHome(Tile* tile) {
 
 // setting the @param tile a Resource-tile
 void Maze::setRes(Tile* tile) {
-    if (prodsNum < 5 && !tile->isRES() ) {
-        producing prod;
-        prods[prodsNum] = prod;
-        prods[prodsNum].setPosition(tile);
-        tile->setRes(&prods[prodsNum]);
-        prodsNum++;
-    } else if (tile->isRES() )
-        removeRes(tile);
+    if (tile != NULL) {
+        if (prodsNum < 5 && !tile->isRES() ) {
+            producing prod;
+            prods[prodsNum] = prod;
+            prods[prodsNum].setPosition(tile);
+            tile->setRes(&prods[prodsNum]);
+            prodsNum++;
+        } else if (tile->isRES() )
+            removeRes(tile);
+    }
 }
 
 
