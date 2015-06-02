@@ -137,12 +137,12 @@ void Maze::setHome(int x, int y) {
 
 // setting the @param tile to an Home
 void Maze::setHome(Tile *tile) {
-    if (tile != NULL && basesNum < 5) {
+    if (tile != NULL) {
         std::cout << "changing Home status of: " + std::to_string(tile->getIndex()) << std::endl;
         if (tile->isBASE()) {
             removeHome(tile);
             tile->removeBase();
-        } else {
+        } else if (basesNum < 5) {
             antBase home1;
             home1.setMaze(this);
             home1.setPosition(tile);
@@ -169,14 +169,12 @@ void Maze::removeHome(Tile* tile) {
     for (int i = 0; i < basesNum; i++)
         if (tile == bases[i].getTile() ) {
             bases[i].setVisible(false);
-            // for (int j = i; j < basesNum + 1; j++) {
-                // bases[j] = bases[j + 1];
-                // if (bases[j].getTile() != NULL)
-                    // bases[j].getTile()->setBase(&bases[j]);
-            // }
-            // basesNum--;
-            // TODO: reordering the bases similar to the leafs
-            // FIXME: currently crashing
+            for (int j = i; j < basesNum - 1; j++) {
+                bases[j] = bases[j + 1];
+                bases[j].getTile()->setBase(&bases[j]);
+            }
+            basesNum--;
+            break;
         }
     std::cout << "gotta reload gfx" << std::endl;
     reloadgfx();
@@ -198,7 +196,7 @@ void Maze::setRes(Tile* tile) {
 }
 
 
-// removing the Resource-state from the @param tile if it existet beforehead
+// removing the Resource-state from the @param tile if it existed beforehand
 void Maze::removeRes(Tile* tile) {
     tile->removeRes();
     for (int i = 0; i < prodsNum; i++)
