@@ -15,11 +15,11 @@ works with CLion and any other IDE working with CMake to build it's projects.
 
 
 
-If you want to build it for yourself, you either need to redefine the SOURCES macro in GraphicsControl.h, main.cpp and ant.h (Please remind me if I have forgotten one) or copy the /resources/ folder to the given path.
+If you want to build it for yourself, you either need to redefine the SOURCES macro in GraphicsControl.h, main.cpp and ant.h (Please remind me if I have forgotten one) or copy the /resources/ folder to the given path (/usr/resources_coding/), only works at Linux for copying, on Windows you'd need to redefine it anyways.
 
 
 
-Other Branches are probably more up-to-date, since I only merge if a new 'feature' or sth is finally working
+Other Branches are usually more up-to-date, since I only merge if a new 'feature' or sth is finally working
 
 
 
@@ -81,29 +81,39 @@ showAnt - Check
 
 tickSystem - in Progress (need someone else who knows more about it)
 
-AntBase - in Progress (need to redefine it)
+AntBase - Check
 
-Resources - in Progress
+Resources - Check
 
-Scent - yet to start
+Scent - starting soon
 
 
 
 KI: (all missing)
 
-Reactive Ant-behaviour
+Reactive Ant-behaviour - starting soon
 
-half-cognitive Ant-behaviour (map)
+autonomous Ant-behaviour - not yet
 
-(map might be chaning)
+half-cognitive Ant-behaviour - not yet
+(the ant makes her own map of the maze, and plans as to what priority e.g. food is needed and decides to go search or go take up some or resarch the map further maybe with communication between them)
 
-selectable Ant-behaviour
+Maze from the view of the ant - not yet
+(a drawn map of it and the difference to the actual one)
 
+(map might be changing) - not yet
 
-AntBase that signs tasks
+selectable Ant-behaviour - not yet
 
+AntBase that signs tasks - not yet
 
+.
 
+.
+
+.
+
+so much about my ideas. Some of them might be on their way to realization in a different branch already, they are usually named after the aim for it. If you want, feel free to contribute to it, though I'd like to do the reactive behaviour and some critical parts of the autonomous behaviour myself.
 
 .
 
@@ -119,6 +129,7 @@ Sources:
 Ant.png: https://www.iconfinder.com/icons/289355/animal_ant_bug_insect_icon#size=128
 Home_1.png: https://www.iconfinder.com/icons/51304/black_house_home_house_icon#size=128
 Home_2.png: https://www.iconfinder.com/icons/175315/home_icon#size=128
+leaf.png: https://www.iconfinder.com/icons/175730/leaf_icon#size=128
 Black.png: from TGUI
 DejaVuSans.ttf: from TGUI
 Black.conf: from TGUI
