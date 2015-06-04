@@ -87,6 +87,8 @@ Resources - Check
 
 Scent - starting soon
 
+Food system - starting soon
+
 
 
 KI: (all missing)
