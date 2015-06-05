@@ -48,7 +48,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // label to show information about the maybe visible Ant
     tgui::Label::Ptr antLabel(*gui);
     antLabel->load(THEME_CONFIG_FILE);
-    antLabel->setPosition(100, 35);
+    antLabel->setPosition(100, 30);
     antLabel->setTextSize(12);
     antLabel->setTextColor(sf::Color(20, 200, 200) );
     antLabel->setText("AntInfo: ...");
@@ -249,10 +249,11 @@ void GraphicsControl::updateInfo() {
 
     if (antToShowPtr->getVisible() ) {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
-                "\nID: " + std::to_string(antToShowPtr->getAntShown()->getID() - 121) +
-                // TODO: using already existing ants for lower IDs
-                "\nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
-                "\nAnts on Tile: " + std::to_string(tileToShowTile.getTileToShow()->getAntCount() ) );
+                "   ID: " + std::to_string(antToShowPtr->getAntShown()->getID() - 21) +
+                "   Ticks living: " + std::to_string(antToShowAnt.getAntShown()->getTicksLiving() ) +
+                "   Food: " + std::to_string(antToShowAnt.getAntShown()->getFood() ) +
+                "   Team: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
+                "   Ants on Tile: " + std::to_string(tileToShowTile.getTileToShow()->getAntCount() ) );
     } else AntInfoLabel->setText("Please select an Ant to show Info about it");
 }
 
@@ -340,13 +341,13 @@ void GraphicsControl::changeWalls(int dir, bool move) {
 
 // changing the shown text on the ticksControl Button
 void GraphicsControl::TicksControlChangeState() {
-    std::cout << "starting ticks ..." << std::endl;
+    std::cout << "doing ticks ..." << std::endl;
     if (ticksControl->getText() == "Start" || ticksControl->getText() == "Resume")
         ticksControl->setText("Pause");
     else
         ticksControl->setText("Resume");
 
-    maze->doTick();
+    doTick();
     // TODO: tickscontrol ...
 }
 
@@ -388,6 +389,11 @@ Tile* GraphicsControl::getTileSelected() {
 
 void GraphicsControl::doTick() {
     // for the implementation
+    maze->doTick();
+    selectedAnt.doTick();
+    base.doTick();
+    leaf.doTick();
+    antToShowAnt.doTick();
 }
 
 
