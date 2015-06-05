@@ -99,7 +99,8 @@ void Ant::draw(sf::RenderWindow *window) {
 
     sprite.setRotation(90 * dir);
 
-    window->draw(sprite);
+    if (!isDead)
+        window->draw(sprite);
 }
 
 
@@ -111,6 +112,16 @@ void Ant::senseFoodOnCurrentTile() {
 
 // Reacting and moving to environmental changes
 void Ant::doTick() {
+
+    testLiving();
+
+    if (!isDead) {
+        senseFoodOnCurrentTile();
+
+    }
+
+    // TODO: test dead and if food carrying
+
     // TODO: what to do at a tick
 
     // TODO: sensing - reacting - moving
@@ -131,6 +142,23 @@ bool Ant::isInside(int x, int y) {
     return x <= locX + height && x >= locX &&
             y <= locY + width && y >= locY;
 
+}
+
+
+// Ant 'dies', meaning it somehow didn't get enough food or got removed from the base
+void Ant::Dies() {
+    current->removeAnt(AntID);
+    isDead = true;
+    if (home != NULL)
+        home->decRealAntCount(this);
+}
+
+
+// Ant has been dead but is needed somewhere else, so it is reused
+void Ant::relive(Tile* pos) {
+    dir = 0;
+    setPosition(pos);
+    isDead = false;
 }
 
 
@@ -176,6 +204,22 @@ Tile* Ant::getCurrent() {
 }
 
 
+// returns the number of ticks the ant will be alive for at least
+unsigned int Ant::getTicksLiving() {
+    return livingForTicks;
+}
+
+
+// testing if the ant is still alive or only a ghost
+void Ant::testLiving() {
+    livingForTicks--;
+    if (livingForTicks == 0)
+        if (ownFood > 0)
+            ownFood--, livingForTicks += 10;
+        else Dies();
+
+}
+
 
 
 
@@ -196,14 +240,14 @@ void showAnt::operator=(Ant *newAnt) {
 
 
 // setting all the values for showing them (from the @param newAnt)
-void showAnt::setAnt(Ant *newAnt) {
+void showAnt::setAnt(Ant* newAnt) {
     AntToShow = newAnt;
     pubX = newAnt->getX();
     pubY = newAnt->getY();
     setDir(newAnt->getDir());
     ownFood = newAnt->getFood();
     current = newAnt->getCurrent();
-    setVisible(true);
+    setVisible(!newAnt->getDead() );
 }
 
 
@@ -290,6 +334,15 @@ Ant* showAnt::getAntShown() {
 }
 
 
+// whatever happens at a tick gets actualized
+void showAnt::doTick() {
+    std::cout << "setting visible or not" << std::endl;
+    if (AntToShow != NULL)
+        if (AntToShow->getDead() )
+            setVisible(false);
+}
+
+
 
 
 
@@ -336,6 +389,7 @@ void antBase::setPosition(Tile *tile, float scale) {
 
 // adding a new ant
 void antBase::addAnt() {
+    // FIXME: adding dead ants back in, currently crashing because of that
     Ant ant = ownAnts[AntCount];
     ant.setPosition(baseTile);
     ant.setHome(this);
@@ -347,6 +401,7 @@ void antBase::addAnt() {
 void antBase::addAnt(Ant ant) {
     ownAnts[AntCount] = ant;
     AntCount++;
+    RealAntCount++;
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].reloadImage();
 }
@@ -397,7 +452,31 @@ Ant* antBase::getAnt(unsigned int AntID) {
 }
 
 
+// adding food to the base, not the tile directly since It'd get lost otherwise
+void antBase::addFood(unsigned int number) {
+    food += number;
+}
 
 
+// @returning food for the @param ant, testing if it is one of the own first
+unsigned int antBase::getFood(Ant* ant, unsigned int number) { //
+    if (ant->getTeamNum() == TeamNum)
+        return number; // number is ten by default
+    else return 0;
+}
 
+
+// @return the number of food there is on this base
+unsigned int antBase::isFood() {
+    return food;
+}
+
+
+// decreasing the Real AntCount and adding the ant to 'reactivatable' ones
+void antBase::decRealAntCount(Ant* ant) {
+    dead[deadCount] = ant;
+
+    RealAntCount--;
+    deadCount++;
+}
 
