@@ -34,7 +34,7 @@ void Ant::reloadImage() {
 
     if (current != NULL) {
         current->removeAnt(AntID);
-        current->addAnt(this);
+        if (!isDead) current->addAnt(this);
     }
 }
 
@@ -59,7 +59,7 @@ void Ant::setCurrent(Tile *current) {
 
     sprite.setPosition(sf::Vector2f(locX, locY) );
 
-    current->addAnt(this);
+    if (!isDead) current->addAnt(this);
 }
 
 
@@ -147,6 +147,7 @@ bool Ant::isInside(int x, int y) {
 
 // Ant 'dies', meaning it somehow didn't get enough food or got removed from the base
 void Ant::Dies() {
+    std::cout << "removing from the tile " << current->getIndex() << std::endl;
     current->removeAnt(AntID);
     isDead = true;
     if (home != NULL)
@@ -159,6 +160,7 @@ void Ant::relive(Tile* pos) {
     dir = 0;
     setPosition(pos);
     isDead = false;
+    livingForTicks = 5;
 }
 
 
@@ -390,18 +392,33 @@ void antBase::setPosition(Tile *tile, float scale) {
 // adding a new ant
 void antBase::addAnt() {
     // FIXME: adding dead ants back in, currently crashing because of that
-    Ant ant = ownAnts[AntCount];
-    ant.setPosition(baseTile);
-    ant.setHome(this);
-    addAnt(ant);
+    Ant ant;
+    if (AntCount == 20)
+        ant = ownAnts[getDeadIt()],
+        deadCount--,
+        ant.relive(baseTile),
+        addAnt(ant);
+    else {
+        ant = ownAnts[AntCount];
+        ant.setPosition(baseTile);
+        ant.setHome(this);
+        addAnt(ant);
+    }
 }
 
 
 // adding a specific @param ant to the ownAnts
 void antBase::addAnt(Ant ant) {
-    ownAnts[AntCount] = ant;
-    AntCount++;
-    RealAntCount++;
+    if (AntCount == 20) {
+        ownAnts[getDeadIt()] = ant;
+        dead[getDeadIt()] = false;
+        deadCount--;
+        RealAntCount++;
+    } else {
+        ownAnts[AntCount] = ant;
+        AntCount++;
+        RealAntCount++;
+    }
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].reloadImage();
 }
@@ -474,9 +491,18 @@ unsigned int antBase::isFood() {
 
 // decreasing the Real AntCount and adding the ant to 'reactivatable' ones
 void antBase::decRealAntCount(Ant* ant) {
-    dead[deadCount] = ant;
+    dead[deadCount] = true;
 
     RealAntCount--;
     deadCount++;
+}
+
+
+// getting the iterator of an dead ant
+int antBase::getDeadIt() {
+    for (int i = 0; i < 20; i++)
+        if (dead[i])
+            return i;
+    return 0;
 }
 

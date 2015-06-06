@@ -31,7 +31,7 @@ class Ant : public tickInterface {
 protected:
     int locX = -1, locY = -1, dir = 0, height = 26, width = 26;
 
-    unsigned int ownFood = 0, AntID, TeamNum = 0, livingForTicks = 20;
+    unsigned int ownFood = 0, AntID, TeamNum = 0, livingForTicks = 5;
 
     bool isDead = false;
 
@@ -113,7 +113,7 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
     Ant ownAnts[20] = {};
-    Ant* dead[20] = {};
+    bool dead[20] = { false };
     Tile *baseTile = NULL;
     int locX, locY, AntCount = 0, RealAntCount = 0, deadCount = 0;
     bool isVisible = true;
@@ -147,6 +147,7 @@ public:
     unsigned int isFood();
 
     void decRealAntCount(Ant* ant);
+    int getDeadIt();
 
     static void initTEAMS() { MAXTEAMNUM = 0; } // initializing the number of teams
 };

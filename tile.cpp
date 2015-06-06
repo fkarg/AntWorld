@@ -296,6 +296,7 @@ void Tile::addAnt(Ant *ant) {
 // removing the Ant with the @param AntID from 'on the tile' if it is there
 // @return: if the operation was successful
 bool Tile::removeAnt(unsigned int AntID) {
+    std::cout << "gotta remove " << AntID << " from tile " << getIndex() << std::endl;
     for (int i = 0; i < ownAnts.size(); i++)
         if (ownAnts[i]->getID() == AntID) {
             ownAnts.erase(ownAnts.begin() + i);
