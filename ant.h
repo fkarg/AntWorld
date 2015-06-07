@@ -23,7 +23,7 @@ class Maze;
 
 static unsigned int MAXANTID; // keeps track of the AntID's
 static unsigned int MAXTEAMNUM; // keeps track of the number of teams
-static const unsigned int MAX_FOOD_ANT_CARRYING = 25;
+static const unsigned int MAX_FOOD_ANT_CARRYING = 30;
 
 
 class Ant : public tickInterface {
@@ -51,7 +51,7 @@ public:
     int getY();             // returns the y-val of the ant
     int getDir();           // returns the current dir of the ant
     unsigned int getFood(); // returns the current food of the ant
-    bool addFood(unsigned int number); // adds @param number much food to the ant if possible
+    void addFood(unsigned int number); // adds @param number much food to the ant if possible
     void BaseFoodCommunicate(); // requests needed food from the base itself or gives own food to the base
     Tile* getCurrent();     // returns the tile the ant is currently on
     void setCurrent(Tile* current); // setting the tile the ant is currently on

@@ -106,7 +106,7 @@ void Ant::draw(sf::RenderWindow *window) {
 
 void Ant::senseFoodOnCurrentTile() {
     if (current->isFood() > 0)
-        ownFood += current->getFood();
+        addFood( (unsigned int) current->getFood() );
 }
 
 
@@ -189,21 +189,19 @@ unsigned int Ant::getFood() {
 }
 
 
-bool Ant::addFood(unsigned int number) {
+void Ant::addFood(unsigned int number) {
     if (number + ownFood > MAX_FOOD_ANT_CARRYING)
-        return false;
+        ownFood = MAX_FOOD_ANT_CARRYING;
     else if (number + ownFood < MAX_FOOD_ANT_CARRYING)
         ownFood += number;
-    else return false;
-    return true;
 }
 
 
 void Ant::BaseFoodCommunicate() {
     if (ownFood < 10)
-        addFood(current->getBase()->getFood(this, 10) );
-    else if (ownFood > 20)
-        current->getBase()->addFood(10), ownFood -= 10;
+        addFood(current->getBase()->getFood(this, 10 - ownFood) );
+    else if (ownFood > 10)
+        current->getBase()->addFood(ownFood - 10), ownFood -= (ownFood - 10);
 
 }
 
