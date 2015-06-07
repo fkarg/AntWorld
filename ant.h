@@ -51,6 +51,8 @@ public:
     int getY();             // returns the y-val of the ant
     int getDir();           // returns the current dir of the ant
     unsigned int getFood(); // returns the current food of the ant
+    bool addFood(unsigned int number); // adds @param number much food to the ant if possible
+    void BaseFoodCommunicate(); // requests needed food from the base itself or gives own food to the base
     Tile* getCurrent();     // returns the tile the ant is currently on
     void setCurrent(Tile* current); // setting the tile the ant is currently on
     void setAntID(unsigned int newID); // setting the unique antID
@@ -114,10 +116,10 @@ private:
     sf::Sprite sprite;
     Ant ownAnts[20] = {};
     bool dead[20] = { false };
-    Tile *baseTile = NULL;
+    Tile* baseTile = NULL;
     int locX, locY, AntCount = 0, RealAntCount = 0, deadCount = 0;
     bool isVisible = true;
-    Maze *maze;
+    Maze* maze;
     unsigned int TeamNum, food = START_FOOD;
 
 public:

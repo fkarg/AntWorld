@@ -214,7 +214,9 @@ bool Tile::isSurrounding(int dir) {
 
 // returns if there is food on the tile and how much
 int Tile::isFood() {
-    if (isRES() )
+    if (isBASE() )
+        return (int) base->isFood();
+    else if (isRES() )
         return (int) res->getProduced();
     else return 0;
 }

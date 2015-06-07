@@ -117,10 +117,11 @@ void Ant::doTick() {
 
     if (!isDead) {
         senseFoodOnCurrentTile();
-
+        if (current->isBASE())
+            BaseFoodCommunicate();
     }
 
-    // TODO: test dead and if food carrying
+    // TODO: test if food carrying
 
     // TODO: what to do at a tick
 
@@ -188,6 +189,25 @@ unsigned int Ant::getFood() {
 }
 
 
+bool Ant::addFood(unsigned int number) {
+    if (number + ownFood > MAX_FOOD_ANT_CARRYING)
+        return false;
+    else if (number + ownFood < MAX_FOOD_ANT_CARRYING)
+        ownFood += number;
+    else return false;
+    return true;
+}
+
+
+void Ant::BaseFoodCommunicate() {
+    if (ownFood < 10)
+        addFood(current->getBase()->getFood(this, 10) );
+    else if (ownFood > 20)
+        current->getBase()->addFood(10), ownFood -= 10;
+
+}
+
+
 // setting the @param unique AntID
 void Ant::setAntID(unsigned int newID) {
     AntID = newID;
@@ -214,12 +234,12 @@ unsigned int Ant::getTicksLiving() {
 
 // testing if the ant is still alive or only a ghost
 void Ant::testLiving() {
-    livingForTicks--;
-    if (livingForTicks == 0)
-        if (ownFood > 0)
+    if (!isDead) {
+        livingForTicks--;
+        if (livingForTicks <= 0) if (ownFood > 0)
             ownFood--, livingForTicks += 10;
         else Dies();
-
+    }
 }
 
 
@@ -391,7 +411,8 @@ void antBase::setPosition(Tile *tile, float scale) {
 
 // adding a new ant
 void antBase::addAnt() {
-    // FIXME: adding dead ants back in, currently crashing because of that
+    // FIXME: currently crashing under broad conditions, and not always either
+    // meaning I haven't figuered out what causes it
     Ant ant;
     if (AntCount == 20)
         ant = ownAnts[getDeadIt()],
@@ -454,6 +475,9 @@ void antBase::draw(sf::RenderWindow *window) {
 
 // doing the tick for all ants too
 void antBase::doTick() {
+    if (baseTile != NULL)
+        if (baseTile->isFood() > 0 )
+            food += baseTile->getFood();
     for (int i = 0; i < AntCount; i++)
         ownAnts[i].doTick();
 }
@@ -476,10 +500,13 @@ void antBase::addFood(unsigned int number) {
 
 
 // @returning food for the @param ant, testing if it is one of the own first
-unsigned int antBase::getFood(Ant* ant, unsigned int number) { //
-    if (ant->getTeamNum() == TeamNum)
+unsigned int antBase::getFood(Ant* ant, unsigned int number) {
+    if (number > 24)
+        number = 24;
+    if (ant->getTeamNum() == TeamNum) {
+        food -= number;
         return number; // number is ten by default
-    else return 0;
+    } else return 0;
 }
 
 

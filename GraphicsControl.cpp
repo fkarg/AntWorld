@@ -249,7 +249,7 @@ void GraphicsControl::updateInfo() {
 
     if (antToShowPtr->getVisible() ) {
         AntInfoLabel->setText("Dir: " + std::to_string(antToShowPtr->getDir() ) +
-                "   ID: " + std::to_string(antToShowPtr->getAntShown()->getID() - 21) +
+                "   ID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) +
                 "   Ticks living: " + std::to_string(antToShowAnt.getAntShown()->getTicksLiving() ) +
                 "   Food: " + std::to_string(antToShowAnt.getAntShown()->getFood() ) +
                 "   Team: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
