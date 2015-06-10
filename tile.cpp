@@ -174,6 +174,10 @@ void Tile::doTick() {
     if (isBASE() )
         base->doTick();
 
+    for (int i = 0; i < 3; i++)
+        if (Scents[i] > 0)
+            Scents[i]--;
+
     // if (getAnt()->getDead() )
         // removeAnt(getAnt()->getID() );
 }
@@ -255,6 +259,7 @@ std::string Tile::getTileInfo() {
         "\nX: " + std::to_string(getX() ) +
         "\nY: " + std::to_string(getY() ) +
         "\n\nFood: " + std::to_string(isFood() ) +
+        "\nHighest Scent: " + std::to_string(getScent(0) ) +
         "\n" + additional;
 }
 
@@ -289,8 +294,9 @@ void Tile::removeRes() {
 
 
 // adding the @param ant to the 'current on tile' vector
-void Tile::addAnt(Ant *ant) {
+void Tile::addAnt(Ant* ant) {
     ownAnts.push_back(ant);
+    addScent(ant);
     addState(ANT);
 }
 
@@ -319,6 +325,64 @@ Ant* Tile::getAnt() {
 int Tile::getAntCount() {
     return (int) ownAnts.size();
 }
+
+
+// @return the scent that currently is on this tile at @param which
+int Tile::getScent(int which) {
+    if (which % 3 == which && which <= scentCount)
+        return Scents[which];
+    return -1;
+}
+
+
+// @returns the Scent from @param own ant if there's one, or -1
+int Tile::getOwnScent(Ant* who) {
+    for (int i = 0; i < 3; i++)
+        if (scentID[i] == who->getID() )
+            return Scents[i];
+    return -1;
+}
+
+
+// @returns the strongest Team-scent
+int Tile::getTeamScent(Ant* who) {
+    int highest = -1;
+    for (int i = 3; i < 3; i++)
+        if (who->isInTeam( (unsigned int) scentID[i]) && highest < Scents[i])
+            highest = Scents[i];
+    return highest;
+}
+
+
+// @returns the scentID, meaning the ID of the ant that left that scent there
+int Tile::getScentID(int which) {
+    if (which % 3 == which && which < scentCount)
+        return scentID[which];
+    return -1;
+}
+
+
+// removes an existing scent or just adds it, saving the @param from AntID
+void Tile::addScent(Ant* from) {
+
+    if (scentCount > 0) {
+
+        for (int i = scentCount - 1; i > 0; i--)
+            Scents[i] = Scents[i - 1];
+        for (int i = scentCount - 1; i > 0; i--)
+            scentID[i] = scentID[i - 1];
+
+        Scents[0] = 100;
+        scentID[0] = from->getID();
+        if (scentCount < 3) scentCount++;
+
+    } else {
+        Scents[0] = 100;
+        scentID[0] = from->getID();
+        scentCount++;
+    }
+}
+
 
 
 // returns if there is a Base on this Tile

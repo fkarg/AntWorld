@@ -66,6 +66,7 @@ public:
 
     void Dies();            // what happens when the ant is 'dead'
     void relive(Tile* pos); // 'bringing the ant back to live' at @param pos
+    bool isInTeam(unsigned int AntID); // @returns if the @param AntID is in the own Team
 
     unsigned int getTicksLiving();      // the number of Ticks the Ant will be alive for definitely
     virtual void testLiving();          // testing if the Ant is still Alive or is just a ghost
@@ -140,9 +141,10 @@ public:
     void setVisible(bool visible) { isVisible = visible; } // setting if the icon is getting drawn
     bool getVisible() { return isVisible; } // returns if the tile is currently visible
     int getAntCount() { return RealAntCount; }  // returns the number of ants from this base
-    Ant* getAnt(unsigned int AntID); // returns the ant with the @param AntID
-    Tile* getTile() { return baseTile; } //returns the baseTile
-    unsigned int getTeamNum() { return TeamNum; } // returns the unique teamNum
+    Ant* getAnt(unsigned int AntID); // @returns the ant with the @param AntID
+    Ant* getAnt(int Index);         // @returns the ant at @param Index
+    Tile* getTile() { return baseTile; } // @returns the baseTile
+    unsigned int getTeamNum() { return TeamNum; } // @returns the unique teamNum
 
     void addFood(unsigned int number);
     unsigned int getFood(Ant* ant, unsigned int number = 10);

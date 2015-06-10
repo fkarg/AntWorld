@@ -119,6 +119,7 @@ void Ant::doTick() {
         senseFoodOnCurrentTile();
         if (current->isBASE())
             BaseFoodCommunicate();
+        current->addScent(this);
     }
 
     // TODO: test if food carrying
@@ -162,6 +163,18 @@ void Ant::relive(Tile* pos) {
     setPosition(pos);
     isDead = false;
     livingForTicks = 5;
+}
+
+
+// @returns if @param AntID is in the own team
+bool Ant::isInTeam(unsigned int AntID) {
+    for (int i = 0; i < home->getAntCount(); i++) {
+        Ant* tmp = home->getAnt(i);
+        if (tmp != NULL)
+            if (tmp->getID() == AntID)
+            return true;
+    }
+    return false;
 }
 
 
@@ -486,6 +499,20 @@ Ant* antBase::getAnt(unsigned int AntID) {
     for (int i = 0; i < AntCount; i++) {
         if (ownAnts[i].getID() == AntID)
             return &ownAnts[i];
+    }
+    return NULL;
+}
+
+
+// @returns the ant at @param index, valid for everything smaller than the realAntCount
+Ant* antBase::getAnt(int Index) {
+    if (Index % 20 == Index && RealAntCount > 0) {
+        int RealIndex = 0;
+        for (int i = 0; i < Index; i++, RealIndex++)
+            for (int j = 0; j < 20 && dead[RealIndex]; j++)
+                RealIndex++;
+        if (RealIndex % 20 == RealIndex)
+            return &ownAnts[RealIndex];
     }
     return NULL;
 }

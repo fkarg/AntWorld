@@ -32,6 +32,7 @@ class showTile;
 class Tile : public tickInterface {
 protected:
     int locX, locY, height, width, index = -1;
+    int Scents[3] = {0, 0, 0}, scentID[3] = {0, 0, 0}, scentCount = 0;
 
     STATE current = NORMAL; // the state the tile currently has
 
@@ -95,6 +96,13 @@ public:
     bool removeAnt(unsigned int AntID); // @return if the AntID's ant was on the tile before, is not from now on anyways
     Ant* getAnt();                      // @returns the ant that got first on this tile
     int getAntCount();                  // @returns how many ants there are exactly on this tile
+
+    int getScentCount() { return scentCount; }
+    int getScent(int which);        // @returns the scent on place @param which
+    int getOwnScent(Ant* who);      // @returns the own scent of @param who or -1
+    int getTeamScent(Ant* who);     // @returns the strongest team-scent or -1
+    int getScentID(int which);      // @returnns the ScentID on place @param which
+    void addScent(Ant* from);       // simply adds a scent to the tile, @param from's AntID is saved
 
     bool isBASE();      // returns if the Tile has the special case 'BASE'
     bool hasAnt();      // returns if the Tile has the special case 'Ant'
@@ -161,13 +169,13 @@ public:
     int getIndex();     // returning the index
     int isFood();       // returning how much food there is on the Tile
     void setWall(int dir, bool setWall); // setting in @param dir the @param setWall
-    void doTick();      // whatever happens at a tick TODO: updating the info
+    void doTick();      // whatever happens at a tick TODO: updating the info seperately
     bool isSurrounding(int dir); // returns if there virtually is a tile next to it in @param dir
     Tile* getSurrounding(int dir); // getting the virtually surrounding tile
     Tile* getTileToShow(); // returns the tile it 'copies' or at least shows
     std::string getTileInfo(); // returns the info of the currently selected tile (when)
 
-    void removeBase();
+    void removeBase();      // removes the Base from the showTile
 };
 
 
