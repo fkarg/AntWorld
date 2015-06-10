@@ -170,8 +170,7 @@ void Ant::relive(Tile* pos) {
 bool Ant::isInTeam(unsigned int AntID) {
     for (int i = 0; i < home->getAntCount(); i++) {
         Ant* tmp = home->getAnt(i);
-        if (tmp != NULL)
-            if (tmp->getID() == AntID)
+        if (tmp != NULL) if (tmp->getID() == AntID)
             return true;
     }
     return false;
@@ -247,7 +246,7 @@ unsigned int Ant::getTicksLiving() {
 void Ant::testLiving() {
     if (!isDead) {
         livingForTicks--;
-        if (livingForTicks <= 0) if (ownFood > 0)
+        if (livingForTicks <= 2) if (ownFood > 0)
             ownFood--, livingForTicks += 10;
         else Dies();
     }
