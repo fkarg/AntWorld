@@ -543,10 +543,17 @@ unsigned int antBase::isFood() {
 
 // decreasing the Real AntCount and adding the ant to 'reactivatable' ones
 void antBase::decRealAntCount(Ant* ant) {
-    dead[deadCount] = true;
 
-    RealAntCount--;
-    deadCount++;
+    for (int i = 0; i < 20; i++)
+        if (ant == &ownAnts[i]) {
+            dead[i] = true;
+            RealAntCount--;
+            deadCount++;
+            break;
+        }
+
+    // dead[deadCount] = true;
+
 }
 
 

@@ -72,7 +72,7 @@ public:
     virtual void testLiving();          // testing if the Ant is still Alive or is just a ghost
     bool getDead() { return isDead; }   // returns if the ant is dead yet
 
-    static void initAntCount() { MAXANTID = 0; }
+    static void initAntCount() { MAXANTID = 0; } // initiating the AntCount
 };
 
 
@@ -102,7 +102,7 @@ public:
     void draw(sf::RenderWindow *window); // drawing the ant if it is visible right now
     Ant* getAntShown();             // returns the ant currently shown, if visible
     void testLiving(){};            // making the showAnt undying
-    void doTick();
+    void doTick();                  // doing the tick
 };
 
 
@@ -146,11 +146,11 @@ public:
     Tile* getTile() { return baseTile; } // @returns the baseTile
     unsigned int getTeamNum() { return TeamNum; } // @returns the unique teamNum
 
-    void addFood(unsigned int number);
-    unsigned int getFood(Ant* ant, unsigned int number = 10);
-    unsigned int isFood();
+    void addFood(unsigned int number);      // adding @param number food to the antBase
+    unsigned int getFood(Ant* ant, unsigned int number = 10); // @returns food for the @param ant
+    unsigned int isFood();                  // returns if there's food on this tile and how many
 
-    void decRealAntCount(Ant* ant);
+    void decRealAntCount(Ant* ant);         // lets the @param ant die
     int getDeadIt();
 
     static void initTEAMS() { MAXTEAMNUM = 0; } // initializing the number of teams
