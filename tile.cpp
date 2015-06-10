@@ -37,7 +37,8 @@ void Tile::addWalls() {
 // adding the @param state to the current state
 void Tile::addState(STATE state) {
     std::cout << "adding state " << state << " to tile " << index << std::endl;
-    if ( (state == RES && !isRES() && res != NULL) || (state == BASE && !isBASE() && base != NULL) || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
+    if ( (state == RES && !isRES() && res != NULL) || (state == BASE && !isBASE() && base != NULL)
+            || (state == ANT && !hasAnt() && ownAnts.size() != 0 ) ) {
         int intNewState = (int) state + (int) current;
         std::cout << "previous state: " << (int) current;
         current = (STATE) intNewState;
@@ -47,9 +48,10 @@ void Tile::addState(STATE state) {
 
 
 // removing the @param state from the current (only ANT, RES or BASE)
-bool Tile::removeState(STATE state) {
+bool Tile:: removeState(STATE state) {
     std::cout << "removing state " << state << " from tile " << index << std::endl;
-    if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL ) || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
+    if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL )
+            || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
         int intNewState = (int) current - (int) state;
         std::cout << "previous state: " << (int) current;
         current = (STATE) intNewState;
@@ -171,6 +173,9 @@ void Tile::doTick() {
         res->doTick();
     if (isBASE() )
         base->doTick();
+
+    // if (getAnt()->getDead() )
+        // removeAnt(getAnt()->getID() );
 }
 
 
@@ -209,7 +214,9 @@ bool Tile::isSurrounding(int dir) {
 
 // returns if there is food on the tile and how much
 int Tile::isFood() {
-    if (isRES() )
+    if (isBASE() )
+        return (int) base->isFood();
+    else if (isRES() )
         return (int) res->getProduced();
     else return 0;
 }
@@ -289,8 +296,9 @@ void Tile::addAnt(Ant *ant) {
 
 
 // removing the Ant with the @param AntID from 'on the tile' if it is there
-// @return: if the operation was succesful
+// @return: if the operation was successful
 bool Tile::removeAnt(unsigned int AntID) {
+    std::cout << "gotta remove " << AntID << " from tile " << getIndex() << std::endl;
     for (int i = 0; i < ownAnts.size(); i++)
         if (ownAnts[i]->getID() == AntID) {
             ownAnts.erase(ownAnts.begin() + i);

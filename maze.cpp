@@ -143,7 +143,7 @@ void Maze::setHome(Tile *tile) {
             removeHome(tile);
             tile->removeBase();
         } else if (basesNum < 5) {
-            antBase home1;
+            antBase home1 = bases[basesNum];
             home1.setMaze(this);
             home1.setPosition(tile);
             home1.setVisible(true);

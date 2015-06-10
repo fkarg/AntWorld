@@ -15,12 +15,15 @@
 #define SOURCES "/usr/resources_coding/"
 #endif
 
+#define START_FOOD 200
+
 
 class Maze;
 
 
 static unsigned int MAXANTID; // keeps track of the AntID's
 static unsigned int MAXTEAMNUM; // keeps track of the number of teams
+static const unsigned int MAX_FOOD_ANT_CARRYING = 30;
 
 
 class Ant : public tickInterface {
@@ -28,7 +31,9 @@ class Ant : public tickInterface {
 protected:
     int locX = -1, locY = -1, dir = 0, height = 26, width = 26;
 
-    unsigned int ownFood = 0, AntID, TeamNum = 0;
+    unsigned int ownFood = 0, AntID, TeamNum = 0, livingForTicks = 5;
+
+    bool isDead = false;
 
     sf::Texture texture;
     sf::Sprite sprite;
@@ -41,21 +46,30 @@ public:
     Ant();
     void reloadImage();     // reloads the maybe corrupted image of the ant
     void setHome(antBase* home); // setting the Home of the Ant
-    unsigned int getTeamNum() { return TeamNum; }
+    unsigned int getTeamNum() { return TeamNum; } // returns the teamNum of the ant
     int getX();             // returns the x-val of the ant
     int getY();             // returns the y-val of the ant
     int getDir();           // returns the current dir of the ant
     unsigned int getFood(); // returns the current food of the ant
+    void addFood(unsigned int number); // adds @param number much food to the ant if possible
+    void BaseFoodCommunicate(); // requests needed food from the base itself or gives own food to the base
     Tile* getCurrent();     // returns the tile the ant is currently on
-    void setCurrent(Tile *current); // setting the tile the ant is currently on
+    void setCurrent(Tile* current); // setting the tile the ant is currently on
     void setAntID(unsigned int newID); // setting the unique antID
     unsigned int getID();   // getting the AntID
-    void setPosition(Tile *tileToGoOn) { setCurrent(tileToGoOn); } // see getCurrent
+    void setPosition(Tile* tileToGoOn) { setCurrent(tileToGoOn); } // see getCurrent
     virtual void move(int dir); // moving the ant if it is possible in @param dir
     virtual void draw(sf::RenderWindow *window); // draws the ant
     void senseFoodOnCurrentTile(); // TODO: sensing etc
     void doTick();          // doing a tick
     bool isInside(int x, int y); // returns if the ant got clicked
+
+    void Dies();            // what happens when the ant is 'dead'
+    void relive(Tile* pos); // 'bringing the ant back to live' at @param pos
+
+    unsigned int getTicksLiving();      // the number of Ticks the Ant will be alive for definitely
+    virtual void testLiving();          // testing if the Ant is still Alive or is just a ghost
+    bool getDead() { return isDead; }   // returns if the ant is dead yet
 
     static void initAntCount() { MAXANTID = 0; }
 };
@@ -86,6 +100,8 @@ public:
     void setPosition(int dir);      // setting the Position relational to the @param dir
     void draw(sf::RenderWindow *window); // drawing the ant if it is visible right now
     Ant* getAntShown();             // returns the ant currently shown, if visible
+    void testLiving(){};            // making the showAnt undying
+    void doTick();
 };
 
 
@@ -99,11 +115,12 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
     Ant ownAnts[20] = {};
-    Tile *baseTile = NULL;
-    int locX, locY, AntCount = 0;
+    bool dead[20] = { false };
+    Tile* baseTile = NULL;
+    int locX, locY, AntCount = 0, RealAntCount = 0, deadCount = 0;
     bool isVisible = true;
-    Maze *maze;
-    unsigned int TeamNum;
+    Maze* maze;
+    unsigned int TeamNum, food = START_FOOD;
 
 public:
     antBase() { reloadBase(); TeamNum = MAXTEAMNUM++; }     // loads the baseImage
@@ -122,10 +139,17 @@ public:
     void doTick();                  // does the tick for all the ants
     void setVisible(bool visible) { isVisible = visible; } // setting if the icon is getting drawn
     bool getVisible() { return isVisible; } // returns if the tile is currently visible
-    int getAntCount() { return AntCount; }  // returns the number of ants from this base
-    Ant *getAnt(unsigned int AntID); // returns the ant with the @param AntID
-    Tile *getTile() { return baseTile; } //returns the baseTile
+    int getAntCount() { return RealAntCount; }  // returns the number of ants from this base
+    Ant* getAnt(unsigned int AntID); // returns the ant with the @param AntID
+    Tile* getTile() { return baseTile; } //returns the baseTile
     unsigned int getTeamNum() { return TeamNum; } // returns the unique teamNum
+
+    void addFood(unsigned int number);
+    unsigned int getFood(Ant* ant, unsigned int number = 10);
+    unsigned int isFood();
+
+    void decRealAntCount(Ant* ant);
+    int getDeadIt();
 
     static void initTEAMS() { MAXTEAMNUM = 0; } // initializing the number of teams
 };
