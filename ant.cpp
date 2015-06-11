@@ -248,7 +248,7 @@ void Ant::testLiving() {
         livingForTicks--;
         if (livingForTicks <= 2) if (ownFood > 0)
             ownFood--, livingForTicks += 10;
-        else Dies();
+        if (livingForTicks <= 0) Dies();
     }
 }
 

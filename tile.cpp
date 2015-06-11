@@ -259,7 +259,8 @@ std::string Tile::getTileInfo() {
         "\nX: " + std::to_string(getX() ) +
         "\nY: " + std::to_string(getY() ) +
         "\n\nFood: " + std::to_string(isFood() ) +
-        "\nHighest Scent: " + std::to_string(getScent(0) ) +
+        "\nHighest Scent: \n" + std::to_string(getScent(0) ) +
+        "\nfrom: " + std::to_string(getScentID(0) ) +
         "\n" + additional;
 }
 
