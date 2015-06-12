@@ -226,10 +226,12 @@ int Tile::isFood() {
 }
 
 
-// @returns max 10 or how much food there's on res, else 0
-int Tile::getFood() {
-    if (isRES() )
-       return res->getFood();
+// @returns max 10 or how much food there's on res or the base, else 0
+int Tile::getFood(Ant* ant) {
+    if (isBASE() )
+        return base->getFood(ant, 10 - ant->getFood() );
+    else if (isRES() )
+        return res->getFood();
     else return 0;
 }
 

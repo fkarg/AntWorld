@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include "ticksystem.h"
 #include "tile.h"
+#include "ai.h"
 
 #include <iostream>
 #include <string>
@@ -24,14 +25,14 @@ class Maze;
 static unsigned int MAXANTID; // keeps track of the AntID's
 static unsigned int MAXTEAMNUM; // keeps track of the number of teams
 static const unsigned int MAX_FOOD_ANT_CARRYING = 30;
-
+static ai AI;
 
 class Ant : public tickInterface {
 
 protected:
     int locX = -1, locY = -1, dir = 0, height = 26, width = 26;
 
-    unsigned int ownFood = 0, AntID, TeamNum = 0, livingForTicks = 5;
+    unsigned int ownFood = 2, AntID, TeamNum = 0, livingForTicks = 5;
 
     bool isDead = false;
 
@@ -60,7 +61,6 @@ public:
     void setPosition(Tile* tileToGoOn) { setCurrent(tileToGoOn); } // see getCurrent
     virtual void move(int dir); // moving the ant if it is possible in @param dir
     virtual void draw(sf::RenderWindow *window); // draws the ant
-    void senseFoodOnCurrentTile(); // TODO: sensing etc
     void doTick();          // doing a tick
     bool isInside(int x, int y); // returns if the ant got clicked
 
@@ -71,7 +71,11 @@ public:
     unsigned int getTicksLiving();      // the number of Ticks the Ant will be alive for definitely
     virtual void testLiving();          // testing if the Ant is still Alive or is just a ghost
     bool getDead() { return isDead; }   // returns if the ant is dead yet
-
+/*
+    SURROUNDING_STATE sense();
+    ACTION decide(SURROUNDING_STATE currentState);
+    void DO(ACTION ding);
+*/
     static void initAntCount() { MAXANTID = 0; } // initiating the AntCount
 };
 
@@ -151,7 +155,7 @@ public:
     unsigned int isFood();                  // returns if there's food on this tile and how many
 
     void decRealAntCount(Ant* ant);         // lets the @param ant die
-    int getDeadIt();
+    int getDeadIt();                        // returns an iterator of a dead ant or else -1
 
     static void initTEAMS() { MAXTEAMNUM = 0; } // initializing the number of teams
 };

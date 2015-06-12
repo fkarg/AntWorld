@@ -80,8 +80,8 @@ public:
     void setSurrounding(int dir, Tile* tile); // setting in @param dir the @param tile
     virtual Tile* getSurrounding(int dir);    // returning the tile in @param dir
     virtual bool isSurrounding(int dir); // returning if there even is sth in @param dir
-    virtual int isFood();       // returning all the food on the Tile
-    int getFood();              // returning 0 up to 10 max food and decreasing it on the Tile
+    virtual int isFood();          // returning all the food on the Tile
+    int getFood(Ant* ant = NULL);  // returning 0 up to 10 max food and decreasing it on the Tile
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
 
     antBase* getBase() { return base; }  // returns the antBase if one is set

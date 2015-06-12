@@ -28,7 +28,7 @@ file(GLOB AntWorld_SRC
 
 
 
-add_executable(AntWorld main.cpp ${AntWorld_SRC} maze.cpp maze.h GraphicsControl.cpp GraphicsControl.h tile.cpp tile.h)
+add_executable(AntWorld main.cpp ${AntWorld_SRC} maze.cpp maze.h GraphicsControl.cpp GraphicsControl.h tile.cpp tile.h ai.cpp ai.h)
 target_link_libraries(AntWorld ${TGUI_LIBRARY} ${SFML_LIBRARIES})
 
 

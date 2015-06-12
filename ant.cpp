@@ -104,22 +104,18 @@ void Ant::draw(sf::RenderWindow *window) {
 }
 
 
-void Ant::senseFoodOnCurrentTile() {
-    if (current->isFood() > 0)
-        addFood( (unsigned int) current->getFood() );
-}
-
-
 // Reacting and moving to environmental changes
 void Ant::doTick() {
 
     testLiving();
 
     if (!isDead) {
-        senseFoodOnCurrentTile();
-        if (current->isBASE())
-            BaseFoodCommunicate();
+        // senseFoodOnCurrentTile();
+        // if (current->isBASE())
+            // BaseFoodCommunicate();
         current->addScent(this);
+        AI.senseAndAct(this);
+        // DO(decide(sense() ) );
     }
 
     // TODO: test if food carrying
@@ -208,7 +204,7 @@ void Ant::addFood(unsigned int number) {
         ownFood += number;
 }
 
-
+// FIXME: STATES! -> remove
 void Ant::BaseFoodCommunicate() {
     if (ownFood < 10)
         addFood(current->getBase()->getFood(this, 10 - ownFood) );
@@ -556,11 +552,11 @@ void antBase::decRealAntCount(Ant* ant) {
 }
 
 
-// getting the iterator of an dead ant
+// getting an iterator of an dead ant or else -1
 int antBase::getDeadIt() {
     for (int i = 0; i < 20; i++)
         if (dead[i])
             return i;
-    return 0;
+    return -1;
 }
 
