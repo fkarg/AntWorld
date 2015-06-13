@@ -368,6 +368,8 @@ void showAnt::doTick() {
     if (AntToShow != NULL)
         if (AntToShow->getDead() )
             setVisible(false);
+    else if (showingTile->getTileToShow()->hasAnt() )
+            setAnt(showingTile->getTileToShow()->getAnt() );
 }
 
 
