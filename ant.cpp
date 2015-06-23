@@ -366,9 +366,11 @@ Ant* showAnt::getAntShown() {
 void showAnt::doTick() {
     std::cout << "setting visible or not" << std::endl;
     if (AntToShow != NULL)
-        if (AntToShow->getDead() )
+        if (AntToShow->getDead())
             setVisible(false);
-    else if (showingTile->getTileToShow()->hasAnt() )
+        else if (showingTile->getTileToShow() != NULL)
+            setVisible(showingTile->getTileToShow()->hasAnt() );
+    else if (showingTile->getTileToShow() != NULL) if (showingTile->getTileToShow()->hasAnt() )
             setAnt(showingTile->getTileToShow()->getAnt() );
 }
 
@@ -419,8 +421,6 @@ void antBase::setPosition(Tile *tile, float scale) {
 
 // adding a new ant
 void antBase::addAnt() {
-    // FIXME: currently crashing under broad conditions, and not always either
-    // meaning I haven't figuered out what causes it
     Ant ant;
     if (AntCount == 20)
         ant = ownAnts[getDeadIt()],
