@@ -46,50 +46,60 @@ Surrounding_state ai::sense(Ant* ant) {
 }
 
 
-/*
-// @returns the decision based on the @param state of the surroundings
-ACTION ai::decide(Surrounding_state currentState) {
+// the @return Action what to do based on the @param currentState
+ACTION ai::decide(const Surrounding_state& currentState) {
 
-    currentState.print();
+	if (currentState.foodThere >= 1
+			&& currentState.antFood <= MAX_FOOD_ANT_CARRYING - 2
+			&& !currentState.isBase)
+		return TAKE_FOOD;
+	if (currentState.isBase && currentState.antFood > 10)
+		return GIVE_FOOD;
+	if (currentState.isBase && currentState.antFood < 10)
+		return TAKE_FOOD;
 
 	ACTION decision = STAY;
 
-	int highest = 0, dirTo = -1, possDirs = 0;
+	currentState.print();		// printing the currentState
 
-	for (int dir = 0; dir < 4 && (dir + 2) % 4 != currentState.lastAction; dir++) {
+	int highest = 0, dirTo = -1, possDir = 0, lastDir = -1;
+
+	// testing for the number of directions without walls and the direction with the highest scent
+	for (int dir = 0; dir < 4; dir++) {
 		if (currentState.scents[dir] > highest)
 			highest = currentState.scents[dir], dirTo = dir;
 		if (!currentState.walls[dir] )
-			possDirs++;
-	}bg
+			possDir++, lastDir = dir;
+	}
 
-	if (possDirs >= 1)
-		while (decision == STAY) {
-			int dir = rand() % 4;
-			if (!currentState.walls[dir] && (dir + 2) % 4 != currentState.lastAction)
-				decision = (ACTION) dir;
+	// testing if this is a dead end (and if there isn't food or sth keeping the ant here too, go away from it
+	if (possDir == 1 && (lastDir + 2) % 4 != currentState.lastAction)
+		decision = (ACTION) lastDir;
+
+	// if there's only two directions possible, you came from one and will go to the other
+	// special cases: you are on the BASE or a RES, and either left or are taking food TODO
+	if (possDir == 2)
+		if ( (lastDir + 2) % 4 != currentState.lastAction)
+			decision = (ACTION) lastDir;
+		else while (decision == STAY) {
+			int newDir = rand() % 4;
+			if ( (newDir + 2) % 4 != currentState.lastAction
+					&& !currentState.walls[newDir] )
+				decision = (ACTION) newDir;
 		}
-	else if (dirTo >= 0 && (dirTo + 2 % 4) != currentState.lastAction) decision = (ACTION) dirTo;
 
-	if (currentState.isFood && currentState.foodThere > 0
-            && currentState.antFood < MAX_FOOD_ANT_CARRYING - 2)
-		decision = TAKE_FOOD;
+	// if there's more than two possibilities, a random event is being chosen for the time being
+	if (possDir >= 3)
+		while (decision == STAY) {
+			int newDir = rand() % 4;
+			if ( (newDir + 2) % 4 != currentState.lastAction
+					&& !currentState.walls[newDir] )
+				decision = (ACTION) newDir;
+		}
 
-	if (currentState.isBase)
-		if (currentState.antFood < 10)
-			decision = TAKE_FOOD;
-		else if (currentState.antFood > 10)
-			decision = GIVE_FOOD;
+	// TODO: following scent or !follow it after the conditions
 
 	return decision;
-}
-*/
-
-
-ACTION ai::decide(const Surrounding_state &currentState) {
-	currentState.print();
-
-	return STAY
 }
 
 
