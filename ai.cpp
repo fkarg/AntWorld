@@ -25,6 +25,7 @@ void ai::senseAndAct(Ant* itself) {
 // @returns the surrounding conditions around the @param ant
 Surrounding_state ai::sense(Ant* ant) {
 	Surrounding_state current;
+	// testing the surroundings for walls and scents
 	for (int dir = 0; dir < 4; dir++ ) {
 		current.walls[dir] = ant->getCurrent()->isWall(dir);
 		if (!current.walls[dir]) {
@@ -32,6 +33,7 @@ Surrounding_state ai::sense(Ant* ant) {
 			current.teamScent[dir] = ant->getCurrent()->getTeamScent(ant) > 0;
 		}
 	}
+	// what type the current tile is (except for hasAnt, since that has to be true)
 	current.isBase = ant->getCurrent()->isBASE();
 	current.isFood = ant->getCurrent()->isFood() > 0;
 	if (current.isFood)
@@ -39,6 +41,7 @@ Surrounding_state ai::sense(Ant* ant) {
 	current.antFood = ant->getFood();
 	current.lastAction = ant->getLastAction();
 
+	// based on the food-state searching for either the base, some food, or
 	if (ant->getFood() > 15 || ant->getFood() <= 5)
 		current.searchingHome = true;
 	else if (ant->getFood() < 15)

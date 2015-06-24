@@ -1,5 +1,5 @@
-#ifndef ANTWORLD_AI_H
-#define ANTWORLD_AI_H
+#ifndef AI_H
+#define AI_H
 
 
 #include <ctime>
@@ -28,10 +28,10 @@ struct Surrounding_state {
 
 class ai {
 private:
-    float version = 1.002;
+	// the version of the ai: 0.0.5
 
 public:
-	ai(){};     // FIXME: currently crashing for usual ants
+	ai(){};     // FIXME: currently crashing for usual ants for some reason
 	void senseAndAct(Ant* itself);  // sensing, reacting and moving altogether
 	Surrounding_state sense(Ant* ant);  // @returns the surrounding state around the @param ant
 	ACTION decide(const Surrounding_state& currentState);  // @returns decision what to do based on the @param surrounding conditions
@@ -39,5 +39,5 @@ public:
 };
 
 
-#endif //ANTWORLD_AI_H
+#endif
 
