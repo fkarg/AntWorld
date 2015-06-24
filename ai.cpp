@@ -27,15 +27,17 @@ Surrounding_state ai::sense(Ant* ant) {
 	Surrounding_state current;
 	for (int dir = 0; dir < 4; dir++ ) {
 		current.walls[dir] = ant->getCurrent()->isWall(dir);
-		if (!current.walls[dir])
-			current.scents[dir] = ant->getCurrent()->getTeamScent(ant);
+		if (!current.walls[dir]) {
+			current.scents[dir] = ant->getCurrent()->getTeamScent > 0 ? ant->getCurrent()->getTeamScent() : ant->getCurrent->getScent();
+			current.teamScent[dir] = ant->getCurrent()->getTeamScent > 0;
+		}
 	}
 	current.isBase = ant->getCurrent()->isBASE();
 	current.isFood = ant->getCurrent()->isFood() > 0;
 	if (current.isFood)
 		current.foodThere = ant->getCurrent()->isFood();
-    current.antFood = ant->getFood();
-    current.lastAction = ant->getLastAction();
+	current.antFood = ant->getFood();
+	current.lastAction = ant->getLastAction();
 
 	if (ant->getFood() > 15 || ant->getFood() <= 5)
 		current.searchingHome = true;

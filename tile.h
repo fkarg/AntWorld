@@ -98,7 +98,7 @@ public:
     int getAntCount();                  // @returns how many ants there are exactly on this tile
 
     int getScentCount() { return scentCount; }
-    int getScent(int which);        // @returns the scent on place @param which
+    int getScent(int which = 0);    // @returns the scent on place @param which
     int getOwnScent(Ant* who);      // @returns the own scent of @param who or -1
     int getTeamScent(Ant* who);     // @returns the strongest team-scent or -1
     int getScentID(int which);      // @returnns the ScentID on place @param which

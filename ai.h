@@ -18,6 +18,7 @@ enum ACTION {
 struct Surrounding_state {
 	bool walls[4] = { false }; // if there's a wall in dir
 	int scents[4] = { -1, -1, -1, -1 }; // how much scent there's in dir
+	bool teamScent[4] = { false; }; // if the scent is from the own team or not
 	bool isBase = false, isFood = false; // if there's a BASE or RES on this tile
 	bool searchingHome = false, searchingFood = false; // if searching for food or for the base currently
 	int foodThere = 0, antFood = 0, lastAction = 6;
