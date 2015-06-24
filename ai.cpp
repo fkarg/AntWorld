@@ -28,8 +28,8 @@ Surrounding_state ai::sense(Ant* ant) {
 	for (int dir = 0; dir < 4; dir++ ) {
 		current.walls[dir] = ant->getCurrent()->isWall(dir);
 		if (!current.walls[dir]) {
-			current.scents[dir] = ant->getCurrent()->getTeamScent > 0 ? ant->getCurrent()->getTeamScent() : ant->getCurrent->getScent();
-			current.teamScent[dir] = ant->getCurrent()->getTeamScent > 0;
+			current.scents[dir] = ant->getCurrent()->getTeamScent(ant) > 0 ? ant->getCurrent()->getTeamScent(ant) : ant->getCurrent()->getScent();
+			current.teamScent[dir] = ant->getCurrent()->getTeamScent(ant) > 0;
 		}
 	}
 	current.isBase = ant->getCurrent()->isBASE();
