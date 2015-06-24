@@ -30,7 +30,7 @@ static ai AI;
 class Ant : public tickInterface {
 
 protected:
-    int locX = -1, locY = -1, dir = 0, height = 26, width = 26;
+    int locX = -1, locY = -1, dir = 0, height = 26, width = 26, lastAction = 6;
 
     unsigned int ownFood = 2, AntID, TeamNum = 0, livingForTicks = 5;
 
@@ -71,6 +71,8 @@ public:
     unsigned int getTicksLiving();      // the number of Ticks the Ant will be alive for definitely
     virtual void testLiving();          // testing if the Ant is still Alive or is just a ghost
     bool getDead() { return isDead; }   // returns if the ant is dead yet
+    int getLastAction() { return lastAction; } // @returns the action the ant did last
+    void setLastAction(int what) { lastAction = what; } // setting what the last action actually was
 /*
     SURROUNDING_STATE sense();
     ACTION decide(SURROUNDING_STATE currentState);
