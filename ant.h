@@ -34,7 +34,7 @@ protected:
 
     unsigned int ownFood = 2, AntID, TeamNum = 0, livingForTicks = 5;
 
-    bool isDead = false;
+    bool isDead = true;
 
     sf::Texture texture;
     sf::Sprite sprite;
@@ -52,6 +52,7 @@ public:
     int getY();             // returns the y-val of the ant
     int getDir();           // returns the current dir of the ant
     unsigned int getFood(); // returns the current food of the ant
+    void remFood(unsigned int num); // removes food from the ant that got added elsewhere
     void addFood(unsigned int number); // adds @param number much food to the ant if possible
     void BaseFoodCommunicate(); // requests needed food from the base itself or gives own food to the base
     Tile* getCurrent();     // returns the tile the ant is currently on
@@ -65,6 +66,7 @@ public:
     bool isInside(int x, int y); // returns if the ant got clicked
 
     void Dies();            // what happens when the ant is 'dead'
+    void live();            // getting the ant to live for the first time
     void relive(Tile* pos); // 'bringing the ant back to live' at @param pos
     bool isInTeam(unsigned int AntID); // @returns if the @param AntID is in the own Team
 

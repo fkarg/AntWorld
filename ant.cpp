@@ -107,6 +107,8 @@ void Ant::draw(sf::RenderWindow *window) {
 // Reacting and moving to environmental changes
 void Ant::doTick() {
 
+    std::cout << "Ant " << AntID << " doing sth" << std::endl;
+
     testLiving();
 
     if (!isDead) {
@@ -150,6 +152,12 @@ void Ant::Dies() {
     isDead = true;
     if (home != NULL)
         home->decRealAntCount(this);
+}
+
+
+// getting the ant to live the first time
+void Ant::live() {
+	isDead = false;
 }
 
 
@@ -197,6 +205,13 @@ unsigned int Ant::getFood() {
 }
 
 
+// removes food taken from the ant elsewhere from the ant too
+void Ant::remFood(unsigned int num) {
+    ownFood -= num;
+}
+
+
+// adding the @param number of food to the ant but max MAX_FOOD_ANT_CARRYING
 void Ant::addFood(unsigned int number) {
     if (number + ownFood > MAX_FOOD_ANT_CARRYING)
         ownFood = MAX_FOOD_ANT_CARRYING;
@@ -431,6 +446,7 @@ void antBase::addAnt() {
         ant = ownAnts[AntCount];
         ant.setPosition(baseTile);
         ant.setHome(this);
+        ant.live();
         addAnt(ant);
     }
 }
@@ -483,10 +499,17 @@ void antBase::draw(sf::RenderWindow *window) {
 
 // doing the tick for all ants too
 void antBase::doTick() {
-    if (baseTile != NULL)
-        if (baseTile->isFood() > 0 )
+    std::cout << "in base " << TeamNum;
+    if (baseTile != NULL) {
+        std::cout  << " on " << baseTile->getIndex() << std::endl;
+        std::cout << "baseTile is not null" << std::endl;
+        if (baseTile->isFood() > 0 && baseTile->isFood() != food ) {
+            std::cout << "on the baseTile is food not from the base" << std::endl;
             food += baseTile->getFood();
-    for (int i = 0; i < AntCount; i++)
+        }
+    }
+    std::cout << "might have added food to the base" << std::endl;
+    for (int i = 0; i < 20; i++)
         ownAnts[i].doTick();
 }
 
@@ -525,10 +548,11 @@ void antBase::addFood(unsigned int number) {
 unsigned int antBase::getFood(Ant* ant, unsigned int number) {
     if (number > 24)
         number = 24;
-    if (ant->getTeamNum() == TeamNum) {
+    if (ant != NULL) if (ant->getTeamNum() == TeamNum) {
         food -= number;
         return number; // number is ten by default
-    } else return 0;
+    }
+    return 0;
 }
 
 

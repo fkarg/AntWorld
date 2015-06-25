@@ -169,6 +169,7 @@ void Tile::drawWalls(sf::RenderWindow *window) {
 // updating things at a tick
 void Tile::doTick() {
     // for implementation purposes
+    std::cout << "in tile " << index << std::endl;
     if (isRES() )
         res->doTick();
     if (isBASE() )

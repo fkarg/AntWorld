@@ -123,8 +123,9 @@ void ai::DO(ACTION what, Ant* ant) {
             ant->addFood((unsigned int) ant->getCurrent()->getFood(ant));
             break;
         case GIVE_FOOD:
-            // ant->getCurrent()->getBase()->addFood(ant->getFood())
-            // TODO: method ant-sided
+            ant->getCurrent()->getBase()->addFood(ant->getFood() - 11);
+			ant->remFood(ant->getFood() - 11);
+            // TODO: method ant-sided - necessary?
             break;
         case STAY:
             break;
