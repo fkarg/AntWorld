@@ -3,23 +3,28 @@ An Environment for several AI's, searching for food and other resources.
 Nearly all the variables can be changed by the user.
 
 
-Project done with Clion and Sublime Text, written in C++
+Project done with Clion, written in C++
 
 Used librarys: SFML, TinyXML2, TGUI (GUI for SFML)
 (TinyXML not implemented yet)
 
 
 
-works with CLion and any other IDE working with CMake to build it's projects.
+works with CLion and any other IDEs working with CMake to build it's projects.
 (you can get CLion here: https://www.jetbrains.com/clion/)
 
 
 
-If you want to build it for yourself, you either need to redefine the SOURCES macro in GraphicsControl.h, main.cpp and ant.h (Please remind me if I have forgotten one) or copy the /resources/ folder to the given path (/usr/resources_coding/), only works at Linux for copying, on Windows you'd need to redefine it anyways.
+If you want to build it for yourself, you either need to redefine the 
+SOURCES macro in GraphicsControl.h, main.cpp and ant.h (Please remind me 
+if I have forgotten one) or copy the /resources/ folder to the given 
+path (/usr/resources_coding/). Copying only works for Linux, on 
+Windows you'd need to redefine it anyways.
 
 
 
-Other Branches are usually more up-to-date, since I only merge if a new 'feature' or sth is finally working
+Other Branches are usually more up-to-date, since I only merge if a 
+new 'feature' or sth is finally working
 
 
 
@@ -28,42 +33,51 @@ Other Branches are usually more up-to-date, since I only merge if a new 'feature
 
 
 
-What I have in mind:
+## What I have in mind:
 
-A GUI similar to the projects of the NetLogo library, where you can specify about everything, 
-but improved direct control over the environment. 
+A GUI similar to the projects of the NetLogo library, where you can 
+specify about everything, but improved direct control over the environment. 
 
 
 Controllable variables:
 
-the walls of the maze (you can delete them all or put one at every possible spot if you want to)
+the walls of the maze (you can remove them all or put one at every 
+possible spot if you want to)
 
-the resources (at first food only, I want to implement resources to level up the base or build new "Ants" later on)
-but not only where it is available, but how much at what rate is available too (except for some maybe ...)
+the resources (at first food only, I want to implement resources to level 
+up the base or build new "Ants" later on) but not only where it is 
+available, but how much at what rate is available too (except for 
+some maybe ...)
 
-if there's an AI to send out (everything higher than reactive bots) for special tasks or how to contribute the resources etc.
+if there's an AI to send out (everything higher than reactive bots) 
+for special tasks or how to distribute the resources etc.
 
 how many of them should be there and from which Base
 
 if bases are allowed to make teams, etc.
 
-several kinds of mazes (several maze generators and an edit mode is certain - two generators and the Edit mode already exist)
+several kinds of mazes (several maze generators and an edit mode is 
+certain - two generators and the Edit mode already exist)
 
-several kinds of AI's - from basic ants up to autonomic ones and maybe even more.
+several kinds of AI's - from basic ants up to autonomic ones and maybe 
+even more.
 
-The best about it: you can click on any tile you want and get every information about that and surrounding tiles, 
-including information about walls, if there is food, a scent, if there's an Ant (or more) on that tile too, 
-then specific information about them is given too (things they are carrying, what type of AI they are, in what state
+The best about it: you can click on any tile you want and get every 
+information about that and surrounding tiles, including information 
+about walls, if there is food, a scent, if there's an Ant (or more) 
+on that tile too, then specific information about them is given too 
+(things they are carrying, what type of AI they are, in what state
 they are right now, etc. )
 
-you can save and load your created and edited mazes, but first the state of everything else will not be supported.
+you can save and load your created and edited mazes, but first the 
+state of everything else will not be supported.
 
 well - at least that's the idea.
 
 
 checklist:
 
-GUI: (parts missing)
+GUI: (parts missing: ...)
 
 Maze - Check
 
@@ -85,15 +99,15 @@ AntBase - Check
 
 Resources - Check
 
-Scent - starting soon
+Scent - not in Reactive Behaviour, but else check
 
-Food system - starting soon
+Food system - Check
 
 
 
-KI: (all missing)
+KI: (in work)
 
-Reactive Ant-behaviour - starting soon
+Reactive Ant-behaviour - half-finished (scent missing)
 
 autonomous Ant-behaviour - not yet
 
@@ -115,7 +129,11 @@ AntBase that signs tasks - not yet
 
 .
 
-so much about my ideas. Some of them might be on their way to realization in a different branch already, they are usually named after the aim for it. If you want, feel free to contribute to it, though I'd like to do the reactive behaviour and some critical parts of the autonomous behaviour myself.
+so much about my ideas. Some of them might be on their way to 
+realization in a different branch already, they are usually named 
+after the aim for it. If you want, feel free to contribute to it, 
+though I'd like to do the reactive behaviour and some critical parts 
+of the autonomous behaviour myself.
 
 .
 
