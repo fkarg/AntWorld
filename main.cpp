@@ -35,7 +35,7 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(20, 20);
+    Maze maze(10, 10);
 
     std::cout << "moving maze ... " << std::endl;
 
@@ -183,6 +183,8 @@ int main()
             }
         }
 
+        if (Frame % 4 == 0) control.doTick();
+
         // Clear screen
         window.clear();
 
@@ -201,6 +203,8 @@ int main()
         window.display();
         std::cout << "Frame: " << Frame << std::endl;
         Frame++;
+
+        std::this_thread::__sleep_for(std::chrono::seconds(0), std::chrono::milliseconds(30) );
 
     }
 

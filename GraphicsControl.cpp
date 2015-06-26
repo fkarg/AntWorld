@@ -343,10 +343,13 @@ void GraphicsControl::changeWalls(int dir, bool move) {
 void GraphicsControl::TicksControlChangeState() {
     std::cout << "doing ticks ..." << std::endl;
     if (ticksControl->getText() == "Start" || ticksControl->getText() == "Resume")
+        ticksControl->setText("Faster"), ticking = true;
+    else if (ticksControl->getText() == "Faster")
         ticksControl->setText("Pause");
-    else
+    else {
         ticksControl->setText("Resume");
-
+        ticking = false;
+    }
     doTick();
     // TODO: tickscontrol ...
 }
@@ -389,16 +392,15 @@ Tile* GraphicsControl::getTileSelected() {
 
 void GraphicsControl::doTick() {
     // for the implementation
-    std::cout << " - for the maze" << std::endl;
-    maze->doTick();
-    std::cout << " - for the selected ant" << std::endl;
-    selectedAnt.doTick();
-    std::cout << " - for the showBase" << std::endl;
-    base.doTick();
-    std::cout << " - for the showLeaf" << std::endl;
-    leaf.doTick();
-    std::cout << " - for the showAnt" << std::endl;
-    antToShowAnt.doTick();
+    if (ticking) {
+        maze->doTick();
+        selectedAnt.doTick();
+        base.doTick();
+        leaf.doTick();
+        antToShowAnt.doTick();
+    }
+    if (ticksControl->getText() == "Faster")
+        std::this_thread::__sleep_for(std::chrono::seconds(0), std::chrono::milliseconds(60) );
 }
 
 

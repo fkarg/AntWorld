@@ -31,7 +31,7 @@ protected:
 
     int tick = 0;       // TODO: ticksystem ...
     const int lowest = 400, diff = 30;
-    bool connect = false, drawBase = false, drawLeaf = false, initial = true;
+    bool connect = false, drawBase = false, drawLeaf = false, initial = true, ticking = false;
 
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;
