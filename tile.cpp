@@ -169,7 +169,6 @@ void Tile::drawWalls(sf::RenderWindow *window) {
 // updating things at a tick
 void Tile::doTick() {
     // for implementation purposes
-    std::cout << "in tile " << index << std::endl;
     if (isRES() )
         res->doTick();
     if (isBASE() )
@@ -300,8 +299,9 @@ void Tile::removeRes() {
 // adding the @param ant to the 'current on tile' vector
 void Tile::addAnt(Ant* ant) {
     ownAnts.push_back(ant);
-    addScent(ant);
+    // addScent(ant);
     addState(ANT);
+    setColor(sf::Color(0, 70, 255) );
 }
 
 
@@ -376,12 +376,12 @@ void Tile::addScent(Ant* from) {
         for (int i = scentCount - 1; i > 0; i--)
             scentID[i] = scentID[i - 1];
 
-        Scents[0] = 100;
+        Scents[0] = 200;
         scentID[0] = from->getID();
         if (scentCount < 3) scentCount++;
 
     } else {
-        Scents[0] = 100;
+        Scents[0] = 200;
         scentID[0] = from->getID();
         scentCount++;
     }

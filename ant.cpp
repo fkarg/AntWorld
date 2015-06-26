@@ -107,15 +107,13 @@ void Ant::draw(sf::RenderWindow *window) {
 // Reacting and moving to environmental changes
 void Ant::doTick() {
 
-    std::cout << "Ant " << AntID << " doing sth" << std::endl;
-
     testLiving();
 
     if (!isDead) {
         // senseFoodOnCurrentTile();
         // if (current->isBASE())
             // BaseFoodCommunicate();
-        current->addScent(this);
+        // current->addScent(this);
         AI.senseAndAct(this);
         // DO(decide(sense() ) );
     }
@@ -499,16 +497,11 @@ void antBase::draw(sf::RenderWindow *window) {
 
 // doing the tick for all ants too
 void antBase::doTick() {
-    std::cout << "in base " << TeamNum;
     if (baseTile != NULL) {
-        std::cout  << " on " << baseTile->getIndex() << std::endl;
-        std::cout << "baseTile is not null" << std::endl;
-        if (baseTile->isFood() > 0 && baseTile->isFood() != food ) {
-            std::cout << "on the baseTile is food not from the base" << std::endl;
+        if (baseTile->isFood() > 0 && baseTile->isFood() != food )
             food += baseTile->getFood();
-        }
     }
-    std::cout << "might have added food to the base" << std::endl;
+
     for (int i = 0; i < 20; i++)
         ownAnts[i].doTick();
 }

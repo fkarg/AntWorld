@@ -4,20 +4,21 @@
 
 
 void Surrounding_state::print() const {
-    std::cout << "Surrounding - INFO" << std::endl;
-    std::cout << "Walls and Scent: " << std::endl;
-    for (int dir = 0; dir < 4; dir++)
-        std::cout << "Dir: " << dir << " wall: " << walls[dir]
-				<< " scent: " << scents[4] << std::endl;
-    std::cout << "isFood: " << isFood << " isBase: " << isBase
-			<< " foodThere: " << foodThere << " antFood: " << antFood
-			<< std::endl;
+	std::cout << "Surrounding - INFO" << std::endl;
+	std::cout << "Walls and Scent: " << std::endl;
+	for (int dir = 0; dir < 4; dir++)
+		std::cout << "Dir: " << dir << " wall: " << walls[dir]
+			<< " scent: " << scents[4] << std::endl;
+
+	std::cout << "isFood: " << isFood << " isBase: " << isBase
+		<< " foodThere: " << foodThere << " antFood: " << antFood
+		<< std::endl;
 }
 
 
 // sensing, reacting and moving
 void ai::senseAndAct(Ant* itself) {
-	std::cout << "Ant " << itself->getID() << " is doing sth" << std::endl;
+	// std::cout << "Ant " << itself->getID() << " is doing sth" << std::endl;
 	DO(decide(sense(itself) ), itself);
 }
 
@@ -32,6 +33,11 @@ Surrounding_state ai::sense(Ant* ant) {
 			current.scents[dir] = ant->getCurrent()->getTeamScent(ant) > 0 ? ant->getCurrent()->getTeamScent(ant) : ant->getCurrent()->getScent();
 			current.teamScent[dir] = ant->getCurrent()->getTeamScent(ant) > 0;
 		}
+		if (ant->getCurrent()->isSurrounding(dir) && !ant->getCurrent()->isWall(dir) )
+			if (ant->getCurrent()->getSurrounding(dir)->isBASE() )
+				current.BaseInDir = dir;
+			else if (ant->getCurrent()->getSurrounding(dir)->isRES() )
+				current.FoodInDir = dir;
 	}
 	// what type the current tile is (except for hasAnt, since that has to be true)
 	current.isBase = ant->getCurrent()->isBASE();
@@ -43,7 +49,7 @@ Surrounding_state ai::sense(Ant* ant) {
 
 	// based on the food-state searching for either the base, some food, or
 	if (ant->getFood() > 15 || ant->getFood() <= 5)
-		current.searchingHome = true;
+		current.searchingHome = true, ant->getCurrent()->addScent(ant);
 	else if (ant->getFood() < 15)
 		current.searchingFood = true;
 
@@ -65,14 +71,18 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 
 	ACTION decision = STAY;
 
-	currentState.print();		// printing the currentState
+	// currentState.print();		// printing the currentState
 
-	int highest = 0, dirTo = -1, possDir = 0, lastDir = -1;
+	int highest = 0, dirTo = -1, possDir = 0, lastDir = -1, teamDir = -1, lowestDir = -1, lowest = 100;
 
 	// testing for the number of directions without walls and the direction with the highest scent
 	for (int dir = 0; dir < 4; dir++) {
-		if (currentState.scents[dir] > highest)
+		if (currentState.scents[dir] > highest && currentState.lastAction != (dir + 2) % 4)
 			highest = currentState.scents[dir], dirTo = dir;
+		else if (currentState.scents[dir] < lowest  && currentState.lastAction != (dir + 2) % 4)
+			lowestDir = dir, lowest = currentState.scents[dir];
+		if (currentState.teamScent[dir] && currentState.lastAction != (dir + 2) % 4)
+			teamDir = dir;
 		if (!currentState.walls[dir] )
 			possDir++, lastDir = dir;
 	}
@@ -102,7 +112,17 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 				decision = (ACTION) newDir;
 		}
 
+	if (teamDir == dirTo && rand() % 10 != 0 && dirTo != -1)
+		if (currentState.searchingHome)
+			decision = (ACTION) teamDir;
+		else if (currentState.searchingFood && lowestDir != -1)
+			decision = (ACTION) lowestDir;
 	// TODO: following scent or !follow it after the conditions
+
+	if (currentState.FoodInDir != -1 && (currentState.FoodInDir + 2) % 4 != currentState.lastAction)
+		decision = (ACTION) currentState.FoodInDir;
+	if (currentState.BaseInDir != -1 && (currentState.BaseInDir + 2) % 4 != currentState.lastAction)
+		decision = (ACTION) currentState.BaseInDir;
 
 	return decision;
 }

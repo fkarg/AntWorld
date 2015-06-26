@@ -20,6 +20,7 @@ struct Surrounding_state {
 	int scents[4] = { -1, -1, -1, -1 }; // how much scent there's in dir
 	bool teamScent[4] = { false }; // if the scent is from the own team or not
 	bool isBase = false, isFood = false; // if there's a BASE or RES on this tile
+	int BaseInDir = -1, FoodInDir = -1;
 	bool searchingHome = false, searchingFood = false; // if searching for food or for the base currently
 	int foodThere = 0, antFood = 0, lastAction = 6;
 	void print() const;       // printing debug-info
@@ -28,7 +29,8 @@ struct Surrounding_state {
 
 class ai {
 private:
-	// the version of the ai: 0.0.5
+	//		(major, minor, test)
+	// the version of the ai: 0.0.8
 
 public:
 	ai(){};     // FIXME: currently crashing for usual ants for some reason
