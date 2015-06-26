@@ -101,7 +101,7 @@ public:
     int getScent(int which = 0);    // @returns the scent on place @param which
     int getOwnScent(Ant* who);      // @returns the own scent of @param who or -1
     int getTeamScent(Ant* who);     // @returns the strongest team-scent or -1
-    int getScentID(int which);      // @returnns the ScentID on place @param which
+    int getScentID(int which);      // @returns the ScentID on place @param which
     void addScent(Ant* from);       // simply adds a scent to the tile, @param from's AntID is saved
 
     bool isBASE();      // returns if the Tile has the special case 'BASE'
