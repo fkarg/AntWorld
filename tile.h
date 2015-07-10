@@ -181,6 +181,35 @@ public:
 
 
 
+class Tile_lite {
+private:
+	int index = -1, AntsOn = 0;
+	STATE current = NORMAL;
+	bool wasFoodOnIt = false, wasScentOnIt = false;
+	bool wall[4] = { true, true, true, true };
+	Tile_lite* surrounding[4] = { NULL, NULL, NULL, NULL };
+	sf::Color TileColor = sf::Color::BLUE;
+public:
+	Tile_lite(){};
+	void setIndex(int index); // setting the Index of the current tile to @param index
+	int getIndex(); // returns the index of the cue
+	void setColor(sf::Color color); // setting the @param color of the tile
+	sf::Color getColor(); // @returns the color of the @param tile
+	void setWall(int dir, bool isWall); // sets in @param dir the wall to @param setWall
+	bool isWall(int dir); // @returns if there's a wall in @param dir
+	void setSurrounding(int dir, Tile_lite* tile); // setting in @paramr dir the @param tile surrounding
+	Tile_lite* getSurrounding(int dir); // @returns in @param dir the surrounding
+	bool isSurrounding(int dir); // @returns if there's a tile in @param dir
+	void setFood(bool isThere); // sets if there was food to @param isThere
+	bool wasFood(); // @returns if there was food on this tile
+	void setScent(bool isThere); // sets if there was scent there to @param isThere
+	bool wasScent(); // @returns if there was scent on this tile 
+
+	bool isBase(); // @returns if there's a base on this tile
+	bool hasAnt(); // @retuns if there's an ant on this tile TODO: relevant?
+	bool isRes(); // @returns if there's a res on this tile
+};
+
 
 
 
@@ -189,4 +218,5 @@ public:
 
 
 #endif
+
 

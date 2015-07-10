@@ -286,3 +286,34 @@ void Maze::reloadgfx(){
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////
+////					Maze_lite
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// 
+Maze_lite::Maze_lite(int xSize, int ySize) {
+	sizeX = xSize;
+	sizeY = ySize;
+	MAP = std::vector<std::vector<Tile_lite> ( (unsigned int) xSize, 
+		std::vector<Tile_lite>( (unsigned int) ySize ) );
+	for (int i = 0; i < xSize; i++)
+		for (int j = 0; j < ySize; j++)
+			MAP[i][j].setIndex(i * ySize + j);
+	setNeighbourTiles();
+}
+
+void Maze_lite::setNeighbourTiles() {
+	for (int i = 0; i < sizeX; i++)
+		for (int j = 0; j < sizeY; j++) {
+			j > 0 ? MAP[i][j].setSurrounding(0, &MAP[i][j - 1]);
+			i < sizeX - 1 ? MAP[i][j].setSurrounding(1, &MAP[i + 1][j]);
+			j < sizeY - 1 ? MAP[i][j].setSurrounding(2, &MAP[i][j + 1]);
+			i > 0 ? MAP[i][j].setSurrounding(3, &MAP[i - 1][j]);
+		}
+}
+
+
+
+
