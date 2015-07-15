@@ -292,7 +292,7 @@ void Maze::reloadgfx(){
 
 
 
-// 
+// creating a maze with xSize time ySize fields
 Maze_lite::Maze_lite(int xSize, int ySize) {
 	sizeX = xSize;
 	sizeY = ySize;
@@ -304,6 +304,7 @@ Maze_lite::Maze_lite(int xSize, int ySize) {
 	setNeighbourTiles();
 }
 
+// setting the neighbouring tiles of the maze_lite
 void Maze_lite::setNeighbourTiles() {
 	for (int i = 0; i < sizeX; i++)
 		for (int j = 0; j < sizeY; j++) {
@@ -315,5 +316,22 @@ void Maze_lite::setNeighbourTiles() {
 }
 
 
+// @returns the xSize of the maze 
+int Maze_lite::getSizeX(){
+	return sizeX;
+}
+
+
+// @returns the ySize of the maze
+int Maze_lite::getSizeY(){
+	return sizeY;
+}
+
+
+// @returns the max index of the maze
+int Maze_lite::INDEX_MAX() {
+	return sizeX * sizeY - 1;
+}
+int 
 
 
