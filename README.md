@@ -107,7 +107,7 @@ Food system - Check
 
 AI: (in work)
 
-Reactive Ant-behaviour - half-finished (scent missing)
+Reactive Ant-behaviour - half-finished (scent needs to be further optimized)
 
 autonomous Ant-behaviour - in progress
 
