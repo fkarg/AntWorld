@@ -75,11 +75,6 @@ public:
     bool getDead() { return isDead; }   // returns if the ant is dead yet
     int getLastAction() { return lastAction; } // @returns the action the ant did last
     void setLastAction(int what) { lastAction = what; } // setting what the last action actually was
-/*
-    SURROUNDING_STATE sense();
-    ACTION decide(SURROUNDING_STATE currentState);
-    void DO(ACTION ding);
-*/
     static void initAntCount() { MAXANTID = 0; } // initiating the AntCount
 };
 

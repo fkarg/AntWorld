@@ -64,7 +64,7 @@ public:
 class Maze_lite : public tickInterface {
 private:
 	int sizeX = -1, sizeY = -1;
-	std::vector<std::vector<Tile_lite*> > MAP;
+	std::vector<std::vector<Tile_lite> > MAP;
 	int prodNums = 0, baseNums = 0;
 	void setNeighbourTiles();
 
@@ -73,7 +73,8 @@ public:
 	int getSizeX(); // @returns the SizeX of the maze
 	int getSizeY(); // @returns the SizeY of the maze
 	int INDEX_MAX(); // @returns the max_index of the maze (sizeX * sizeY)
-	Tile_lite* getAtIndex(int index); // returns the tile at @param index
+	Tile_lite& getAtIndex(int index); // @returns the &tile at @param index
+
 };
 
 

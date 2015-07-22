@@ -468,7 +468,7 @@ bool producing::getProducingState() {
 }
 
 
-// @return the productionrate of this tile if there's production at all to begin with
+// @return the production rate of this tile if there's production at all to begin with
 float producing::getProductionRate() {
     return production;
 }
@@ -673,13 +673,13 @@ sf::Color Tile_lite::getColor() {
 
 // setting in @param dir the wall to @param isWall
 void Tile_lite::setWall(int dir, bool isWall) {
-	isSurrounding(dir) ? wall[dir] = isWall;
+	if (isSurrounding(dir) ) wall[dir] = isWall;
 }
 
 
 // @returns if there's a wall in @param dir
 bool Tile_lite::isWall(int dir) {
-	isSurrounding(dir) ? return wall[dir] : return true;
+	return isSurrounding(dir) ? wall[dir] : true;
 }
 
 
@@ -691,7 +691,7 @@ void Tile_lite::setSurrounding(int dir, Tile_lite* tile) {
 
 // @returns the surrounding of the tile in @param dir
 Tile_lite* Tile_lite::getSurrounding(int dir) {
-	isSurrounding(dir) ? return surrounding[dir] : return NULL;
+    return isSurrounding(dir) ? surrounding[dir] : NULL;
 }
 
 
@@ -704,7 +704,7 @@ bool Tile_lite::isSurrounding(int dir) {
 // setting if there was food on this tile to @param isThere
 // no amount since the value will change over time
 void Tile_lite::setFood(bool isThere) {
-	wasFoodOnIt = wasThere;
+	wasFoodOnIt = isThere;
 }
 
 

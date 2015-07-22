@@ -188,7 +188,7 @@ private:
 	bool wasFoodOnIt = false, wasScentOnIt = false;
 	bool wall[4] = { true, true, true, true };
 	Tile_lite* surrounding[4] = { NULL, NULL, NULL, NULL };
-	sf::Color TileColor = sf::Color::BLUE;
+	sf::Color TileColor = sf::Color::Blue;
 public:
 	Tile_lite(){};
 	void setIndex(int index); // setting the Index of the current tile to @param index

@@ -75,7 +75,7 @@ state of everything else will not be supported.
 well - at least that's the idea.
 
 
-checklist:
+## checklist:
 
 GUI: (parts missing: ...)
 
@@ -105,11 +105,11 @@ Food system - Check
 
 
 
-KI: (in work)
+AI: (in work)
 
 Reactive Ant-behaviour - half-finished (scent missing)
 
-autonomous Ant-behaviour - not yet
+autonomous Ant-behaviour - in progress
 
 half-cognitive Ant-behaviour - not yet
 (the ant makes her own map of the maze, and plans as to what priority e.g. food is needed and decides to go search or go take up some or resarch the map further maybe with communication between them)
@@ -145,7 +145,7 @@ of the autonomous behaviour myself.
 
 .
 
-Sources:
+## Sources:
 Ant.png: https://www.iconfinder.com/icons/289355/animal_ant_bug_insect_icon#size=128
 Home_1.png: https://www.iconfinder.com/icons/51304/black_house_home_house_icon#size=128
 Home_2.png: https://www.iconfinder.com/icons/175315/home_icon#size=128
