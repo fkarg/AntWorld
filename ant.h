@@ -5,6 +5,7 @@
 #include "ticksystem.h"
 #include "tile.h"
 #include "ai.h"
+#include "maze_lite.h"
 
 #include <iostream>
 #include <string>
