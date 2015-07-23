@@ -37,18 +37,22 @@ protected:
     showTile *tileToShowPtr;
     showTile tileToShowTile;
 
+    // the showAnt to show if there's a ant currently
     showAnt *antToShowPtr;
     showAnt antToShowAnt;
 
+    // the selected ant (for test-purposes and NULLPointer-prevention)
     Ant selectedAnt;
     Ant* focusedAnt;
 
+    // the maze, the showBase and the showLeaf
     Maze* maze;
     antBase base;
     producing leaf;
 
     sf::RenderWindow* window;
 
+    // a craver, perfectCreator and randomCreator for creating the mazes
     Craver craver;
     perfectCreator perf;
     RandomCreator randomCreator;
@@ -69,9 +73,9 @@ public:
     bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
     void TicksControlChangeState();     // changes the state of the ticksControl
-    void drawSpecial();                    // draws the Ants (showAnt & selectedAnt)
+    void drawSpecial();                 // draws the Ants (showAnt & selectedAnt)
     Tile* getTileSelected();            // returns the currently selected tile
-    void changeFocus();                 //
+    void changeFocus();                 // toggles the focus of the ant currently selected
     void doTick();                      // for the implementation
 };
 

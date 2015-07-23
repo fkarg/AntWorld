@@ -403,10 +403,10 @@ Tile* GraphicsControl::getTileSelected() {
 }
 
 
-// changing the focus of the ant (if there's one to focus on
+// toggles the focus of the ant currently selected
 void GraphicsControl::changeFocus() {
     if (focusAntButton->getText() == "Focus on Ant" && getTileSelected() != NULL) {
-        if (getTileSelected()->hasAnt())
+        if (getTileSelected()->hasAnt() )
             focusedAnt = getTileSelected()->getAnt(), focusAntButton->setText("End Focus");
         else std::cout << "No Ant on Tile!!!" << std::endl;
     } else if (focusAntButton->getText() == "End Focus")
@@ -415,8 +415,8 @@ void GraphicsControl::changeFocus() {
 }
 
 
+// doing the Tick for everything on the map
 void GraphicsControl::doTick() {
-    // for the implementation
 
     if (ticking) {
         maze->doTick();
@@ -426,11 +426,11 @@ void GraphicsControl::doTick() {
         antToShowAnt.doTick();
     }
 
-
+    // focusing the ant if it got selected
     if (focusAntButton->getText() == "End Focus")
         tileToShowTile = focusedAnt->getCurrent(), antToShowAnt.setAnt(focusedAnt);
 
-
+    // slowing it down if the option to go faster is still present
     if (ticksControl->getText() == "Faster")
         std::this_thread::__sleep_for(std::chrono::seconds(0), std::chrono::milliseconds(60) );
 }
