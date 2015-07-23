@@ -34,6 +34,17 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     closeButton->setCallbackId(10);
 
 
+    tgui::Button::Ptr focusButton(*gui);
+    focusButton->load(THEME_CONFIG_FILE);
+    focusButton->setPosition(500, 70);
+    focusButton->setSize(90, 20);
+    focusButton->setText("Focus on Ant");
+    focusButton->bindCallback(tgui::Button::LeftMouseClicked);
+    focusButton->setCallbackId(13);
+
+    focusAntButton = focusButton;
+
+
     // label to show information about the selected Tile
     tgui::Label::Ptr infoLabel(*gui);
     infoLabel->load(THEME_CONFIG_FILE);
@@ -100,7 +111,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr startTicksButton(*gui);
     startTicksButton->load(THEME_CONFIG_FILE);
     startTicksButton->setSize(90, 20);
-    startTicksButton->setPosition(500, 50);
+    startTicksButton->setPosition(500, 40);
     startTicksButton->setCallbackId(4);
     startTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
     startTicksButton->setText("Start");
@@ -252,9 +263,11 @@ void GraphicsControl::updateInfo() {
                 "   ID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) +
                 "   Ticks living: " + std::to_string(antToShowAnt.getAntShown()->getTicksLiving() ) +
                 "   Food: " + std::to_string(antToShowAnt.getAntShown()->getFood() ) +
-                "   Team: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
+                "   \nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
                 "   Ants on Tile: " + std::to_string(tileToShowTile.getTileToShow()->getAntCount() ) );
-    } else AntInfoLabel->setText("Please select an Ant to show Info about it");
+        if (focusAntButton->getText() == "End Focus" )
+            AntInfoLabel->setText(AntInfoLabel->getText() + "\n\nFocused");
+    } else AntInfoLabel->setText("Please select an Ant to show Info about it\n\n\nNo Ant Focused");
 }
 
 
@@ -390,8 +403,21 @@ Tile* GraphicsControl::getTileSelected() {
 }
 
 
+// changing the focus of the ant (if there's one to focus on
+void GraphicsControl::changeFocus() {
+    if (focusAntButton->getText() == "Focus on Ant" && getTileSelected() != NULL) {
+        if (getTileSelected()->hasAnt())
+            focusedAnt = getTileSelected()->getAnt(), focusAntButton->setText("End Focus");
+        else std::cout << "No Ant on Tile!!!" << std::endl;
+    } else if (focusAntButton->getText() == "End Focus")
+        focusAntButton->setText("Focus on Ant");
+    else std::cout << "Please select a Tile first!!!" << std::endl;
+}
+
+
 void GraphicsControl::doTick() {
     // for the implementation
+
     if (ticking) {
         maze->doTick();
         selectedAnt.doTick();
@@ -399,6 +425,12 @@ void GraphicsControl::doTick() {
         leaf.doTick();
         antToShowAnt.doTick();
     }
+
+
+    if (focusAntButton->getText() == "End Focus")
+        tileToShowTile = focusedAnt->getCurrent(), antToShowAnt.setAnt(focusedAnt);
+
+
     if (ticksControl->getText() == "Faster")
         std::this_thread::__sleep_for(std::chrono::seconds(0), std::chrono::milliseconds(60) );
 }

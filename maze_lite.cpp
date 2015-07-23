@@ -57,7 +57,7 @@ Tile_lite* Tile_lite::getSurrounding(int dir) {
 
 // @returns if there's a tile surrounding this one in @param dir
 bool Tile_lite::isSurrounding(int dir) {
-    return surrounding[dir] != NULL;
+    return dir % 4 == dir && surrounding[dir] != NULL;
 }
 
 
@@ -116,7 +116,7 @@ bool Tile_lite::isRes() {
 Maze_lite::Maze_lite(int xSize, int ySize) {
     sizeX = xSize;
     sizeY = ySize;
-    MAP = std::vector<std::vector<Tile_lite>> ( (unsigned int) xSize,
+    MAP = std::vector<std::vector<Tile_lite> > ( (unsigned int) xSize,
             std::vector<Tile_lite>( (unsigned int) ySize ) );
     for (int i = 0; i < xSize; i++)
         for (int j = 0; j < ySize; j++)

@@ -88,19 +88,19 @@ int main()
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                         control.changeWalls(LEFT, control.isAdvancedMode() );
 
-                    // for the ASDW (-> neo: UIAV) - Keys:
+                    // for the SDFE (-> neo: IAEL) - Keys:
                     // but not changing the selected tile
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
                         control.changeWalls(UP);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
                         control.changeWalls(RIGHT);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
                         control.changeWalls(DOWN);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I))
                         control.changeWalls(LEFT);
 
 
@@ -176,6 +176,9 @@ int main()
                     break;
                 case 12:
                     maze.setRes(control.getTileSelected() );
+                    break;
+                case 13:
+                    control.changeFocus();
                     break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;

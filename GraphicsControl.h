@@ -25,7 +25,7 @@ class GraphicsControl : public tickInterface {
 protected:
     // pointer for several necessary gui objects for accessing them later
     tgui::Label::Ptr TileInfoLabel, AntInfoLabel;
-    tgui::Button::Ptr ticksControl, setHomeButton, setResButton;
+    tgui::Button::Ptr ticksControl, setHomeButton, setResButton, focusAntButton;
     tgui::Checkbox::Ptr advancedMode;
     tgui::Slider::Ptr slider;
 
@@ -41,6 +41,7 @@ protected:
     showAnt antToShowAnt;
 
     Ant selectedAnt;
+    Ant* focusedAnt;
 
     Maze* maze;
     antBase base;
@@ -69,7 +70,8 @@ public:
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
     void TicksControlChangeState();     // changes the state of the ticksControl
     void drawSpecial();                    // draws the Ants (showAnt & selectedAnt)
-    Tile *getTileSelected();            // returns the currently selected tile
+    Tile* getTileSelected();            // returns the currently selected tile
+    void changeFocus();                 //
     void doTick();                      // for the implementation
 };
 

@@ -7,19 +7,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include "ticksystem.h"
-
-
-
-// possible states for every tile
-enum STATE {
-    // 0     1    2
-    NORMAL, ANT, RES,
-    //  3      4      5
-    RES_ANT, BASE, BASE_ANT,
-    //  6           7
-    BASE_RES, BASE_RES_ANT
-};
-
+#include "maze_lite.h"
 
 
 class Ant;
