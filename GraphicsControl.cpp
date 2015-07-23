@@ -357,6 +357,7 @@ void GraphicsControl::changeWalls(int dir, bool move) {
                         tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir) );
             tileToShowPtr->getSurrounding(dir)->setWall( (dir + 2) % 4,
                     !tileToShowPtr->getSurrounding(dir)->isWall( (dir + 2) % 4) );
+            doTick();
             if (move)
                 changeTextInfoLabel(tileToShowPtr->getSurrounding(dir) );
         }
@@ -438,12 +439,14 @@ void GraphicsControl::doTick() {
         antToShowAnt.doTick();
     }
 
+    for (int dir = 0; dir < 4 && tileToShowTile.getTileToShow() != NULL; dir++)
+        if (tileToShowTile.getTileToShow()->isSurrounding(dir) )
+            directionsTile[dir] = tileToShowTile.getTileToShow()->getSurrounding(dir);
+
+
     // focusing the ant if it got selected
     if (focusAntButton->getText() == "End Focus") {
         tileToShowTile = focusedAnt->getCurrent();
-        for (int dir = 0; dir < 4; dir++)
-            if (tileToShowTile.getTileToShow()->isSurrounding(dir) )
-                directionsTile[dir] = tileToShowTile.getTileToShow()->getSurrounding(dir);
         antToShowAnt.setAnt(focusedAnt);
 
         if (focusedAnt->getDead() )
