@@ -9,9 +9,8 @@ GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
     tileToShowTile.setSize(30, 50, 35, 35);
 
     for (int dir = 0; dir < 4; dir++)
-        directionsTile[dir].setSize(30 + (dir == 0 ? 7 : dir == 1 ? 35 : dir == 2 ? 7 : -20)
-                , 50 + (dir == 0 ? -20 : dir == 1 ? 7 : dir == 2 ? 35 : 7)
-                , 20, 20);
+        directionsTile[dir].setSize(30 + (dir == 0 ? 6 : dir == 1 ? 35 : dir == 2 ? 6 : -23),
+                50 + (dir == 0 ? -23 : dir == 1 ? 6 : dir == 2 ? 35 : 6) , 23, 23);
 
     antToShowPtr->setPosition(tileToShowPtr);
     antToShowPtr->setAnt(&selectedAnt);
