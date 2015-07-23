@@ -19,12 +19,7 @@ file(GLOB AntWorld_SRC
     "resources/*.*"
     "*.h"
     "*.cpp"
-    "*.hpp"
-    "*.conf"
-    "*.ttf"
-    "GraphicsControl.hpp"
-    "mazecreator.*"
-    "resources/DejaVuSans.ttf" )
+    "*.hpp" )
 
 
 
