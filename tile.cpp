@@ -608,7 +608,9 @@ void showTile::doTick() {
 
 // returns if there is a tile virtually surrounding this tile in @param dir
 bool showTile::isSurrounding(int dir) {
-    return tileToShow->isSurrounding(dir);
+    if (tileToShow != NULL && dir % 4 == dir)
+        return tileToShow->isSurrounding(dir);
+    return false;
 }
 
 

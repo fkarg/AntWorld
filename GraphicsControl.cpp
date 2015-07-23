@@ -8,6 +8,11 @@ GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
 
     tileToShowTile.setSize(30, 50, 35, 35);
 
+    for (int dir = 0; dir < 4; dir++)
+        directionsTile[dir].setSize(30 + (dir == 0 ? 7 : dir == 1 ? 35 : dir == 2 ? 7 : -20)
+                , 50 + (dir == 0 ? -20 : dir == 1 ? 7 : dir == 2 ? 35 : 7)
+                , 20, 20);
+
     antToShowPtr->setPosition(tileToShowPtr);
     antToShowPtr->setAnt(&selectedAnt);
 
@@ -48,7 +53,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     // label to show information about the selected Tile
     tgui::Label::Ptr infoLabel(*gui);
     infoLabel->load(THEME_CONFIG_FILE);
-    infoLabel->setPosition(20, 110);
+    infoLabel->setPosition(20, 130);
     infoLabel->setTextSize(12);
     infoLabel->setTextColor(sf::Color(20, 200, 200) );
     infoLabel->setText("Info:\n\nIndex:\nX:\nY:\n\nFood:");
@@ -213,8 +218,12 @@ void GraphicsControl::setMaze(Maze *maze) {
 
 
 // changing the TileInfoLabel to the @param tile
-void GraphicsControl::changeTextInfoLabel(Tile *tile) {
+void GraphicsControl::changeTextInfoLabel(Tile* tile) {
     tileToShowTile = tile;
+
+    for (int dir = 0; dir < 4; dir++)
+        if (tile->isSurrounding(dir) )
+            directionsTile[dir] = tile->getSurrounding(dir);
 
     std::cout << "GC: changeTextInfoLabel" << std::endl;
 
@@ -252,6 +261,10 @@ void GraphicsControl::updateInfo() {
 
     TileInfoLabel->setText(tileToShowPtr->getTileInfo() );
     tileToShowPtr->draw(window);
+
+    for (int dir = 0; dir < 4; dir++)
+        if (!tileToShowPtr->isWall(dir) )
+            directionsTile[dir].draw(window);
 
     if (tileToShowPtr->getTileToShow() != NULL) {
         drawBase = tileToShowPtr->getTileToShow()->isBASE();
@@ -427,8 +440,16 @@ void GraphicsControl::doTick() {
     }
 
     // focusing the ant if it got selected
-    if (focusAntButton->getText() == "End Focus")
-        tileToShowTile = focusedAnt->getCurrent(), antToShowAnt.setAnt(focusedAnt);
+    if (focusAntButton->getText() == "End Focus") {
+        tileToShowTile = focusedAnt->getCurrent();
+        for (int dir = 0; dir < 4; dir++)
+            if (tileToShowTile.getTileToShow()->isSurrounding(dir) )
+                directionsTile[dir] = tileToShowTile.getTileToShow()->getSurrounding(dir);
+        antToShowAnt.setAnt(focusedAnt);
+
+        if (focusedAnt->getDead() )
+            focusAntButton->setText("Focus Ant");
+    }
 
     // slowing it down if the option to go faster is still present
     if (ticksControl->getText() == "Faster")

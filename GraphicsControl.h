@@ -36,6 +36,7 @@ protected:
     // pointer to the showTile and showTile
     showTile *tileToShowPtr;
     showTile tileToShowTile;
+    showTile directionsTile[4] = {};
 
     // the showAnt to show if there's a ant currently
     showAnt *antToShowPtr;
@@ -61,7 +62,7 @@ public:
     GraphicsControl(sf::RenderWindow *window); // setting the pointers
     void addGui(tgui::Gui *gui);        // adding the gui and adding the @param tgui
     void setMaze(Maze *maze);           // setting the @param maze in which everything happens
-    void changeTextInfoLabel(Tile *tile); // changing the TileInfoLabel to @param tile
+    void changeTextInfoLabel(Tile* tile); // changing the TileInfoLabel to @param tile
     void AntMove(int dir);              // moving the ant in @param dir
     void updateInfo();                  // updating the infoLabels
     void testConnectedButtonClicked();  // if the testConnectedButton is clicked
