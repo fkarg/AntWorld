@@ -20,7 +20,7 @@ void Maze::drawOuterWalls(sf::RenderWindow *renderWindow) {
 Maze::Maze(int xSize, int ySize) {
     sizeX = xSize;
     sizeY = ySize;
-    MAP = std::vector<std::vector<Tile> >( (unsigned int) xSize,
+    MAP = std::vector<std::vector<Tile>> ( (unsigned int) xSize,
             std::vector<Tile>( (unsigned int) ySize) );
     for (int i = 0; i < xSize; i++) {
         for (int j = 0; j < ySize; j++) {
@@ -283,61 +283,5 @@ void Maze::reloadgfx(){
     for (producing& prod : prods)
         prod.reloadImage();
 }
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-////					Maze_lite
-//////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-// creating a maze with xSize time ySize fields
-Maze_lite::Maze_lite(int xSize, int ySize) {
-	sizeX = xSize;
-	sizeY = ySize;
-	MAP = std::vector<std::vector<Tile_lite> >( (unsigned int) xSize,
-		std::vector<Tile_lite>( (unsigned int) ySize ) );
-	for (int i = 0; i < xSize; i++)
-		for (int j = 0; j < ySize; j++)
-			MAP[i][j].setIndex(i * ySize + j);
-	setNeighbourTiles();
-}
-
-// setting the neighbouring tiles of the maze_lite
-void Maze_lite::setNeighbourTiles() {
-	for (int i = 0; i < sizeX; i++)
-		for (int j = 0; j < sizeY; j++) {
-			if (j > 0) MAP[i][j].setSurrounding(0, &MAP[i][j - 1]);
-			if (i < sizeX - 1) MAP[i][j].setSurrounding(1, &MAP[i + 1][j]);
-			if (j < sizeY - 1) MAP[i][j].setSurrounding(2, &MAP[i][j + 1]);
-			if (i > 0) MAP[i][j].setSurrounding(3, &MAP[i - 1][j]);
-		}
-}
-
-
-// @returns the xSize of the maze 
-int Maze_lite::getSizeX(){
-	return sizeX;
-}
-
-
-// @returns the ySize of the maze
-int Maze_lite::getSizeY(){
-	return sizeY;
-}
-
-
-// @returns the max index of the maze
-int Maze_lite::INDEX_MAX() {
-	return sizeX * sizeY - 1;
-}
- 
-
-// @returns the tile& at the @param index
-Tile_lite& Maze_lite::getAtIndex(int index) {
-	return MAP[index % sizeX][index / sizeX];
-}
-
 
 
