@@ -71,18 +71,18 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 
 	ACTION decision = STAY;
 
-	// currentState.print();		// printing the currentState
+	// currentState.print();		// printing the currentState (dbgmode)
 
-	int highest = 0, dirTo = -1, possDir = 0, lastDir = -1, teamDir = -1, lowestDir = -1, lowest = 100;
+	int highest = 0, highestDir = -1, possDir = 0, lastDir = -1, teamDir = -1, lowestDir = -1, lowest = 100;
 
-	// testing for the number of directions without walls and the direction with the highest scent
+	// testing for the number of directions without walls and the direction with the highest and lowest scent
 	for (int dir = 0; dir < 4; dir++) {
-		if (currentState.scents[dir] > highest && currentState.lastAction != (dir + 2) % 4)
-			highest = currentState.scents[dir], dirTo = dir;
-		else if (currentState.scents[dir] < lowest  && currentState.lastAction != (dir + 2) % 4)
-			lowestDir = dir, lowest = currentState.scents[dir];
-		if (currentState.teamScent[dir] && currentState.lastAction != (dir + 2) % 4)
-			teamDir = dir;
+		if (currentState.lastAction != (dir + 2) % 4) {
+			if (currentState.scents[dir] > highest)
+				highest = currentState.scents[dir], highestDir = dir; // dirTo = dir;
+			if (currentState.scents[dir] < lowest)
+				lowestDir = dir, lowest = currentState.scents[dir];
+		}
 		if (!currentState.walls[dir] )
 			possDir++, lastDir = dir;
 	}
@@ -112,11 +112,10 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 				decision = (ACTION) newDir;
 		}
 
-	if (teamDir == dirTo && rand() % 10 != 0 && dirTo != -1)
-		if (currentState.searchingHome)
+	if (currentState.teamScent[highestDir] && rand() % 10 != 0 && highestDir != -1 && currentState.searchingHome)
 			decision = (ACTION) teamDir;
-		else if (currentState.searchingFood && lowestDir != -1)
-			decision = (ACTION) lowestDir;
+	else if (currentState.searchingFood && lowestDir != -1 && currentState.teamScent[lowestDir])
+		decision = (ACTION) lowestDir;
 	// TODO: following scent or !follow it after the conditions
 
 	if (currentState.FoodInDir != -1 && (currentState.FoodInDir + 2) % 4 != currentState.lastAction)
