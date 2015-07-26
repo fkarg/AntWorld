@@ -43,6 +43,19 @@ void Ant::reloadImage() {
 void Ant::setHome(antBase* home) {
     Ant::home = home;
     TeamNum = home->getTeamNum();
+
+    // TODO: how to visualize Teams the best?
+
+    /*
+     * Idea: for each Team-Index there's an own color that's drawn automatically
+     * (I need to watch out for the showBase, but I guess I just make that teamNum usual)
+     *
+     * there's also the question as to how to visualize scent-traits
+     * TODO: visualize scent-traits
+     * as to I would make it a strong color (e.g. color of team) and
+     * visualize for the selected ant how things around her are seen
+     * including own and TeamScents (different colors obviously)
+     */
 }
 
 
