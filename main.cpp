@@ -14,7 +14,7 @@ enum DIRECTIONS {
 int main()
 {
 
-    std::cout << "creating the maze ..." << std::endl;
+    std::cout << "starting up AI to control the world ..." << std::endl;
 
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(760, 750), "SFML window");
