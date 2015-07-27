@@ -1,7 +1,3 @@
-//
-// Created by bz on 03.04.15.
-//
-
 #include "tile.h"
 #include "ant.h"
 
@@ -72,7 +68,7 @@ void Tile::setSize(int x, int y, int width, int height) {
     addWalls();
 
     rect.setSize(sf::Vector2f(height, width) );
-    setColor(sf::Color::Blue);
+    setColor(sf::Color(80, 80, 80, 200) );
     rect.setPosition(sf::Vector2f(locX, locY) );
 }
 
