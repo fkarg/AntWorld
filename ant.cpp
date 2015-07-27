@@ -438,7 +438,7 @@ void showAnt::doTick() {
 
 // reloading the base-Image (needed when transferring 'ownership')
 void antBase::reloadBase() {
-    if (!texture.loadFromFile(SOURCES"Home_1.png") )
+    if (!texture.loadFromFile(SOURCES"Home_2.png") )
         std::cout << "Error Loading Home_Image" << std::endl;
     else
         sprite.setTexture(texture);
@@ -447,6 +447,7 @@ void antBase::reloadBase() {
 
     sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
 
+    // for the color of the team (same as the ants) for better distinguishing them
     switch (TeamNum) {
         case 0:
             break;
@@ -467,7 +468,7 @@ void antBase::reloadBase() {
             break;
     }
 
-    sprite.setColor(sf::Color(rcol, gcol, bcol, 255) );
+    sprite.setColor(sf::Color(rcol, gcol, bcol) );
 
     // for (int i = 0; i < AntCount; i++)
         // ownAnts[i].reloadImage();
@@ -485,7 +486,9 @@ void antBase::setPosition(int x, int y, float scale) {
     locX = x + 2;
     locY = y + 2;
     sprite.setPosition(locX, locY);
-    sprite.scale(scale, scale);
+    if (sprite.getScale() != sf::Vector2f(scale, scale) )
+        sprite.setScale(scale, scale);
+    // sprite.scale(scale, scale);
 }
 
 
