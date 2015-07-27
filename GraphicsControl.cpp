@@ -234,6 +234,7 @@ void GraphicsControl::changeTextInfoLabel(Tile* tile) {
 
     if (connect) {
         craver.setAim(tileToShowPtr->getTileToShow());
+        craver.setEndColor(sf::Color::Green);
         craver.colorPath(sf::Color::Cyan);
         craver.searchAStar();
 
@@ -287,6 +288,7 @@ void GraphicsControl::updateInfo() {
 void GraphicsControl::testConnectedButtonClicked() {
     connect = true;
     craver.setStart(tileToShowPtr->getTileToShow() );
+    craver.setStartColor(sf::Color::Yellow);
 }
 
 

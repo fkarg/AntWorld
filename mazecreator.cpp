@@ -114,6 +114,18 @@ void Craver::colorPath(sf::Color color) {
 }
 
 
+// setting the color of the startTile to @param startColor
+void Craver::setStartColor(sf::Color startColor) {
+    Craver::startColor = startColor;
+}
+
+
+// setting the color of the endTile to @param endColor
+void Craver::setEndColor(sf::Color endColor) {
+    Craver::endColor = endColor;
+}
+
+
 void Craver::doTick() {
     // for overriding it ...
 }
@@ -218,8 +230,8 @@ bool Craver::searchAStar() {
     }
 
     out("INFO: couldn't find aimTile");
-    startTile->setColor(sf::Color::Yellow);
-    aimTile->setColor(sf::Color::Red);
+    startTile->setColor(startColor);
+    aimTile->setColor(endColor);
 
     return false;
 }
