@@ -28,9 +28,33 @@ void Ant::reloadImage() {
 
     // sprite.setScale(sf::Vector2f(30, 30) );
 
-    // sprite.setColor(sf::Color(0, 255, 0, 255) );
+    // sprite.setColor(sf::Color(255, 255, 255, 200) );
+    // setting the color to one of the following:
+    // 1: red, 2: yellow, 3: green 4: turquoise (5: blue) 6: magenta
 
-    sprite.setColor(sf::Color(255, 255, 255, 200) );
+    sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
+
+    switch (TeamNum) {
+        case 0:
+            break;
+        case 1:
+            bcol = 0;
+        case 2:
+            gcol = 0;
+            break;
+        case 3:
+            rcol = 0;
+        case 4:
+            bcol = 0;
+            break;
+        case 5:
+            gcol = 0;
+            break;
+        default:
+            break;
+    }
+
+    sprite.setColor(sf::Color(rcol, gcol, bcol, 200) );
 
     if (current != NULL) {
         current->removeAnt(AntID);
@@ -49,6 +73,7 @@ void Ant::setHome(antBase* home) {
     /*
      * Idea: for each Team-Index there's an own color that's drawn automatically
      * (I need to watch out for the showBase, but I guess I just make that teamNum usual)
+     * -> DONE
      *
      * there's also the question as to how to visualize scent-traits
      * TODO: visualize scent-traits
@@ -229,6 +254,7 @@ void Ant::addFood(unsigned int number) {
     else if (number + ownFood < MAX_FOOD_ANT_CARRYING)
         ownFood += number;
 }
+
 
 // FIXME: STATES! -> remove
 void Ant::BaseFoodCommunicate() {
@@ -417,6 +443,30 @@ void antBase::reloadBase() {
         sprite.setTexture(texture);
 
     texture.setSmooth(true);
+
+    sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
+
+    switch (TeamNum) {
+        case 0:
+            break;
+        case 1:
+            bcol = 0;
+        case 2:
+            gcol = 0;
+            break;
+        case 3:
+            rcol = 0;
+        case 4:
+            bcol = 0;
+            break;
+        case 5:
+            gcol = 0;
+            break;
+        default:
+            break;
+    }
+
+    sprite.setColor(sf::Color(rcol, gcol, bcol, 255) );
 
     // for (int i = 0; i < AntCount; i++)
         // ownAnts[i].reloadImage();
