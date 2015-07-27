@@ -128,7 +128,7 @@ private:
     unsigned int TeamNum, food = START_FOOD;
 
 public:
-    antBase() { reloadBase(); TeamNum = MAXTEAMNUM++; }     // loads the baseImage
+    antBase() { TeamNum = MAXTEAMNUM++; reloadBase(); }     // loads the baseImage
     void reloadBase();              // reloads the baseImage
     void setMaze(Maze *maze);       // sets the @param maze
     void setPosition(int x, int y, float scale = 0.2); // sets the Position of the Base

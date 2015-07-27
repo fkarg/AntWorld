@@ -30,7 +30,7 @@ void Ant::reloadImage() {
 
     // sprite.setColor(sf::Color(255, 255, 255, 200) );
     // setting the color to one of the following:
-    // 1: red, 2: yellow, 3: green 4: turquoise (5: blue) 6: magenta
+    // 1: red, 2: magenta, 3: green 4: yellow (5: blue) 5: turquoise
 
     sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
 
@@ -48,7 +48,7 @@ void Ant::reloadImage() {
             bcol = 0;
             break;
         case 5:
-            gcol = 0;
+            rcol = 0;
             break;
         default:
             break;
@@ -328,6 +328,7 @@ void showAnt::setAnt(Ant* newAnt) {
     ownFood = newAnt->getFood();
     current = newAnt->getCurrent();
     setVisible(!newAnt->getDead() );
+    TeamNum = newAnt->getTeamNum();
 }
 
 
@@ -460,7 +461,7 @@ void antBase::reloadBase() {
             bcol = 0;
             break;
         case 5:
-            gcol = 0;
+            rcol = 0;
             break;
         default:
             break;
