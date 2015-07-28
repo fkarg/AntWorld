@@ -475,6 +475,12 @@ void antBase::reloadBase() {
 }
 
 
+// @returns the Color of the Team and the Base
+sf::Color antBase::getColor() {
+	return sprite.getColor();
+}
+
+
 // setting the @param maze
 void antBase::setMaze(Maze *maze) {
     antBase::maze = maze;

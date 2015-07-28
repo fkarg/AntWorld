@@ -48,7 +48,7 @@ Surrounding_state ai::sense(Ant* ant) {
 	current.lastAction = ant->getLastAction();
 
 	// based on the food-state searching for either the base, some food, or
-	if (ant->getFood() > 15 || ant->getFood() <= 5)
+	if (ant->getFood() > 15)
 		current.searchingHome = true, ant->getCurrent()->addScent(ant);
 	else if (ant->getFood() < 15)
 		current.searchingFood = true;

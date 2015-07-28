@@ -35,7 +35,7 @@ int main()
     std::cout << "creating maze ... " << std::endl;
 
     // Creating a 10 x 10 Maze
-    Maze maze(10, 10);
+    Maze maze(20, 20);
 
     std::cout << "moving maze ... " << std::endl;
 
@@ -186,7 +186,7 @@ int main()
             }
         }
 
-        if (Frame % 4 == 0) control.doTick();
+        if (Frame % 5 == 0) control.doTick();
 
         // Clear screen
         window.clear();

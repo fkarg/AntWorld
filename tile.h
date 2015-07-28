@@ -89,7 +89,7 @@ public:
     int getScent(int which = 0);    // @returns the scent on place @param which
     int getOwnScent(Ant* who);      // @returns the own scent of @param who or -1
     int getTeamScent(Ant* who);     // @returns the strongest team-scent or -1
-    int getScentID(int which);      // @returns the ScentID on place @param which
+    int getScentID(int which = 0);  // @returns the ScentID on place @param which
     void addScent(Ant* from);       // simply adds a scent to the tile, @param from's AntID is saved
 
     bool isBASE();      // returns if the Tile has the special case 'BASE'
@@ -102,7 +102,7 @@ public:
 
 class producing : public tickInterface {
 private:
-    float production = 0.0, produced = 0.0;
+    float production = 2.0, produced = 20.0;
     bool isProducing = true; // if there's production currently
 
     sf::Texture texture;   // the texture of the tile

@@ -130,6 +130,7 @@ private:
 public:
     antBase() { TeamNum = MAXTEAMNUM++; reloadBase(); }     // loads the baseImage
     void reloadBase();              // reloads the baseImage
+    sf::Color getColor();           // @returns the color of the base and with it of the team
     void setMaze(Maze *maze);       // sets the @param maze
     void setPosition(int x, int y, float scale = 0.2); // sets the Position of the Base
     void setPosition(Tile *tile, float scale = 0.2);   // sets the Position of the BaseImage

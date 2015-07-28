@@ -240,6 +240,7 @@ void GraphicsControl::changeTextInfoLabel(Tile* tile) {
 
         connect = false;
     }
+    changeFocus();
 }
 
 
@@ -323,6 +324,14 @@ void GraphicsControl::createRandom() {
 // resetting the maze a whole
 void GraphicsControl::ResetMaze() {
     perf.ResetMaze();
+}
+
+
+// resetting the color of the maze
+void GraphicsControl::ResetColorOfMaze() {
+	for (int i = 0; i < maze->getSizeX(); i++)
+		for (int j = 0; j < maze->getSizeY(); j++)
+			maze->getTile(i, j)->setColor(sf::Color(80, 80, 80, 200) );
 }
 
 
@@ -430,6 +439,42 @@ void GraphicsControl::changeFocus() {
 }
 
 
+// putting a colored layer over the maze from the view of the @param ant
+void GraphicsControl::ColorFor(Ant* ant) {
+	for (int i = 0; i < maze->getSizeX(); i++)
+		for (int j = 0; j < maze->getSizeY(); j++) {
+			Tile* toColor = maze->getTile(i, j);
+			int rcol = 60, gcol = 60, bcol = 60;
+			if (toColor->hasAnt() ) {
+				if (ant->isInTeam(toColor->getAnt()->getID() ) )
+					gcol += 100;
+				else rcol += 130;
+			}
+
+			if (toColor->isRES() )
+				gcol += 200;
+
+            if (ant->isInTeam( (unsigned int) toColor->getScentID() )
+                    && toColor->getScent() >= 0 )
+                gcol += toColor->getScent();
+            else rcol += toColor->getScent();
+
+            rcol = rcol > 255 ? 255 : rcol;
+            gcol = gcol > 255 ? 255 : gcol;
+            bcol = bcol > 255 ? 255 : bcol;
+
+			toColor->setColor(sf::Color(
+                    (sf::Uint8) rcol, (sf::Uint8) gcol, (sf::Uint8) bcol) );
+
+			if (toColor->isBASE())
+                toColor->setColor(toColor->getBase()->getTeamNum() == ant->getTeamNum() ?
+                                  sf::Color(20, 255, 20) : sf::Color(200, 20, 20) );
+				// toColor->setColor(toColor->getBase()->getColor() );
+		}
+    maze->getTile(ant->getCurrent()->getIndex())->setColor(sf::Color::White);
+}
+
+
 // doing the Tick for everything on the map
 void GraphicsControl::doTick() {
 
@@ -453,7 +498,9 @@ void GraphicsControl::doTick() {
 
         if (focusedAnt->getDead() )
             focusAntButton->setText("Focus Ant");
-    }
+        }
+    ResetColorOfMaze();
+    if (focusedAnt != NULL) ColorFor(focusedAnt);
 
     // slowing it down if the option to go faster is still present
     if (ticksControl->getText() == "Faster")

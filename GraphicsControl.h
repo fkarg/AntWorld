@@ -70,6 +70,7 @@ public:
     void createPerfect();               // creates a perfect maze
     void createRandom();                // creates a random maze
     void ResetMaze();                   // resets the maze completely
+    void ResetColorOfMaze();		// resetting the color of the maze for visualising sth
     void sliderValueChanged();          // gets called whenever the value of the slider changes
     bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
@@ -77,6 +78,7 @@ public:
     void drawSpecial();                 // draws the Ants (showAnt & selectedAnt)
     Tile* getTileSelected();            // returns the currently selected tile
     void changeFocus();                 // toggles the focus of the ant currently selected
+    void ColorFor(Ant* ant);		// showing the maze from the point of view from the @param ant
     void doTick();                      // for the implementation
 };
 

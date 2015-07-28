@@ -68,7 +68,7 @@ void Tile::setSize(int x, int y, int width, int height) {
     addWalls();
 
     rect.setSize(sf::Vector2f(height, width) );
-    setColor(sf::Color(80, 80, 80, 200) );
+    setColor(sf::Color(40, 40, 40) );
     rect.setPosition(sf::Vector2f(locX, locY) );
 }
 
@@ -297,7 +297,7 @@ void Tile::addAnt(Ant* ant) {
     ownAnts.push_back(ant);
     // addScent(ant);
     addState(ANT);
-    setColor(sf::Color(0, 70, 255) );
+    // setColor(sf::Color(0, 70, 255) );
 }
 
 
@@ -443,6 +443,8 @@ void producing::reloadImage() {
         std::cout << "Error: couldn't load RES_Image";
     else
         sprite.setTexture(texture);
+
+    sprite.setColor(sf::Color::Yellow);
 }
 
 
