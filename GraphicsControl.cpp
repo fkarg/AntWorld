@@ -198,7 +198,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Slider::Ptr slider2(*gui);
     slider2->load(THEME_CONFIG_FILE);
     slider2->setVerticalScroll(false);
-    slider2->setPosition(600, 50);
+    slider2->setPosition(600, 45);
     slider2->setSize(80, 11);
     slider2->setMinimum(0);
     slider2->setMaximum(5);
