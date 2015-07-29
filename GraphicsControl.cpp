@@ -18,6 +18,7 @@ GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
     antToShowPtr->setVisible(false);
 
 
+    base.setPosition(tileToShowPtr, 0.24);
     base.setPosition(tileToShowPtr->getOwnX(), tileToShowPtr->getOwnY(), 0.24);
     leaf.setPosition(tileToShowPtr);
     leaf.setProducing(true);
@@ -405,6 +406,7 @@ void GraphicsControl::drawSpecial() {
             leaf.draw(window);
         }
         if (drawBase) {
+            base.setColor(base.getTile()->getBase()->getColor() );
             setHomeButton->setText("Remove Home");
             if (!drawLeaf) slider->setValue( (unsigned int) tileToShowTile.getTileToShow()->getBase()->getAntCount() );
             base.draw(window);

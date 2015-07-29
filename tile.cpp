@@ -44,7 +44,7 @@ void Tile::addState(STATE state) {
 
 
 // removing the @param state from the current (only ANT, RES or BASE)
-bool Tile:: removeState(STATE state) {
+bool Tile::removeState(STATE state) {
     std::cout << "removing state " << state << " from tile " << index << std::endl;
     if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL )
             || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
@@ -578,6 +578,13 @@ int showTile::isFood() {
 }
 
 
+// @returns the base of the tileToShow
+antBase* showTile::getBase() {
+    if (tileToShow != NULL) if (tileToShow->getBase() != NULL)
+        return tileToShow->getBase();
+    return NULL;
+}
+
 // setting in the @param dir the wall to @param setWall
 void showTile::setWall(int dir, bool setWall) {
     if (dir % 4 == dir) {
@@ -638,5 +645,4 @@ void showTile::removeBase() {
     tileToShow->removeBase();
     removeState(BASE);
 }
-
 

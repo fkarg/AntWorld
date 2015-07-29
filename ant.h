@@ -88,7 +88,7 @@ class showAnt : public Ant {
 
 protected:
     int pubX = -1, pubY = -1;
-    bool isVisible = false;
+    bool isVisible = false, autoColor = true;
     showTile* showingTile;
     Ant* AntToShow;
 
@@ -123,7 +123,8 @@ private:
     bool dead[20] = { false };
     Tile* baseTile = NULL;
     int locX, locY, AntCount = 0, RealAntCount = 0, deadCount = 0;
-    bool isVisible = true;
+    bool isVisible = true, autoColor = true;
+    sf::Color BaseColor;
     Maze* maze;
     unsigned int TeamNum, food = START_FOOD;
 
@@ -131,6 +132,7 @@ public:
     antBase() { TeamNum = MAXTEAMNUM++; reloadBase(); }     // loads the baseImage
     void reloadBase();              // reloads the baseImage
     sf::Color getColor();           // @returns the color of the base and with it of the team
+    void setColor(sf::Color color); // setting the color of the Base (for the showBase) to @param color
     void setMaze(Maze *maze);       // sets the @param maze
     void setPosition(int x, int y, float scale = 0.2); // sets the Position of the Base
     void setPosition(Tile *tile, float scale = 0.2);   // sets the Position of the BaseImage

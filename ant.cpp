@@ -54,7 +54,7 @@ void Ant::reloadImage() {
             break;
     }
 
-    sprite.setColor(sf::Color(rcol, gcol, bcol, 200) );
+    sprite.setColor(sf::Color(rcol, gcol, bcol, 220) );
 
     if (current != NULL) {
         current->removeAnt(AntID);
@@ -329,6 +329,7 @@ void showAnt::setAnt(Ant* newAnt) {
     current = newAnt->getCurrent();
     setVisible(!newAnt->getDead() );
     TeamNum = newAnt->getTeamNum();
+    reloadImage();
 }
 
 
@@ -468,7 +469,8 @@ void antBase::reloadBase() {
             break;
     }
 
-    sprite.setColor(sf::Color(rcol, gcol, bcol) );
+    if (autoColor) sprite.setColor(sf::Color(rcol, gcol, bcol) );
+    else sprite.setColor(BaseColor);
 
     // for (int i = 0; i < AntCount; i++)
         // ownAnts[i].reloadImage();
@@ -478,6 +480,14 @@ void antBase::reloadBase() {
 // @returns the Color of the Team and the Base
 sf::Color antBase::getColor() {
 	return sprite.getColor();
+}
+
+
+// setting the color of the base (for the showBase) to @param color and deactivating team-colors
+void antBase::setColor(sf::Color color) {
+	autoColor = false;
+	BaseColor = color;
+	reloadBase();
 }
 
 

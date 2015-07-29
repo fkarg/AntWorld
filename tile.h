@@ -72,7 +72,7 @@ public:
     int getFood(Ant* ant = NULL);  // returning 0 up to 10 max food and decreasing it on the Tile
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
 
-    antBase* getBase() { return base; }  // returns the antBase if one is set
+    virtual antBase* getBase() { return base; }  // returns the antBase if one is set
     void setBase(antBase* base);         // setting the antBase
     virtual void removeBase();           // removing the base, needed when destroyed or sth
 
@@ -155,6 +155,7 @@ public:
     int getOwnY();      // returning the own Y value
     void setIndex(int index); // setting the @param index
     int getIndex();     // returning the index
+    antBase* getBase();  // @returning the AntBase (for the color)
     int isFood();       // returning how much food there is on the Tile
     void setWall(int dir, bool setWall); // setting in @param dir the @param setWall
     void doTick();      // whatever happens at a tick TODO: updating the info seperately
