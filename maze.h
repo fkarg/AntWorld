@@ -6,10 +6,11 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <iostream>
+
 #include "ticksystem.h"
 #include "tile.h"
 #include "ant.h"
-
+#include "maze_lite.h"
 
 
 
@@ -58,8 +59,6 @@ public:
 
     ~Maze(){};                      // destructor of the Maze
 };
-
-
 
 
 

@@ -14,7 +14,7 @@ enum DIRECTIONS {
 int main()
 {
 
-    std::cout << "creating the maze ..." << std::endl;
+    std::cout << "starting up AI to control the world ..." << std::endl;
 
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(760, 750), "SFML window");
@@ -88,19 +88,19 @@ int main()
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                         control.changeWalls(LEFT, control.isAdvancedMode() );
 
-                    // for the ASDW (-> neo: UIAV) - Keys:
+                    // for the SDFE (-> neo: IAEL) - Keys:
                     // but not changing the selected tile
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::L))
                         control.changeWalls(UP);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
                         control.changeWalls(RIGHT);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
                         control.changeWalls(DOWN);
 
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::I))
                         control.changeWalls(LEFT);
 
 
@@ -177,11 +177,16 @@ int main()
                 case 12:
                     maze.setRes(control.getTileSelected() );
                     break;
+                case 13:
+                    control.changeFocus();
+                    break;
                 default:
                     std::cout << "uncought callback: " << std::to_string(callback.id) << std::endl;
                     break;
             }
         }
+
+        if (Frame % 5 == 0) control.doTick();
 
         // Clear screen
         window.clear();
@@ -201,6 +206,8 @@ int main()
         window.display();
         std::cout << "Frame: " << Frame << std::endl;
         Frame++;
+
+        std::this_thread::__sleep_for(std::chrono::seconds(0), std::chrono::milliseconds(30) );
 
     }
 

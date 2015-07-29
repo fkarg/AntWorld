@@ -8,12 +8,17 @@ GraphicsControl::GraphicsControl(sf::RenderWindow *window) {
 
     tileToShowTile.setSize(30, 50, 35, 35);
 
+    for (int dir = 0; dir < 4; dir++)
+        directionsTile[dir].setSize(30 + (dir == 0 ? 6 : dir == 1 ? 35 : dir == 2 ? 6 : -23),
+                50 + (dir == 0 ? -23 : dir == 1 ? 6 : dir == 2 ? 35 : 6) , 23, 23);
+
     antToShowPtr->setPosition(tileToShowPtr);
     antToShowPtr->setAnt(&selectedAnt);
 
     antToShowPtr->setVisible(false);
 
 
+    base.setPosition(tileToShowPtr, 0.24);
     base.setPosition(tileToShowPtr->getOwnX(), tileToShowPtr->getOwnY(), 0.24);
     leaf.setPosition(tileToShowPtr);
     leaf.setProducing(true);
@@ -34,10 +39,21 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     closeButton->setCallbackId(10);
 
 
+    tgui::Button::Ptr focusButton(*gui);
+    focusButton->load(THEME_CONFIG_FILE);
+    focusButton->setPosition(500, 70);
+    focusButton->setSize(90, 20);
+    focusButton->setText("Focus on Ant");
+    focusButton->bindCallback(tgui::Button::LeftMouseClicked);
+    focusButton->setCallbackId(13);
+
+    focusAntButton = focusButton;
+
+
     // label to show information about the selected Tile
     tgui::Label::Ptr infoLabel(*gui);
     infoLabel->load(THEME_CONFIG_FILE);
-    infoLabel->setPosition(20, 110);
+    infoLabel->setPosition(20, 130);
     infoLabel->setTextSize(12);
     infoLabel->setTextColor(sf::Color(20, 200, 200) );
     infoLabel->setText("Info:\n\nIndex:\nX:\nY:\n\nFood:");
@@ -100,7 +116,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     tgui::Button::Ptr startTicksButton(*gui);
     startTicksButton->load(THEME_CONFIG_FILE);
     startTicksButton->setSize(90, 20);
-    startTicksButton->setPosition(500, 50);
+    startTicksButton->setPosition(500, 40);
     startTicksButton->setCallbackId(4);
     startTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
     startTicksButton->setText("Start");
@@ -202,8 +218,12 @@ void GraphicsControl::setMaze(Maze *maze) {
 
 
 // changing the TileInfoLabel to the @param tile
-void GraphicsControl::changeTextInfoLabel(Tile *tile) {
+void GraphicsControl::changeTextInfoLabel(Tile* tile) {
     tileToShowTile = tile;
+
+    for (int dir = 0; dir < 4; dir++)
+        if (tile->isSurrounding(dir) )
+            directionsTile[dir] = tile->getSurrounding(dir);
 
     std::cout << "GC: changeTextInfoLabel" << std::endl;
 
@@ -215,11 +235,13 @@ void GraphicsControl::changeTextInfoLabel(Tile *tile) {
 
     if (connect) {
         craver.setAim(tileToShowPtr->getTileToShow());
+        craver.setEndColor(sf::Color::Green);
         craver.colorPath(sf::Color::Cyan);
         craver.searchAStar();
 
         connect = false;
     }
+    changeFocus();
 }
 
 
@@ -242,6 +264,10 @@ void GraphicsControl::updateInfo() {
     TileInfoLabel->setText(tileToShowPtr->getTileInfo() );
     tileToShowPtr->draw(window);
 
+    for (int dir = 0; dir < 4; dir++)
+        if (!tileToShowPtr->isWall(dir) )
+            directionsTile[dir].draw(window);
+
     if (tileToShowPtr->getTileToShow() != NULL) {
         drawBase = tileToShowPtr->getTileToShow()->isBASE();
         drawLeaf = tileToShowPtr->getTileToShow()->isRES();
@@ -252,9 +278,11 @@ void GraphicsControl::updateInfo() {
                 "   ID: " + std::to_string(antToShowPtr->getAntShown()->getID() ) +
                 "   Ticks living: " + std::to_string(antToShowAnt.getAntShown()->getTicksLiving() ) +
                 "   Food: " + std::to_string(antToShowAnt.getAntShown()->getFood() ) +
-                "   Team: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
+                "   \nTeam: " + std::to_string(antToShowPtr->getAntShown()->getTeamNum() ) +
                 "   Ants on Tile: " + std::to_string(tileToShowTile.getTileToShow()->getAntCount() ) );
-    } else AntInfoLabel->setText("Please select an Ant to show Info about it");
+        if (focusAntButton->getText() == "End Focus" )
+            AntInfoLabel->setText(AntInfoLabel->getText() + "\n\nFocused");
+    } else AntInfoLabel->setText("Please select an Ant to show Info about it\n\n\nNo Ant Focused");
 }
 
 
@@ -262,6 +290,7 @@ void GraphicsControl::updateInfo() {
 void GraphicsControl::testConnectedButtonClicked() {
     connect = true;
     craver.setStart(tileToShowPtr->getTileToShow() );
+    craver.setStartColor(sf::Color::Yellow);
 }
 
 
@@ -299,6 +328,14 @@ void GraphicsControl::ResetMaze() {
 }
 
 
+// resetting the color of the maze
+void GraphicsControl::ResetColorOfMaze() {
+	for (int i = 0; i < maze->getSizeX(); i++)
+		for (int j = 0; j < maze->getSizeY(); j++)
+			maze->getTile(i, j)->setColor(sf::Color(80, 80, 80, 200) );
+}
+
+
 // updates things according to the changed slider values
 void GraphicsControl::sliderValueChanged() {
     if (!initial) {
@@ -332,6 +369,7 @@ void GraphicsControl::changeWalls(int dir, bool move) {
                         tileToShowPtr->setWall(dir, !tileToShowPtr->isWall(dir) );
             tileToShowPtr->getSurrounding(dir)->setWall( (dir + 2) % 4,
                     !tileToShowPtr->getSurrounding(dir)->isWall( (dir + 2) % 4) );
+            doTick();
             if (move)
                 changeTextInfoLabel(tileToShowPtr->getSurrounding(dir) );
         }
@@ -343,10 +381,13 @@ void GraphicsControl::changeWalls(int dir, bool move) {
 void GraphicsControl::TicksControlChangeState() {
     std::cout << "doing ticks ..." << std::endl;
     if (ticksControl->getText() == "Start" || ticksControl->getText() == "Resume")
+        ticksControl->setText("Faster"), ticking = true;
+    else if (ticksControl->getText() == "Faster")
         ticksControl->setText("Pause");
-    else
+    else {
         ticksControl->setText("Resume");
-
+        ticking = false;
+    }
     doTick();
     // TODO: tickscontrol ...
 }
@@ -365,6 +406,7 @@ void GraphicsControl::drawSpecial() {
             leaf.draw(window);
         }
         if (drawBase) {
+            base.setColor(base.getTile()->getBase()->getColor() );
             setHomeButton->setText("Remove Home");
             if (!drawLeaf) slider->setValue( (unsigned int) tileToShowTile.getTileToShow()->getBase()->getAntCount() );
             base.draw(window);
@@ -387,13 +429,84 @@ Tile* GraphicsControl::getTileSelected() {
 }
 
 
+// toggles the focus of the ant currently selected
+void GraphicsControl::changeFocus() {
+    if (focusAntButton->getText() == "Focus on Ant" && getTileSelected() != NULL) {
+        if (getTileSelected()->hasAnt() )
+            focusedAnt = getTileSelected()->getAnt(), focusAntButton->setText("End Focus");
+        else std::cout << "No Ant on Tile!!!" << std::endl;
+    } else if (focusAntButton->getText() == "End Focus")
+        focusAntButton->setText("Focus on Ant");
+    else std::cout << "Please select a Tile first!!!" << std::endl;
+}
+
+
+// putting a colored layer over the maze from the view of the @param ant
+void GraphicsControl::ColorFor(Ant* ant) {
+	for (int i = 0; i < maze->getSizeX(); i++)
+		for (int j = 0; j < maze->getSizeY(); j++) {
+			Tile* toColor = maze->getTile(i, j);
+			int rcol = 60, gcol = 60, bcol = 60;
+			if (toColor->hasAnt() ) {
+				if (ant->isInTeam(toColor->getAnt()->getID() ) )
+					gcol += 100;
+				else rcol += 130;
+			}
+
+			if (toColor->isRES() )
+				gcol += 200;
+
+            if (ant->isInTeam( (unsigned int) toColor->getScentID() )
+                    && toColor->getScent() >= 0 )
+                gcol += toColor->getScent();
+            else rcol += toColor->getScent();
+
+            rcol = rcol > 255 ? 255 : rcol;
+            gcol = gcol > 255 ? 255 : gcol;
+            bcol = bcol > 255 ? 255 : bcol;
+
+			toColor->setColor(sf::Color(
+                    (sf::Uint8) rcol, (sf::Uint8) gcol, (sf::Uint8) bcol) );
+
+			if (toColor->isBASE())
+                toColor->setColor(toColor->getBase()->getTeamNum() == ant->getTeamNum() ?
+                                  sf::Color(20, 255, 20) : sf::Color(200, 20, 20) );
+				// toColor->setColor(toColor->getBase()->getColor() );
+		}
+    maze->getTile(ant->getCurrent()->getIndex())->setColor(sf::Color::White);
+}
+
+
+// doing the Tick for everything on the map
 void GraphicsControl::doTick() {
-    // for the implementation
-    maze->doTick();
-    selectedAnt.doTick();
-    base.doTick();
-    leaf.doTick();
-    antToShowAnt.doTick();
+
+    if (ticking) {
+        maze->doTick();
+        selectedAnt.doTick();
+        base.doTick();
+        leaf.doTick();
+        antToShowAnt.doTick();
+    }
+
+    for (int dir = 0; dir < 4 && tileToShowTile.getTileToShow() != NULL; dir++)
+        if (tileToShowTile.getTileToShow()->isSurrounding(dir) )
+            directionsTile[dir] = tileToShowTile.getTileToShow()->getSurrounding(dir);
+
+
+    // focusing the ant if it got selected
+    if (focusAntButton->getText() == "End Focus") {
+        tileToShowTile = focusedAnt->getCurrent();
+        antToShowAnt.setAnt(focusedAnt);
+
+        if (focusedAnt->getDead() )
+            focusAntButton->setText("Focus Ant");
+        }
+    ResetColorOfMaze();
+    if (focusedAnt != NULL) ColorFor(focusedAnt);
+
+    // slowing it down if the option to go faster is still present
+    if (ticksControl->getText() == "Faster")
+        std::this_thread::__sleep_for(std::chrono::seconds(0), std::chrono::milliseconds(60) );
 }
 
 

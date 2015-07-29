@@ -28,9 +28,33 @@ void Ant::reloadImage() {
 
     // sprite.setScale(sf::Vector2f(30, 30) );
 
-    // sprite.setColor(sf::Color(0, 255, 0, 255) );
+    // sprite.setColor(sf::Color(255, 255, 255, 200) );
+    // setting the color to one of the following:
+    // 1: red, 2: magenta, 3: green 4: yellow (5: blue) 5: turquoise
 
-    sprite.setColor(sf::Color(255, 255, 255, 200) );
+    sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
+
+    switch (TeamNum) {
+        case 0:
+            break;
+        case 1:
+            bcol = 0;
+        case 2:
+            gcol = 0;
+            break;
+        case 3:
+            rcol = 0;
+        case 4:
+            bcol = 0;
+            break;
+        case 5:
+            rcol = 0;
+            break;
+        default:
+            break;
+    }
+
+    sprite.setColor(sf::Color(rcol, gcol, bcol, 220) );
 
     if (current != NULL) {
         current->removeAnt(AntID);
@@ -43,6 +67,20 @@ void Ant::reloadImage() {
 void Ant::setHome(antBase* home) {
     Ant::home = home;
     TeamNum = home->getTeamNum();
+
+    // TODO: how to visualize Teams the best?
+
+    /*
+     * Idea: for each Team-Index there's an own color that's drawn automatically
+     * (I need to watch out for the showBase, but I guess I just make that teamNum usual)
+     * -> DONE
+     *
+     * there's also the question as to how to visualize scent-traits
+     * TODO: visualize scent-traits
+     * as to I would make it a strong color (e.g. color of team) and
+     * visualize for the selected ant how things around her are seen
+     * including own and TeamScents (different colors obviously)
+     */
 }
 
 
@@ -104,22 +142,18 @@ void Ant::draw(sf::RenderWindow *window) {
 }
 
 
-void Ant::senseFoodOnCurrentTile() {
-    if (current->isFood() > 0)
-        addFood( (unsigned int) current->getFood() );
-}
-
-
 // Reacting and moving to environmental changes
 void Ant::doTick() {
 
     testLiving();
 
     if (!isDead) {
-        senseFoodOnCurrentTile();
-        if (current->isBASE())
-            BaseFoodCommunicate();
-        current->addScent(this);
+        // senseFoodOnCurrentTile();
+        // if (current->isBASE())
+            // BaseFoodCommunicate();
+        // current->addScent(this);
+        AI.senseAndAct(this);
+        // DO(decide(sense() ) );
     }
 
     // TODO: test if food carrying
@@ -157,6 +191,12 @@ void Ant::Dies() {
 }
 
 
+// getting the ant to live the first time
+void Ant::live() {
+	isDead = false;
+}
+
+
 // Ant has been dead but is needed somewhere else, so it is reused
 void Ant::relive(Tile* pos) {
     dir = 0;
@@ -170,8 +210,7 @@ void Ant::relive(Tile* pos) {
 bool Ant::isInTeam(unsigned int AntID) {
     for (int i = 0; i < home->getAntCount(); i++) {
         Ant* tmp = home->getAnt(i);
-        if (tmp != NULL)
-            if (tmp->getID() == AntID)
+        if (tmp != NULL) if (tmp->getID() == AntID)
             return true;
     }
     return false;
@@ -202,6 +241,13 @@ unsigned int Ant::getFood() {
 }
 
 
+// removes food taken from the ant elsewhere from the ant too
+void Ant::remFood(unsigned int num) {
+    ownFood -= num;
+}
+
+
+// adding the @param number of food to the ant but max MAX_FOOD_ANT_CARRYING
 void Ant::addFood(unsigned int number) {
     if (number + ownFood > MAX_FOOD_ANT_CARRYING)
         ownFood = MAX_FOOD_ANT_CARRYING;
@@ -210,6 +256,7 @@ void Ant::addFood(unsigned int number) {
 }
 
 
+// FIXME: STATES! -> remove
 void Ant::BaseFoodCommunicate() {
     if (ownFood < 10)
         addFood(current->getBase()->getFood(this, 10 - ownFood) );
@@ -247,9 +294,9 @@ unsigned int Ant::getTicksLiving() {
 void Ant::testLiving() {
     if (!isDead) {
         livingForTicks--;
-        if (livingForTicks <= 0) if (ownFood > 0)
+        if (livingForTicks <= 2) if (ownFood > 0)
             ownFood--, livingForTicks += 10;
-        else Dies();
+        if (livingForTicks <= 0) Dies();
     }
 }
 
@@ -281,6 +328,8 @@ void showAnt::setAnt(Ant* newAnt) {
     ownFood = newAnt->getFood();
     current = newAnt->getCurrent();
     setVisible(!newAnt->getDead() );
+    TeamNum = newAnt->getTeamNum();
+    reloadImage();
 }
 
 
@@ -371,8 +420,12 @@ Ant* showAnt::getAntShown() {
 void showAnt::doTick() {
     std::cout << "setting visible or not" << std::endl;
     if (AntToShow != NULL)
-        if (AntToShow->getDead() )
+        if (AntToShow->getDead())
             setVisible(false);
+        else if (showingTile->getTileToShow() != NULL)
+            setVisible(showingTile->getTileToShow()->hasAnt() );
+    else if (showingTile->getTileToShow() != NULL) if (showingTile->getTileToShow()->hasAnt() )
+            setAnt(showingTile->getTileToShow()->getAnt() );
 }
 
 
@@ -386,15 +439,55 @@ void showAnt::doTick() {
 
 // reloading the base-Image (needed when transferring 'ownership')
 void antBase::reloadBase() {
-    if (!texture.loadFromFile(SOURCES"Home_1.png") )
+    if (!texture.loadFromFile(SOURCES"Home_2.png") )
         std::cout << "Error Loading Home_Image" << std::endl;
     else
         sprite.setTexture(texture);
 
     texture.setSmooth(true);
 
+    sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
+
+    // for the color of the team (same as the ants) for better distinguishing them
+    switch (TeamNum) {
+        case 0:
+            break;
+        case 1:
+            bcol = 0;
+        case 2:
+            gcol = 0;
+            break;
+        case 3:
+            rcol = 0;
+        case 4:
+            bcol = 0;
+            break;
+        case 5:
+            rcol = 0;
+            break;
+        default:
+            break;
+    }
+
+    if (autoColor) sprite.setColor(sf::Color(rcol, gcol, bcol) );
+    else sprite.setColor(BaseColor);
+
     // for (int i = 0; i < AntCount; i++)
         // ownAnts[i].reloadImage();
+}
+
+
+// @returns the Color of the Team and the Base
+sf::Color antBase::getColor() {
+	return sprite.getColor();
+}
+
+
+// setting the color of the base (for the showBase) to @param color and deactivating team-colors
+void antBase::setColor(sf::Color color) {
+	autoColor = false;
+	BaseColor = color;
+	reloadBase();
 }
 
 
@@ -409,7 +502,9 @@ void antBase::setPosition(int x, int y, float scale) {
     locX = x + 2;
     locY = y + 2;
     sprite.setPosition(locX, locY);
-    sprite.scale(scale, scale);
+    if (sprite.getScale() != sf::Vector2f(scale, scale) )
+        sprite.setScale(scale, scale);
+    // sprite.scale(scale, scale);
 }
 
 
@@ -422,8 +517,6 @@ void antBase::setPosition(Tile *tile, float scale) {
 
 // adding a new ant
 void antBase::addAnt() {
-    // FIXME: currently crashing under broad conditions, and not always either
-    // meaning I haven't figuered out what causes it
     Ant ant;
     if (AntCount == 20)
         ant = ownAnts[getDeadIt()],
@@ -434,6 +527,7 @@ void antBase::addAnt() {
         ant = ownAnts[AntCount];
         ant.setPosition(baseTile);
         ant.setHome(this);
+        ant.live();
         addAnt(ant);
     }
 }
@@ -486,10 +580,12 @@ void antBase::draw(sf::RenderWindow *window) {
 
 // doing the tick for all ants too
 void antBase::doTick() {
-    if (baseTile != NULL)
-        if (baseTile->isFood() > 0 )
+    if (baseTile != NULL) {
+        if (baseTile->isFood() > 0 && baseTile->isFood() != food )
             food += baseTile->getFood();
-    for (int i = 0; i < AntCount; i++)
+    }
+
+    for (int i = 0; i < 20; i++)
         ownAnts[i].doTick();
 }
 
@@ -528,10 +624,11 @@ void antBase::addFood(unsigned int number) {
 unsigned int antBase::getFood(Ant* ant, unsigned int number) {
     if (number > 24)
         number = 24;
-    if (ant->getTeamNum() == TeamNum) {
+    if (ant != NULL) if (ant->getTeamNum() == TeamNum) {
         food -= number;
         return number; // number is ten by default
-    } else return 0;
+    }
+    return 0;
 }
 
 
@@ -557,11 +654,11 @@ void antBase::decRealAntCount(Ant* ant) {
 }
 
 
-// getting the iterator of an dead ant
+// getting an iterator of an dead ant or else -1
 int antBase::getDeadIt() {
     for (int i = 0; i < 20; i++)
         if (dead[i])
             return i;
-    return 0;
+    return -1;
 }
 

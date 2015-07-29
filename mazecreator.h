@@ -37,7 +37,8 @@ private:
     Tile *startTile = NULL, *aimTile = NULL;
     Maze *maze = NULL;
 
-    sf::Color colorTiles = sf::Color(sf::Color::Blue);
+    sf::Color colorTiles = sf::Color::Blue,
+            startColor = sf::Color::Yellow, endColor = sf::Color::Green;
 
     void ColorTiles(std::vector<Tile*> tiles);
 
@@ -51,6 +52,8 @@ public:
     void setMaze(Maze *maze); // setting the maze in which there is searched
 
     void colorPath(sf::Color color); // coloring the found path
+    void setStartColor(sf::Color startColor); // coloring the startTile with @param startColor
+    void setEndColor(sf::Color endColor); // setting the Color of the endTile to @param endColor
 
     void doTick(); // what happens at a tick ? nothing actually
 

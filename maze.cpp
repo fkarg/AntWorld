@@ -20,7 +20,7 @@ void Maze::drawOuterWalls(sf::RenderWindow *renderWindow) {
 Maze::Maze(int xSize, int ySize) {
     sizeX = xSize;
     sizeY = ySize;
-    MAP = std::vector<std::vector<Tile> >( (unsigned int) xSize,
+    MAP = std::vector<std::vector<Tile>> ( (unsigned int) xSize,
             std::vector<Tile>( (unsigned int) ySize) );
     for (int i = 0; i < xSize; i++) {
         for (int j = 0; j < ySize; j++) {
@@ -283,6 +283,5 @@ void Maze::reloadgfx(){
     for (producing& prod : prods)
         prod.reloadImage();
 }
-
 
 

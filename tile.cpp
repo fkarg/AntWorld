@@ -1,7 +1,3 @@
-//
-// Created by bz on 03.04.15.
-//
-
 #include "tile.h"
 #include "ant.h"
 
@@ -48,7 +44,7 @@ void Tile::addState(STATE state) {
 
 
 // removing the @param state from the current (only ANT, RES or BASE)
-bool Tile:: removeState(STATE state) {
+bool Tile::removeState(STATE state) {
     std::cout << "removing state " << state << " from tile " << index << std::endl;
     if ( (state == RES && isRES() && res == NULL) || (state == BASE && isBASE() && base == NULL )
             || (state == ANT && hasAnt() && ownAnts.size() == 0) ) {
@@ -72,7 +68,7 @@ void Tile::setSize(int x, int y, int width, int height) {
     addWalls();
 
     rect.setSize(sf::Vector2f(height, width) );
-    setColor(sf::Color::Blue);
+    setColor(sf::Color(40, 40, 40) );
     rect.setPosition(sf::Vector2f(locX, locY) );
 }
 
@@ -226,10 +222,12 @@ int Tile::isFood() {
 }
 
 
-// @returns max 10 or how much food there's on res, else 0
-int Tile::getFood() {
-    if (isRES() )
-       return res->getFood();
+// @returns max 10 or how much food there's on res or the base, else 0
+int Tile::getFood(Ant* ant) {
+    if (isBASE() )
+        return base->getFood(ant, 10 - ant->getFood() );
+    else if (isRES() )
+        return res->getFood();
     else return 0;
 }
 
@@ -259,7 +257,8 @@ std::string Tile::getTileInfo() {
         "\nX: " + std::to_string(getX() ) +
         "\nY: " + std::to_string(getY() ) +
         "\n\nFood: " + std::to_string(isFood() ) +
-        "\nHighest Scent: " + std::to_string(getScent(0) ) +
+        "\nHighest Scent: \n" + std::to_string(getScent(0) ) +
+        "\nfrom: " + std::to_string(getScentID(0) ) +
         "\n" + additional;
 }
 
@@ -296,8 +295,9 @@ void Tile::removeRes() {
 // adding the @param ant to the 'current on tile' vector
 void Tile::addAnt(Ant* ant) {
     ownAnts.push_back(ant);
-    addScent(ant);
+    // addScent(ant);
     addState(ANT);
+    // setColor(sf::Color(0, 70, 255) );
 }
 
 
@@ -372,12 +372,12 @@ void Tile::addScent(Ant* from) {
         for (int i = scentCount - 1; i > 0; i--)
             scentID[i] = scentID[i - 1];
 
-        Scents[0] = 100;
+        Scents[0] = 200;
         scentID[0] = from->getID();
         if (scentCount < 3) scentCount++;
 
     } else {
-        Scents[0] = 100;
+        Scents[0] = 200;
         scentID[0] = from->getID();
         scentCount++;
     }
@@ -443,6 +443,8 @@ void producing::reloadImage() {
         std::cout << "Error: couldn't load RES_Image";
     else
         sprite.setTexture(texture);
+
+    sprite.setColor(sf::Color::Yellow);
 }
 
 
@@ -464,7 +466,7 @@ bool producing::getProducingState() {
 }
 
 
-// @return the productionrate of this tile if there's production at all to begin with
+// @return the production rate of this tile if there's production at all to begin with
 float producing::getProductionRate() {
     return production;
 }
@@ -576,6 +578,13 @@ int showTile::isFood() {
 }
 
 
+// @returns the base of the tileToShow
+antBase* showTile::getBase() {
+    if (tileToShow != NULL) if (tileToShow->getBase() != NULL)
+        return tileToShow->getBase();
+    return NULL;
+}
+
 // setting in the @param dir the wall to @param setWall
 void showTile::setWall(int dir, bool setWall) {
     if (dir % 4 == dir) {
@@ -604,7 +613,9 @@ void showTile::doTick() {
 
 // returns if there is a tile virtually surrounding this tile in @param dir
 bool showTile::isSurrounding(int dir) {
-    return tileToShow->isSurrounding(dir);
+    if (tileToShow != NULL && dir % 4 == dir)
+        return tileToShow->isSurrounding(dir);
+    return false;
 }
 
 
@@ -634,5 +645,4 @@ void showTile::removeBase() {
     tileToShow->removeBase();
     removeState(BASE);
 }
-
 

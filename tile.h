@@ -7,19 +7,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include "ticksystem.h"
-
-
-
-// possible states for every tile
-enum STATE {
-    // 0     1    2
-    NORMAL, ANT, RES,
-    //  3      4      5
-    RES_ANT, BASE, BASE_ANT,
-    //  6           7
-    BASE_RES, BASE_RES_ANT
-};
-
+#include "maze_lite.h"
 
 
 class Ant;
@@ -80,11 +68,11 @@ public:
     void setSurrounding(int dir, Tile* tile); // setting in @param dir the @param tile
     virtual Tile* getSurrounding(int dir);    // returning the tile in @param dir
     virtual bool isSurrounding(int dir); // returning if there even is sth in @param dir
-    virtual int isFood();       // returning all the food on the Tile
-    int getFood();              // returning 0 up to 10 max food and decreasing it on the Tile
+    virtual int isFood();          // returning all the food on the Tile
+    int getFood(Ant* ant = NULL);  // returning 0 up to 10 max food and decreasing it on the Tile
     virtual std::string getTileInfo();   // returns the TileInfoLabel of the tile
 
-    antBase* getBase() { return base; }  // returns the antBase if one is set
+    virtual antBase* getBase() { return base; }  // returns the antBase if one is set
     void setBase(antBase* base);         // setting the antBase
     virtual void removeBase();           // removing the base, needed when destroyed or sth
 
@@ -98,10 +86,10 @@ public:
     int getAntCount();                  // @returns how many ants there are exactly on this tile
 
     int getScentCount() { return scentCount; }
-    int getScent(int which);        // @returns the scent on place @param which
+    int getScent(int which = 0);    // @returns the scent on place @param which
     int getOwnScent(Ant* who);      // @returns the own scent of @param who or -1
     int getTeamScent(Ant* who);     // @returns the strongest team-scent or -1
-    int getScentID(int which);      // @returnns the ScentID on place @param which
+    int getScentID(int which = 0);  // @returns the ScentID on place @param which
     void addScent(Ant* from);       // simply adds a scent to the tile, @param from's AntID is saved
 
     bool isBASE();      // returns if the Tile has the special case 'BASE'
@@ -114,7 +102,7 @@ public:
 
 class producing : public tickInterface {
 private:
-    float production = 0.0, produced = 0.0;
+    float production = 2.0, produced = 20.0;
     bool isProducing = true; // if there's production currently
 
     sf::Texture texture;   // the texture of the tile
@@ -167,6 +155,7 @@ public:
     int getOwnY();      // returning the own Y value
     void setIndex(int index); // setting the @param index
     int getIndex();     // returning the index
+    antBase* getBase();  // @returning the AntBase (for the color)
     int isFood();       // returning how much food there is on the Tile
     void setWall(int dir, bool setWall); // setting in @param dir the @param setWall
     void doTick();      // whatever happens at a tick TODO: updating the info seperately
@@ -184,9 +173,6 @@ public:
 
 
 
-
-
-
-
 #endif
+
 
