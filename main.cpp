@@ -163,6 +163,12 @@ int main()
                 case 7:
                     control.sliderValueChanged();
                     break;
+                case 8:
+                    control.tickSliderChanged();
+                    break;
+                case 9:
+                    control.doTicks();
+                    break;
                 case 10:
                     std::cout << "closing window" << std::endl;
                     window.close();

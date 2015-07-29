@@ -39,6 +39,7 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     closeButton->setCallbackId(10);
 
 
+    // button for focusing on the ant
     tgui::Button::Ptr focusButton(*gui);
     focusButton->load(THEME_CONFIG_FILE);
     focusButton->setPosition(500, 70);
@@ -48,6 +49,17 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     focusButton->setCallbackId(13);
 
     focusAntButton = focusButton;
+
+
+    // button for doing some Ticks
+    tgui::Button::Ptr doTicksButton(*gui);
+    doTicksButton->load(THEME_CONFIG_FILE);
+    doTicksButton->setPosition(600, 70);
+    doTicksButton->setSize(90, 20);
+    doTicksButton->setText("One Tick");
+    doTicksButton->bindCallback(tgui::Button::LeftMouseClicked);
+    doTicksButton->setCallbackId(9);
+    tickButton = doTicksButton;
 
 
     // label to show information about the selected Tile
@@ -182,6 +194,18 @@ void GraphicsControl::addGui(tgui::Gui *gui) {
     slider->setCallbackId(7);
 
     GraphicsControl::slider = slider;
+
+    tgui::Slider::Ptr slider2(*gui);
+    slider2->load(THEME_CONFIG_FILE);
+    slider2->setVerticalScroll(false);
+    slider2->setPosition(600, 50);
+    slider2->setSize(80, 11);
+    slider2->setMinimum(0);
+    slider2->setMaximum(5);
+    slider2->setValue(1);
+    slider2->bindCallback(tgui::Slider::ValueChanged);
+    slider2->setCallbackId(8);
+    tickSlider = slider2;
 
 
     // creating the menu
@@ -355,6 +379,35 @@ void GraphicsControl::sliderValueChanged() {
 }
 
 
+// setting the right value to the tick-controlling button
+void GraphicsControl::tickSliderChanged() {
+    int val = tickSlider->getValue();
+	std::cout << "changed TickSlider: " << val << std::endl;
+	switch (val) {
+		case 2:
+			tickText = "Two";
+			break;
+		case 3:
+			tickText = "Three";
+			break;
+		case 4:
+			tickText = "Four";
+			break;
+		case 5:
+			tickText = "Five";
+			break;
+		default:
+			tickText = "No";
+			break;
+	}
+
+    tickText += " Ticks";
+    if (val == 1)
+        tickText = "One Tick";
+
+    tickButton->setText(tickText);
+}
+
 // returns if the Checkbox is checked or not
 bool GraphicsControl::isAdvancedMode() {
     return advancedMode->isChecked();
@@ -480,6 +533,8 @@ void GraphicsControl::ColorFor(Ant* ant) {
 // doing the Tick for everything on the map
 void GraphicsControl::doTick() {
 
+    std::cout << "Doing a Tick" << std::endl;
+
     if (ticking) {
         maze->doTick();
         selectedAnt.doTick();
@@ -510,7 +565,15 @@ void GraphicsControl::doTick() {
 }
 
 
-
+// doing the @param number of ticks
+void GraphicsControl::doTicks() {
+    std::cout << "doing Ticks" << std::endl;
+    int ticksNum = tickSlider->getValue();
+    ticking = true;
+	for (int i = 0; i < ticksNum; i++)
+		doTick();
+    ticking = false;
+}
 
 
 

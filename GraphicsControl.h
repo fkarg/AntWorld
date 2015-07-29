@@ -25,9 +25,10 @@ class GraphicsControl : public tickInterface {
 protected:
     // pointer for several necessary gui objects for accessing them later
     tgui::Label::Ptr TileInfoLabel, AntInfoLabel;
-    tgui::Button::Ptr ticksControl, setHomeButton, setResButton, focusAntButton;
+    tgui::Button::Ptr ticksControl, setHomeButton, setResButton, focusAntButton, tickButton;
     tgui::Checkbox::Ptr advancedMode;
-    tgui::Slider::Ptr slider;
+    tgui::Slider::Ptr slider, tickSlider;
+	std::string tickText = "One Tick";
 
     int tick = 0;       // TODO: ticksystem ...
     const int lowest = 400, diff = 30;
@@ -72,14 +73,16 @@ public:
     void ResetMaze();                   // resets the maze completely
     void ResetColorOfMaze();		// resetting the color of the maze for visualising sth
     void sliderValueChanged();          // gets called whenever the value of the slider changes
+    void tickSliderChanged();           // setting the button to control the ticks to the num
     bool isAdvancedMode();              // returns if the advancedMode checkbox is checked
     void changeWalls(int dir, bool move = false); // changes the walls in @param dir and @param moves
     void TicksControlChangeState();     // changes the state of the ticksControl
     void drawSpecial();                 // draws the Ants (showAnt & selectedAnt)
     Tile* getTileSelected();            // returns the currently selected tile
     void changeFocus();                 // toggles the focus of the ant currently selected
-    void ColorFor(Ant* ant);		// showing the maze from the point of view from the @param ant
+    void ColorFor(Ant* ant);		    // showing the maze from the point of view from the @param ant
     void doTick();                      // for the implementation
+    void doTicks();              // doing the @param number of ticks
 };
 
 
