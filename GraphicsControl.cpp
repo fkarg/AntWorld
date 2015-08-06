@@ -501,20 +501,22 @@ void GraphicsControl::ColorFor(Ant* ant) {
 			Tile* toColor = maze->getTile(i, j);
 			int rcol = 60, gcol = 60, bcol = 60;
 			if (toColor->hasAnt() ) {
-				if (ant->isInTeam(toColor->getAnt()->getID() ) ) {
-					if (toColor->getIndex() == ant->getCurrent()->getIndex() )
-						bcol += 150, gcol += 150, rcol += 100;
-					else gcol += 100;
-				} else rcol += 130;
+				sf::Color teamColor = TeamColor::get(toColor->getAnt()->getTeamNum() );
+				rcol += teamColor.r / 2;
+				gcol += teamColor.g / 2;
+				bcol += teamColor.b / 2;
 			}
 
 			if (toColor->isRES() )
 				gcol += 200;
 
-            if (ant->isInTeam( (unsigned int) toColor->getScentID() )
-                    && toColor->getScent() >= 0 )
-                gcol += toColor->getScent();
-            else rcol += toColor->getScent();
+            if (toColor->getScent() >= 0 ) {
+                sf::Color teamColor = TeamColor::get( (toColor->getScentID() -2) / 20);
+                rcol += teamColor.r > 0 ? toColor->getScent() : 0;
+                gcol += teamColor.g > 0 ? toColor->getScent() : 0;
+                bcol += teamColor.b > 0 ? toColor->getScent() : 0;
+
+            }
 
             rcol = rcol > 255 ? 255 : rcol;
             gcol = gcol > 255 ? 255 : gcol;
@@ -524,8 +526,7 @@ void GraphicsControl::ColorFor(Ant* ant) {
                     (sf::Uint8) rcol, (sf::Uint8) gcol, (sf::Uint8) bcol) );
 
 			if (toColor->isBASE())
-                toColor->setColor(toColor->getBase()->getTeamNum() == ant->getTeamNum() ?
-                                  sf::Color(20, 255, 20) : sf::Color(200, 20, 20) );
+                toColor->setColor(TeamColor::get(toColor->getBase()->getTeamNum() ) );
 				// toColor->setColor(toColor->getBase()->getColor() );
 		}
     // maze->getTile(ant->getCurrent()->getIndex())->setColor(sf::Color::White);

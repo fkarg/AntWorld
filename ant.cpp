@@ -31,29 +31,9 @@ void Ant::reloadImage() {
     // setting the color to one of the following:
     // 1: red, 2: magenta, 3: green 4: yellow (5: blue) 5: turquoise
 
-    sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
+    sf::Color TeamColor = TeamColor::get(TeamNum);
 
-    switch (TeamNum) {
-        case 0:
-            break;
-        case 1:
-            bcol = 0;
-        case 2:
-            gcol = 0;
-            break;
-        case 3:
-            rcol = 0;
-        case 4:
-            bcol = 0;
-            break;
-        case 5:
-            rcol = 0;
-            break;
-        default:
-            break;
-    }
-
-    sprite.setColor(sf::Color(rcol, gcol, bcol, 220) );
+    sprite.setColor(sf::Color( TeamColor.r, TeamColor.g, TeamColor.b, 200) );
 
     if (current != NULL) {
         current->removeAnt(AntID);
@@ -444,31 +424,8 @@ void antBase::reloadBase() {
         sprite.setTexture(texture);
 
     texture.setSmooth(true);
-
-    sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
-
-    // for the color of the team (same as the ants) for better distinguishing them
-    switch (TeamNum) {
-        case 0:
-            break;
-        case 1:
-            bcol = 0;
-        case 2:
-            gcol = 0;
-            break;
-        case 3:
-            rcol = 0;
-        case 4:
-            bcol = 0;
-            break;
-        case 5:
-            rcol = 0;
-            break;
-        default:
-            break;
-    }
-
-    if (autoColor) sprite.setColor(sf::Color(rcol, gcol, bcol) );
+    
+    if (autoColor) sprite.setColor(TeamColor::get(TeamNum) );
     else sprite.setColor(BaseColor);
 
     // for (int i = 0; i < AntCount; i++)

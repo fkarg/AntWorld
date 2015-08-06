@@ -28,6 +28,35 @@ static unsigned int MAXTEAMNUM; // keeps track of the number of teams
 static const unsigned int MAX_FOOD_ANT_CARRYING = 30;
 static ai AI;
 
+
+struct TeamColor {
+	static sf::Color get(int TeamNum) {
+        sf::Uint8 rcol = 255, gcol = 255, bcol = 255;
+        // for the color of the teams in general for distinguishing them
+        switch (TeamNum) {
+            case 0:
+                break;
+            case 1:
+                bcol = 0;
+            case 2:
+                gcol = 0;
+                break;
+            case 3:
+                rcol = 0;
+            case 4:
+                bcol = 0;
+                break;
+            case 5:
+                rcol = 0;
+                break;
+            default:
+                break;
+        }
+        return sf::Color(rcol, gcol, bcol);
+    }
+};
+
+
 class Ant : public tickInterface {
 
 protected:
