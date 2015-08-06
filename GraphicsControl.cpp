@@ -508,14 +508,13 @@ void GraphicsControl::ColorFor(Ant* ant) {
 			}
 
 			if (toColor->isRES() )
-				gcol += 200;
+				rcol += 100, gcol += 100, bcol += 100;
 
             if (toColor->getScent() >= 0 ) {
                 sf::Color teamColor = TeamColor::get( (toColor->getScentID() -2) / 20);
                 rcol += teamColor.r > 0 ? toColor->getScent() : 0;
                 gcol += teamColor.g > 0 ? toColor->getScent() : 0;
                 bcol += teamColor.b > 0 ? toColor->getScent() : 0;
-
             }
 
             rcol = rcol > 255 ? 255 : rcol;

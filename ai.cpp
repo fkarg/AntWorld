@@ -115,7 +115,7 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 				decision = (ACTION) newDir;
 		}
 
-	if (currentState.teamScent[highestDir] && rand() % 10 != 0 && highestDir != -1 && currentState.searchingHome)
+	if (currentState.teamScent[highestDir] && highestDir != -1 && currentState.searchingHome)
 			decision = (ACTION) teamDir;
 	else if (currentState.searchingFood && lowestDir != -1 && currentState.teamScent[lowestDir])
 		decision = (ACTION) lowestDir;
