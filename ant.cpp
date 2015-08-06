@@ -8,8 +8,7 @@ Ant::Ant() {
 
     reloadImage();
 
-    setAntID(MAXANTID);
-    MAXANTID++;
+    setAntID(MAXANTID++);
 
     sprite.scale(sf::Vector2f(0.2, 0.2) );
 
@@ -208,8 +207,8 @@ void Ant::relive(Tile* pos) {
 
 // @returns if @param AntID is in the own team
 bool Ant::isInTeam(unsigned int AntID) {
-    for (int i = 0; i < home->getAntCount(); i++) {
-        Ant* tmp = home->getAnt(i);
+    for (int i = ((AntID -2) % 20) - 1, counter = 0; counter < 3; i++, counter++) {
+        Ant* tmp = home->getAnt(i, true);
         if (tmp != NULL) if (tmp->getID() == AntID)
             return true;
     }
@@ -591,25 +590,26 @@ void antBase::doTick() {
 
 
 // returns the ant with the @param AntID or NULL if nonexistent
-Ant* antBase::getAnt(unsigned int AntID) {
-    for (int i = 0; i < AntCount; i++) {
-        if (ownAnts[i].getID() == AntID)
-            return &ownAnts[i];
-    }
-    return NULL;
+Ant* antBase::getAntWith(unsigned int AntID) {
+    unsigned int begin = ownAnts[0].getID();
+    unsigned int wanted = AntID - begin;
+    if (ownAnts[wanted].getID() == AntID)
+	    return &ownAnts[wanted];
+    else return NULL;
 }
 
 
 // @returns the ant at @param index, valid for everything smaller than the realAntCount
-Ant* antBase::getAnt(int Index) {
-    if (Index % 20 == Index && RealAntCount > 0) {
+Ant* antBase::getAnt(int Index, bool deadToo) {
+    if (Index % 20 == Index && RealAntCount > 0 && !deadToo) {
         int RealIndex = 0;
         for (int i = 0; i < Index; i++, RealIndex++)
             for (int j = 0; j < 20 && dead[RealIndex]; j++)
                 RealIndex++;
         if (RealIndex % 20 == RealIndex)
             return &ownAnts[RealIndex];
-    }
+    } else if (Index % 20 == Index)
+        return &ownAnts[Index];
     return NULL;
 }
 

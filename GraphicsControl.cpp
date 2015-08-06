@@ -501,9 +501,11 @@ void GraphicsControl::ColorFor(Ant* ant) {
 			Tile* toColor = maze->getTile(i, j);
 			int rcol = 60, gcol = 60, bcol = 60;
 			if (toColor->hasAnt() ) {
-				if (ant->isInTeam(toColor->getAnt()->getID() ) )
-					gcol += 100;
-				else rcol += 130;
+				if (ant->isInTeam(toColor->getAnt()->getID() ) ) {
+					if (toColor->getIndex() == ant->getCurrent()->getIndex() )
+						bcol += 150, gcol += 150, rcol += 100;
+					else gcol += 100;
+				} else rcol += 130;
 			}
 
 			if (toColor->isRES() )
@@ -526,7 +528,7 @@ void GraphicsControl::ColorFor(Ant* ant) {
                                   sf::Color(20, 255, 20) : sf::Color(200, 20, 20) );
 				// toColor->setColor(toColor->getBase()->getColor() );
 		}
-    maze->getTile(ant->getCurrent()->getIndex())->setColor(sf::Color::White);
+    // maze->getTile(ant->getCurrent()->getIndex())->setColor(sf::Color::White);
 }
 
 

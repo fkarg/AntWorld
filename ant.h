@@ -148,8 +148,8 @@ public:
     void setVisible(bool visible) { isVisible = visible; } // setting if the icon is getting drawn
     bool getVisible() { return isVisible; } // returns if the tile is currently visible
     int getAntCount() { return RealAntCount; }  // returns the number of ants from this base
-    Ant* getAnt(unsigned int AntID); // @returns the ant with the @param AntID
-    Ant* getAnt(int Index);         // @returns the ant at @param Index
+    Ant* getAntWith(unsigned int AntID); // @returns the ant with the @param AntID
+    Ant* getAnt(int Index, bool deadToo = false);         // @returns the ant at @param Index
     Tile* getTile() { return baseTile; } // @returns the baseTile
     unsigned int getTeamNum() { return TeamNum; } // @returns the unique teamNum
 
