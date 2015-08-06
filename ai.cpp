@@ -41,6 +41,9 @@ Surrounding_state ai::sense(Ant* ant) {
 	}
 	// what type the current tile is (except for hasAnt, since that has to be true)
 	current.isBase = ant->getCurrent()->isBASE();
+	if (current.isBase && ant->getCurrent()->getBase()->getTeamNum() == ant->getTeamNum() )
+		current.isOwnBase = true;
+	else current.isOwnBase = false;
 	current.isFood = ant->getCurrent()->isFood() > 0;
 	if (current.isFood)
 		current.foodThere = ant->getCurrent()->isFood();
@@ -64,9 +67,9 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 			&& currentState.antFood <= MAX_FOOD_ANT_CARRYING - 2
 			&& !currentState.isBase)
 		return TAKE_FOOD;
-	if (currentState.isBase && currentState.antFood > 10)
+	if (currentState.isOwnBase && currentState.antFood > 10)
 		return GIVE_FOOD;
-	if (currentState.isBase && currentState.antFood < 10)
+	if (currentState.isOwnBase && currentState.antFood < 10)
 		return TAKE_FOOD;
 
 	ACTION decision = STAY;
