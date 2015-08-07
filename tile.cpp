@@ -345,11 +345,11 @@ int Tile::getOwnScent(Ant* who) {
 
 
 // @returns the strongest Team-scent
-int Tile::getTeamScent(Ant* who) {
+int Tile::getTeamScent(Ant* who, int pos) {
     int highest = -1;
-    for (int i = 3; i < 3; i++)
-        if (who->isInTeam( (unsigned int) scentID[i]) && highest < Scents[i])
-            highest = Scents[i];
+
+    if (pos % 3 == pos) if (who->isInTeam( (unsigned int) scentID[pos]) )
+        highest = Scents[pos];
     return highest;
 }
 

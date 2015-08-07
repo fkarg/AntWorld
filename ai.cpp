@@ -30,8 +30,12 @@ Surrounding_state ai::sense(Ant* ant) {
 	for (int dir = 0; dir < 4; dir++ ) {
 		current.walls[dir] = ant->getCurrent()->isWall(dir);
 		if (!current.walls[dir]) {
-			current.scents[dir] = ant->getCurrent()->getTeamScent(ant) > 0 ? ant->getCurrent()->getTeamScent(ant) : ant->getCurrent()->getScent();
+			current.scents[dir] = ant->getCurrent()->getScent();
 			current.teamScent[dir] = ant->getCurrent()->getTeamScent(ant) > 0;
+            current.scents2[dir] = ant->getCurrent()->getScent(2);
+            current.teamScent2[dir] = ant->getCurrent()->getTeamScent(ant, 2) > 0;
+            if (current.teamScent[dir] ) current.TeamScentCount += 1;
+            if (current.teamScent2[dir] ) current.TeamScent2Count += 1;
 		}
 		if (ant->getCurrent()->isSurrounding(dir) && !ant->getCurrent()->isWall(dir) )
 			if (ant->getCurrent()->getSurrounding(dir)->isBASE() )
@@ -55,6 +59,10 @@ Surrounding_state ai::sense(Ant* ant) {
 		current.searchingHome = true, ant->getCurrent()->addScent(ant);
 	else if (ant->getFood() < 15)
 		current.searchingFood = true;
+    
+    for (int num = 0; num < 3; num++)
+        current.scentThere[num] = ant->getCurrent()->getScent(num),
+            current.teamScentThere[num] = ant->getCurrent()->getTeamScent(ant, num) > 0;
 
 	return current;
 }
@@ -97,9 +105,7 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 	// if there's only two directions possible, you came from one and will go to the other
 	// special cases: you are on the BASE or a RES, and either left or are taking food TODO
 	if (possDir == 2)
-		if ( (lastDir + 2) % 4 != currentState.lastAction)
-			decision = (ACTION) lastDir;
-		else while (decision == STAY) {
+		while (decision == STAY) {
 			int newDir = rand() % 4;
 			if ( (newDir + 2) % 4 != currentState.lastAction
 					&& !currentState.walls[newDir] )
@@ -112,21 +118,33 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 			int newDir = rand() % 4;
 			if ( (newDir + 2) % 4 != currentState.lastAction
 					&& !currentState.walls[newDir] )
-				decision = (ACTION) newDir;
-		}
+                decision = (ACTION) newDir;
+        }
 
-	if (currentState.teamScent[highestDir] && highestDir != -1 && currentState.searchingHome)
-			decision = (ACTION) teamDir;
-	else if (currentState.searchingFood && lowestDir != -1 && currentState.teamScent[lowestDir])
-		decision = (ACTION) lowestDir;
-	// TODO: following scent or !follow it after the conditions
+//     if (currentState.teamScent[highestDir] && highestDir != -1 && currentState.searchingHome)
+//         decision = (ACTION) teamDir;
+//     else if (currentState.searchingFood && lowestDir != -1 && currentState.teamScent[lowestDir])
+//         decision = (ACTION) lowestDir;
 
-	if (currentState.FoodInDir != -1 && (currentState.FoodInDir + 2) % 4 != currentState.lastAction)
-		decision = (ACTION) currentState.FoodInDir;
-	if (currentState.BaseInDir != -1 && (currentState.BaseInDir + 2) % 4 != currentState.lastAction)
-		decision = (ACTION) currentState.BaseInDir;
 
-	return decision;
+    // TODO: following scent or !follow it after the conditions
+
+    if (currentState.FoodInDir != -1 && (currentState.FoodInDir + 2) % 4 != currentState.lastAction)
+        decision = (ACTION) currentState.FoodInDir;
+    if (currentState.BaseInDir != -1 && (currentState.BaseInDir + 2) % 4 != currentState.lastAction)
+        decision = (ACTION) currentState.BaseInDir;
+
+    // TODO: scent-integration
+    // for one scent in a direction the ant didn't come from: follow it
+    // for two scents, one from the dir the ant came from, follow the other
+    // for two scents, both not from the dir the ant came from,
+    //  follow the higher when searching the Home
+    //  ant the lower one when searching food
+    // for more than two, or one at the own tile too:
+    //  the same as for two not from the current direction
+    // if there's no scent follow the randowm choice aready made
+
+    return decision;
 }
 
 

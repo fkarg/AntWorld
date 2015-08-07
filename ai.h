@@ -17,8 +17,13 @@ enum ACTION {
 
 struct Surrounding_state {
 	bool walls[4] = { false }; // if there's a wall in dir
+    int scentThere[3] = { -1, -1, -1 }; // the scent on the current tile (for deciding with several)
+    bool teamScentThere[3] = { false }; // if the scent on the tile is from the own team
 	int scents[4] = { -1, -1, -1, -1 }; // how much scent there's in dir
+    int scents2[4] = { -1, -1, -1, -1 }; // how much scent is there in dir(2)
 	bool teamScent[4] = { false }; // if the scent is from the own team or not
+    bool teamScent2[4] = { false }; // if the scent2 is from the own team or not
+    int TeamScentCount = 0, TeamScent2Count = 0;
 	bool isBase = false, isOwnBase = false, isFood = false; // if there's a BASE or RES on this tile, and if it is a BASE, if it's not the own
 	int BaseInDir = -1, FoodInDir = -1;
 	bool searchingHome = false, searchingFood = false; // if searching for food or for the base currently
