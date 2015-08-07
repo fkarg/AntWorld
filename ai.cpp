@@ -84,14 +84,14 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 
 	// currentState.print();		// printing the currentState (dbgmode)
 
-	int highest = 0, highestDir = -1, possDir = 0, lastDir = -1, teamDir = -1, lowestDir = -1, lowest = 100;
+	int highest = 0, highestDir = -1, possDir = 0, lastDir = -1, teamDir = -1, lowestDir = -1, lowest = 255;
 
 	// testing for the number of directions without walls and the direction with the highest and lowest scent
 	for (int dir = 0; dir < 4; dir++) {
 		if (currentState.lastAction != (dir + 2) % 4) {
-			if (currentState.scents[dir] > highest)
+			if (currentState.scents[dir] > highest && currentState.teamScent[dir])
 				highest = currentState.scents[dir], highestDir = dir; // dirTo = dir;
-			if (currentState.scents[dir] < lowest)
+			if (currentState.scents[dir] < lowest && currentState.teamScent[dir] && currentState.scents[dir] > 0)
 				lowestDir = dir, lowest = currentState.scents[dir];
 		}
 		if (!currentState.walls[dir] )
@@ -105,7 +105,9 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 	// if there's only two directions possible, you came from one and will go to the other
 	// special cases: you are on the BASE or a RES, and either left or are taking food TODO
 	if (possDir == 2)
-		while (decision == STAY) {
+		if ( (lastDir + 2) % 4 != currentState.lastAction)
+			decision = (ACTION) lastDir;
+		else while (decision == STAY) {
 			int newDir = rand() % 4;
 			if ( (newDir + 2) % 4 != currentState.lastAction
 					&& !currentState.walls[newDir] )
@@ -127,13 +129,6 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 //         decision = (ACTION) lowestDir;
 
 
-    // TODO: following scent or !follow it after the conditions
-
-    if (currentState.FoodInDir != -1 && (currentState.FoodInDir + 2) % 4 != currentState.lastAction)
-        decision = (ACTION) currentState.FoodInDir;
-    if (currentState.BaseInDir != -1 && (currentState.BaseInDir + 2) % 4 != currentState.lastAction)
-        decision = (ACTION) currentState.BaseInDir;
-
     // TODO: scent-integration
     // for one scent in a direction the ant didn't come from: follow it
     // for two scents, one from the dir the ant came from, follow the other
@@ -143,6 +138,49 @@ ACTION ai::decide(const Surrounding_state& currentState) {
     // for more than two, or one at the own tile too:
     //  the same as for two not from the current direction
     // if there's no scent follow the randowm choice aready made
+
+    bool decided = false;
+
+    switch (currentState.TeamScentCount) {
+        case 1:
+            for (int dir = 0; dir < 4; dir++)
+                if (currentState.teamScent[dir] && (dir + 2) % 4 != currentState.lastAction)
+                    decision = (ACTION) dir;
+            break;
+        case 2:
+        case 3:
+        case 4: {
+            if ((highestDir + 2) % 4 != currentState.lastAction && currentState.searchingHome)
+                decision = (ACTION) highestDir;
+            else if ((lowestDir + 2) % 4 != currentState.lastAction && currentState.searchingFood)
+                decision = (ACTION) lowestDir;
+            else {
+                int dirs[4] = {-1, -1, -1, -1}, tmpdir = -1, count = 0;
+                for (int dir = 0; dir < 4; dir++)
+                    if ((dir + 2) % 4 != currentState.lastAction && dir != highestDir && dir != lowestDir) {
+                        dirs[1] = dirs[0] >= 0 && currentState.teamScent[dir] ? dirs[0] : dirs[1];
+                        dirs[0] = currentState.teamScent[dir] ? dir : dirs[0];
+                        count += currentState.teamScent[dir] ? 1 : 0;
+                    }
+                if (count == 0) {
+                    if (currentState.searchingFood) decision = (ACTION) highestDir;
+                    else if (currentState.searchingHome) decision = (ACTION) lowestDir;
+                } else if (count == 1) {
+                    decision = (ACTION) dirs[0];
+                } else if (currentState.searchingHome)
+                    decision = dirs[0] > dirs[1] ? (ACTION) dirs[0] : (ACTION) dirs[1];
+                else if (currentState.searchingFood) decision = dirs[0] > dirs[1] ? (ACTION) dirs[1] : (ACTION) dirs[0];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+
+    if (currentState.FoodInDir != -1 && (currentState.FoodInDir + 2) % 4 != currentState.lastAction)
+        decision = (ACTION) currentState.FoodInDir;
+    if (currentState.BaseInDir != -1 && (currentState.BaseInDir + 2) % 4 != currentState.lastAction)
+        decision = (ACTION) currentState.BaseInDir;
 
     return decision;
 }
