@@ -496,19 +496,19 @@ void GraphicsControl::changeFocus() {
 
 // putting a colored layer over the maze from the view of the @param ant
 void GraphicsControl::ColorFor(Ant* ant) {
-	for (int i = 0; i < maze->getSizeX(); i++)
-		for (int j = 0; j < maze->getSizeY(); j++) {
-			Tile* toColor = maze->getTile(i, j);
-			int rcol = 60, gcol = 60, bcol = 60;
-			if (toColor->hasAnt() ) {
-				sf::Color teamColor = TeamColor::get(toColor->getAnt()->getTeamNum() );
-				rcol += teamColor.r / 2;
-				gcol += teamColor.g / 2;
-				bcol += teamColor.b / 2;
-			}
+    for (int i = 0; i < maze->getSizeX(); i++)
+        for (int j = 0; j < maze->getSizeY(); j++) {
+            Tile* toColor = maze->getTile(i, j);
+            int rcol = 60, gcol = 60, bcol = 60;
+            if (toColor->hasAnt() ) {
+                sf::Color teamColor = TeamColor::get(toColor->getAnt()->getTeamNum() );
+                rcol += teamColor.r / 2;
+                gcol += teamColor.g / 2;
+                bcol += teamColor.b / 2;
+            }
 
-			if (toColor->isRES() )
-				rcol += 100, gcol += 100, bcol += 100;
+            if (toColor->isRES() )
+                rcol += 100, gcol += 100, bcol += 100;
 
             if (toColor->getScent() >= 0 ) {
                 sf::Color teamColor = TeamColor::get( (toColor->getScentID() -2) / 20);
@@ -521,13 +521,12 @@ void GraphicsControl::ColorFor(Ant* ant) {
             gcol = gcol > 255 ? 255 : gcol;
             bcol = bcol > 255 ? 255 : bcol;
 
-			toColor->setColor(sf::Color(
+            toColor->setColor(sf::Color(
                     (sf::Uint8) rcol, (sf::Uint8) gcol, (sf::Uint8) bcol) );
-
-			if (toColor->isBASE())
+            if (toColor->isBASE())
                 toColor->setColor(TeamColor::get(toColor->getBase()->getTeamNum() ) );
-				// toColor->setColor(toColor->getBase()->getColor() );
-		}
+                // toColor->setColor(toColor->getBase()->getColor() );
+        }
     // maze->getTile(ant->getCurrent()->getIndex())->setColor(sf::Color::White);
 }
 
