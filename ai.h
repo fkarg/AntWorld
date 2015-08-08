@@ -10,7 +10,7 @@ class Ant;
 
 enum ACTION {
 	MOVE_UP, MOVE_RIGHT, MOVE_DOWN, MOVE_LEFT,
-	TAKE_FOOD, GIVE_FOOD, STAY
+	TAKE_FOOD, GIVE_FOOD, CHANGE_DIR, STAY
 };
 
 
@@ -38,8 +38,8 @@ private:
 	// the version of the ai: 0.0.8
 
 public:
-	ai(){};     // FIXME: currently crashing for usual ants for some reason
-	void senseAndAct(Ant* itself);  // sensing, reacting and moving altogether
+	ai();     // initiating the pseudo-random-number generator
+    void senseAndAct(Ant* itself);  // sensing, reacting and moving altogether
 	Surrounding_state sense(Ant* ant);  // @returns the surrounding state around the @param ant
 	ACTION decide(const Surrounding_state& currentState);  // @returns decision what to do based on the @param surrounding conditions
 	void DO(ACTION what, Ant* ant);  // actually doing @param what with the @param ant

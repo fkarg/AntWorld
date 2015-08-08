@@ -16,6 +16,10 @@ void Surrounding_state::print() const {
 }
 
 
+ai::ai() {
+    srand((unsigned int) time(0) );
+}
+
 // sensing, reacting and moving
 void ai::senseAndAct(Ant* itself) {
 	// std::cout << "Ant " << itself->getID() << " is doing sth" << std::endl;
@@ -70,6 +74,7 @@ Surrounding_state ai::sense(Ant* ant) {
 
 // the @return Action what to do based on the @param currentState
 ACTION ai::decide(const Surrounding_state& currentState) {
+    std::cout << "AI --- DECIDING" << std::endl;
 
 	if (currentState.foodThere >= 1
 			&& currentState.antFood <= MAX_FOOD_ANT_CARRYING - 2
@@ -103,16 +108,11 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 		decision = (ACTION) lastDir;
 
 	// if there's only two directions possible, you came from one and will go to the other
-	// special cases: you are on the BASE or a RES, and either left or are taking food TODO
+
 	if (possDir == 2)
 		if ( (lastDir + 2) % 4 != currentState.lastAction)
 			decision = (ACTION) lastDir;
-		else while (decision == STAY) {
-			int newDir = rand() % 4;
-			if ( (newDir + 2) % 4 != currentState.lastAction
-					&& !currentState.walls[newDir] )
-				decision = (ACTION) newDir;
-		}
+		else possDir += 1;
 
 	// if there's more than two possibilities, a random event is being chosen for the time being
 	if (possDir >= 3)
@@ -122,12 +122,7 @@ ACTION ai::decide(const Surrounding_state& currentState) {
 					&& !currentState.walls[newDir] )
                 decision = (ACTION) newDir;
         }
-
-//     if (currentState.teamScent[highestDir] && highestDir != -1 && currentState.searchingHome)
-//         decision = (ACTION) teamDir;
-//     else if (currentState.searchingFood && lowestDir != -1 && currentState.teamScent[lowestDir])
-//         decision = (ACTION) lowestDir;
-
+    std::cout << "'random' decision was: " << decision << std::endl;
 
     // TODO: scent-integration
     // for one scent in a direction the ant didn't come from: follow it
@@ -139,22 +134,22 @@ ACTION ai::decide(const Surrounding_state& currentState) {
     //  the same as for two not from the current direction
     // if there's no scent follow the randowm choice aready made
 
-    bool decided = false;
+//    bool decided = false;
 
     switch (currentState.TeamScentCount) {
         case 1:
             for (int dir = 0; dir < 4; dir++)
                 if (currentState.teamScent[dir] && (dir + 2) % 4 != currentState.lastAction)
-                    decision = (ACTION) dir;
+                    decision = (ACTION) dir, std::cout << "following only scent" << std::endl;
             break;
         case 2:
         case 3:
         case 4: {
-            if ((highestDir + 2) % 4 != currentState.lastAction && currentState.searchingHome)
-                decision = (ACTION) highestDir;
-            else if ((lowestDir + 2) % 4 != currentState.lastAction && currentState.searchingFood)
-                decision = (ACTION) lowestDir;
-            else {
+            if ((highestDir + 2) % 4 != currentState.lastAction && currentState.searchingHome && highest > 0)
+                decision = (ACTION) highestDir, std::cout << "following highest" << std::endl;
+            else if ((lowestDir + 2) % 4 != currentState.lastAction && currentState.searchingFood && lowest < 255)
+                decision = (ACTION) lowestDir, std::cout << "following lowest" << std::endl;
+            else if (highest > 0 && lowest < 255) {
                 int dirs[4] = {-1, -1, -1, -1}, tmpdir = -1, count = 0;
                 for (int dir = 0; dir < 4; dir++)
                     if ((dir + 2) % 4 != currentState.lastAction && dir != highestDir && dir != lowestDir) {
@@ -170,6 +165,7 @@ ACTION ai::decide(const Surrounding_state& currentState) {
                 } else if (currentState.searchingHome)
                     decision = dirs[0] > dirs[1] ? (ACTION) dirs[0] : (ACTION) dirs[1];
                 else if (currentState.searchingFood) decision = dirs[0] > dirs[1] ? (ACTION) dirs[1] : (ACTION) dirs[0];
+                std::cout << "decided for one of the other dirs" << std::endl;
             }
         }
             break;
@@ -181,6 +177,10 @@ ACTION ai::decide(const Surrounding_state& currentState) {
         decision = (ACTION) currentState.FoodInDir;
     if (currentState.BaseInDir != -1 && (currentState.BaseInDir + 2) % 4 != currentState.lastAction)
         decision = (ACTION) currentState.BaseInDir;
+    if (currentState.isFood && currentState.searchingHome && currentState.antFood >= MAX_FOOD_ANT_CARRYING - 2)
+        decision = CHANGE_DIR;
+
+    std::cout << "final decision: " << decision << std::endl;
 
     return decision;
 }
@@ -204,6 +204,10 @@ void ai::DO(ACTION what, Ant* ant) {
             ant->getCurrent()->getBase()->addFood(ant->getFood() - 11);
 			ant->remFood(ant->getFood() - 11);
             // TODO: method ant-sided - necessary?
+            break;
+        case CHANGE_DIR:
+            what = (ACTION) ( (ant->getDir() + 2) % 4);
+            ant->move(what);
             break;
         case STAY:
             break;

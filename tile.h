@@ -24,8 +24,8 @@ protected:
 
     STATE current = NORMAL; // the state the tile currently has
 
-    bool wall[4] = { false, false, false, false };
-    // bool wall[4] = { true, true, true, true };
+    // bool wall[4] = { false, false, false, false };
+    bool wall[4] = { true, true, true, true };
 //    the directions: up, right, down, left
 //                     0 ,   1 ,   2 ,   3
 
